@@ -1,4 +1,4 @@
-const CACHE = "tacklebox-field-guide-v2";
+const CACHE = "tacklebox-field-guide-v4";
 const SHELL = [
   "./", "./index.html", "./styles.css", "./data.js", "./app.js",
   "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png",

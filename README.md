@@ -1,6 +1,6 @@
-# Tacklebox Field Guide
+# Striper Tacklebox | NJ Coastal Field Guide
 
-A phone-first, offline-capable U.S. freshwater and saltwater fishing reference. It covers 18 technique families with practical rod, reel, line, leader, bait/lure, seasonal, access, and safety guidance.
+A phone-first, offline-capable New Jersey striped bass, fluke, and sheepshead shore playbook backed by a U.S. freshwater and saltwater fishing reference. It covers 18 technique families with practical rod, reel, line, leader, bait/lure, seasonal, access, and safety guidance.
 
 ## Live app
 
@@ -28,6 +28,9 @@ Saved field cards stay on that browser/device. Clearing site data removes saved 
 
 ## Features
 
+- NJ shore playbook for striped bass, fluke, and sheepshead
+- Species-specific selectors for current conditions, structure, bait, and presentation
+- 2026 NJ regulatory summaries with live-source links
 - Freshwater, saltwater, season, access, technique, and text filters
 - Saved field cards stored on the phone
 - Side-by-side comparison of up to three techniques
@@ -42,7 +45,7 @@ Every push to `main` runs the tests and browser builds, then deploys the reposit
 ## Local validation
 
 ```text
-bun test tests/data.test.js
+bun test tests
 bun build app.js --target browser --outfile app-check.js
 bun build data.js --target browser --outfile data-check.js
 bun build sw.js --target browser --outfile sw-check.js

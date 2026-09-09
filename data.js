@@ -50,3 +50,98 @@ window.TACKLEBOX_DATA = {
     {name:"Texas Saltwater Fishing Magazine — Jetty tackle",url:"https://www.texassaltwaterfishingmagazine.com/fishing/jetty-tackle"}
   ]
 };
+
+window.TACKLEBOX_DATA.nj = {
+  defaultSpecies: "striper",
+  species: {
+    striper: {
+      label: "Striped bass",
+      subtitle: "Spring run · fall migration · surf, inlet, and bay",
+      intro: "Follow bait and moving water from the Raritan and Delaware systems to inlet rips and the ocean wash.",
+      fields: [
+        {id:"season",label:"Season",options:[["spring","Spring run"],["summer","Summer / night"],["fall","Fall run"],["winter","Winter holdover"]]},
+        {id:"access",label:"Access",options:[["surf","Surf / beach"],["jetty","Jetty / inlet"],["bay","Back bay / estuary"],["boat","Boat / kayak"],["pier","Pier / bridge"]]},
+        {id:"signal",label:"Bait or condition",options:[["bunker","Adult bunker"],["peanuts","Peanut bunker"],["mullet","Mullet"],["sandeel","Sand eels"],["spearing","Spearing / rainfish"],["eel","Night / live eel"],["rough","Dirty / rough water"],["calm","Clean / calm"]]}
+      ],
+      plays: [
+        {id:"spring-bunker",name:"Spring bunker run",match:{season:["spring"],access:["bay","boat"],signal:["bunker"]},lure:"Bunker-profile soft bait, large swimmer, or legally presented fresh bunker",rig:"30–50 lb braid, 40–50 lb leader; inline circle hook whenever fishing bait",retrieve:"Slow and deliberate. Live-line naturally or keep a soft bait beside the school.",why:"Large spring bass key on adult menhaden in bays and river mouths.",caution:"Verify current NJ season, slot, possession, bunker, and registry rules before fishing."},
+        {id:"spring-surf",name:"Early surf and inlet",match:{season:["spring"],access:["surf","jetty"],signal:["rough","calm"]},lure:"Bucktail with trailer, minnow plug, or clam/bloodworm where legal",rig:"9–10 ft surf rod, 20–30 lb braid, 30–40 lb leader; circle hook for bait",retrieve:"Sweep troughs and cuts slowly; let current swing a bucktail through the seam.",why:"Migrating fish pause at warmer outflows, cuts, and inlet edges.",caution:"Do not assume calendar dates. Check NJDEP Marine Fisheries before every trip."},
+        {id:"summer-night",name:"Summer night current",match:{season:["summer"],access:["jetty","bay","pier"],signal:["eel","calm"]},lure:"Dark needlefish, slim swimmer, bucktail, or live eel",rig:"20–30 lb braid, 30–50 lb abrasion leader; inline circle hook for eel",retrieve:"Dead-slow and straight. Let the tide sweep across shadow lines and inlet seams.",why:"Low light, cooler water, and current concentrate summer resident fish.",caution:"Carry light, flotation, and traction; never turn your back to inlet surge."},
+        {id:"fall-mullet",name:"September mullet run",match:{season:["fall"],access:["surf","jetty"],signal:["mullet"]},lure:"Pencil popper, walking plug, or mullet-profile swimmer",rig:"9–11 ft surf outfit, 30 lb braid, 30–40 lb leader",retrieve:"Walk or chug on top, then slow a swimmer through the wash after dark.",why:"Mullet travel tight to the beach and create a visible surface profile.",caution:"Work the first trough before casting beyond it."},
+        {id:"fall-peanuts",name:"Peanut bunker blitz",match:{season:["fall"],access:["surf","boat","pier"],signal:["peanuts","spearing"]},lure:"Small epoxy jig, compact metal, or 4–6 in swimmer",rig:"20–30 lb braid with 30–40 lb leader",retrieve:"Match bait size; medium-fast through the school, then sink below surface chaos.",why:"Compact young-of-year bait often draws mixed-size bass close to shore.",caution:"Avoid treble-hook crowding during blitzes; give other anglers room."},
+        {id:"fall-sandeel",name:"Late-fall sand eel pattern",match:{season:["fall"],access:["surf","jetty"],signal:["sandeel"]},lure:"Thin diamond jig or needlefish with a single teaser",rig:"30 lb braid, 40 lb leader; teaser 12–18 in ahead",retrieve:"Steady and low with occasional flutter or pause.",why:"A narrow profile and bottom-oriented retrieve match sand eels.",caution:"Use only one teaser and controlled casts around crowds."},
+        {id:"rough-water",name:"Dirty-water search",match:{season:["spring","fall"],access:["surf","jetty"],signal:["rough"]},lure:"Dark or chartreuse bucktail, wide-wobble swimmer, or bait rig",rig:"Heavier leader and only enough weight to hold the strike zone",retrieve:"Slow, close, and in contact; use vibration and silhouette.",why:"Visibility falls, so profile and pressure waves matter more than detail.",caution:"White water can hide holes and sweep; retreat before conditions exceed your footing."},
+        {id:"winter-holdover",name:"Winter holdover finesse",match:{season:["winter"],access:["bay","pier"],signal:["calm","spearing"]},lure:"Small paddletail or fluke-style plastic",rig:"Light jighead, 15–25 lb leader, balanced spinning outfit",retrieve:"Drag or dead-stick near the warmest stable water.",why:"Holdovers feed in short windows and rarely chase far.",caution:"Confirm open water and current rules; handle cold-stressed fish quickly."}
+      ],
+      rules:[
+        "Atlantic Ocean, 0–3 nautical miles: open year-round; 28–31 in slot; 1 fish per person per day.",
+        "Other NJ marine waters: March 1–December 31; 28–31 in slot; 1 fish per person per day.",
+        "Delaware River, Calhoun Street Bridge downstream to Salem River: March 1–31 and June 1–December 31; closed April–May.",
+        "Federal EEZ beyond 3 nautical miles: targeting, harvest, retention, and possession are prohibited.",
+        "Inline circle hooks are required with bait. Gaffing and net take are prohibited. Free NJ saltwater registration is required for anglers 16+.",
+        "2026 Bonus Program: one 24 to under-28 in fish per permit, May 15–December 31; immediate tagging and harvest reporting required."
+      ],
+      footer:"2026 summary from the NJ Marine Digest reprint on eRegulations, ASMFC, and eCFR. N.J.A.C. is binding law. Verify in-season NJDEP changes before every trip."
+    },
+    fluke: {
+      label: "Fluke",
+      subtitle: "Summer flounder · beaches, cuts, inlets, and channel edges",
+      intro: "Keep a moving offering near bottom. Fluke face current and ambush forage crossing sand, troughs, cuts, and edges.",
+      fields: [
+        {id:"access",label:"Access",options:[["surf","Surf / beach"],["inlet","Inlet / rip"],["bay","Back bay / channel"],["pier","Pier / bulkhead"]]},
+        {id:"drift",label:"Water movement",options:[["slow","Slack / slow"],["moderate","Moderate"],["fast","Fast / ripping"],["stationary","Anchored / stationary"]]},
+        {id:"depth",label:"Depth or structure",options:[["shallow","Shallow trough / flat"],["edge","Channel edge"],["deep","Deep hole / inlet"],["structure","Bulkhead / rock edge"]]}
+      ],
+      plays: [
+        {id:"surf-light",name:"Walk-and-cast beach bucktail",match:{access:["surf"],drift:["slow","moderate"],depth:["shallow"]},lure:"1/2–1 oz bucktail plus scented grub or strip bait",rig:"7–9 ft medium spinning rod, 10–20 lb braid, 20–30 lb leader; optional teaser",retrieve:"Cast diagonally, maintain bottom, lift-drop while walking the trough.",why:"Mobile anglers cover ambush lanes inside the first bar.",caution:"Measure every fish and verify the current NJ season, size, and possession rules."},
+        {id:"surf-cut",name:"Cut and trough sweep",match:{access:["surf"],drift:["moderate","fast"],depth:["edge"]},lure:"1–2 oz bucktail with paddle-tail or scented trailer",rig:"Use the lightest head that repeatedly touches bottom",retrieve:"Cast up-current, follow the sweep, and pause beside the cut lip.",why:"Current funnels forage through cuts where fluke can pin it to sand.",caution:"Avoid wading across unseen cuts in moving surf."},
+        {id:"inlet-rip",name:"Inlet rip bucktail",match:{access:["inlet"],drift:["fast"],depth:["deep","edge"]},lure:"2–4 oz bucktail or weighted fluke rig",rig:"20–30 lb braid, 30–40 lb abrasion leader; weight matched to current",retrieve:"Short controlled lifts while the rig sweeps the bottom edge.",why:"Heavy flow demands enough weight to stay in the feeding lane.",caution:"Inlet current, rocks, and boat traffic create serious hazards."},
+        {id:"bay-drift",name:"Bay channel drift",match:{access:["bay"],drift:["moderate"],depth:["edge"]},lure:"Bucktail and teaser, or squid/spearing-style bait combination",rig:"1–2 oz bottom-contact rig on 15–20 lb braid",retrieve:"Tend bottom continuously; lift just enough to make the trailer swim.",why:"Channel edges combine current, forage, and depth changes.",caution:"Keep clear of marked navigation channels and moving vessels."},
+        {id:"slow-finesse",name:"Slow-water finesse",match:{access:["bay","pier"],drift:["slow","stationary"],depth:["shallow","structure"]},lure:"Light jig with scented minnow, killie-style bait, or strip bait",rig:"1/4–3/4 oz jig, 15–25 lb leader",retrieve:"Subtle hops and long pauses; let tide animate the bait.",why:"Light tackle keeps a natural presentation when current cannot move a heavy rig.",caution:"Do not let a stationary bait bury into grass or debris."},
+        {id:"pier-edge",name:"Pier and bulkhead edge",match:{access:["pier"],drift:["moderate","stationary"],depth:["structure","edge"]},lure:"High-low fluke rig or bucktail beside the edge",rig:"Sinker heavy enough to hold; landing net or drop net ready",retrieve:"Vertical lift-drop or short sweeps parallel to structure.",why:"Fluke use shade lines, pilings, and scoured edges as ambush points.",caution:"Never lift a substantial fish by rod and line from height."}
+      ],
+      rules:[
+        "General NJ waters: May 4–September 25; 18 in minimum; 3 fish per person.",
+        "Delaware Bay and tributaries: May 4–September 25; 17 in minimum; 3 fish per person.",
+        "Island Beach State Park shore fishing: May 4–September 25; 16 in minimum; 2 fish per person.",
+        "IBSP shore fishing means pier, jetty, beach, bank, or marsh access under the published rule.",
+        "One legal-size fluke from the current daily catch may be filleted for bait; retain the intact rack for measurement."
+      ],
+      footer:"2026 measures from the NJ Marine Digest reprint on eRegulations. Regulations remain in effect until changed; verify NJDEP updates before fishing. Handle teeth and dorsal spines carefully."
+    },
+    sheeps: {
+      label: "Sheepshead",
+      subtitle: "Shore-access structure · jetties, bridges, pilings, and seawalls",
+      intro: "This is not featureless-beach surf fishing. Find barnacle, mussel, crab, and current on hard structure, then fish vertically and react to a subtle bite.",
+      fields: [
+        {id:"structure",label:"Structure",options:[["jetty","Jetty / inlet rock"],["piling","Bridge / dock piling"],["wall","Bulkhead / seawall"],["mussel","Mussel bed / sod edge"]]},
+        {id:"bait",label:"Bait",options:[["crab","Fiddler or green crab"],["flea","Sand flea"],["shrimp","Shrimp"],["mussel","Barnacle / mussel"],["clam","Clam"]]},
+        {id:"tide",label:"Tide",options:[["moving","Moving water"],["slack","Slack water"],["warming","Warming midday"]]}
+      ],
+      plays: [
+        {id:"jetty-crab",name:"Jetty crab drop",match:{structure:["jetty"],bait:["crab"],tide:["moving"]},lure:"Small whole or halved legal crab",rig:"Small strong short-shank hook, 20–30 lb abrasion leader, just enough weight to hold",retrieve:"Lower beside the rock face; hold bottom and set when taps become weight.",why:"Crabs naturally wash along barnacle-covered inlet rock.",caution:"Use cleated footwear where appropriate, watch swell, and retie after every rock contact."},
+        {id:"piling-crab",name:"Piling scrape zone",match:{structure:["piling"],bait:["crab","shrimp"],tide:["moving","slack"]},lure:"Crab or fresh shrimp tight to the piling",rig:"Knocker or split-shot rig, short abrasion leader",retrieve:"Keep nearly vertical; detect the light scrape and pull away immediately.",why:"Sheepshead graze crustaceans directly from pilings.",caution:"Have a landing or drop net ready and keep hands clear of teeth and spines."},
+        {id:"wall-finesse",name:"Seawall finesse",match:{structure:["wall"],bait:["shrimp","clam"],tide:["moving","warming"]},lure:"Fresh shrimp or clam piece",rig:"Light split shot, compact hook, 20–30 lb leader",retrieve:"Slowly walk the bait along shade, seams, and wall irregularities.",why:"A light rig presents naturally where heavy weight would snag.",caution:"Public access and bait rules vary; do not scrape protected or private structures."},
+        {id:"mussel-edge",name:"Mussel-bed edge",match:{structure:["mussel"],bait:["mussel","crab"],tide:["moving","warming"]},lure:"Mussel, barnacle-style bait, or small crab",rig:"Short leader with enough weight for intermittent bottom contact",retrieve:"Hold at the hard-soft edge and lift only to clear snags.",why:"Shell beds supply forage and a defined edge in current.",caution:"Shell and oysters cut leader quickly; inspect after every drop."},
+        {id:"sandflea-rock",name:"Sand flea along inlet rock",match:{structure:["jetty","wall"],bait:["flea"],tide:["moving"]},lure:"Fresh sand flea",rig:"Small stout hook and a compact bottom rig",retrieve:"Present tight to submerged rock and maintain direct feel.",why:"Sand fleas are a natural shore forage that can work where rock meets beach.",caution:"Sheepshead are a structure target here, not an open-sand roaming fish."},
+        {id:"slack-precision",name:"Slack-tide precision",match:{structure:["piling","jetty"],bait:["crab","mussel"],tide:["slack"]},lure:"Small crab or fresh shellfish bait",rig:"Downsize sinker for a vertical natural fall",retrieve:"Hold still, watch line, and set on weight rather than repeated taps.",why:"Reduced flow lets a light bait remain beside the feeding face.",caution:"Verify current NJ species identification, season, size, and possession rules before retention."}
+      ],
+      rules:[
+        "Sheepshead is not listed in the complete 2026 NJ regulated-species table published in the NJ Marine Digest reprint.",
+        "No NJ minimum size, bag/possession limit, or closed season is listed for sheepshead in that table.",
+        "NJ wanton-waste rules still apply: intentionally killed fish must be retained and may not be discarded."
+      ],
+      footer:"High-confidence 2026 Marine Digest reprint finding, but N.J.A.C. remains binding and mid-season changes are possible. Sheepshead are primarily a hard-structure shore target. Barnacles, waves, teeth, and dorsal spines demand abrasion leader, traction, and careful handling."
+    }
+  },
+  sources: [
+    {name:"NJDEP Marine Fisheries",url:"https://dep.nj.gov/njfw/fishing/marine/"},
+    {name:"ASMFC Atlantic Striped Bass",url:"https://www.asmfc.org/species/atlantic-striped-bass"},
+    {name:"ASMFC Summer Flounder",url:"https://www.asmfc.org/species/summer-flounder"},
+    {name:"NOAA Summer Flounder",url:"https://www.fisheries.noaa.gov/species/summer-flounder"},
+    {name:"NOAA Atlantic Striped Bass",url:"https://www.fisheries.noaa.gov/species/atlantic-striped-bass"},
+    {name:"Federal Striped Bass EEZ Rule",url:"https://www.ecfr.gov/current/title-50/chapter-VI/part-697/section-697.7"},
+    {name:"2026 NJ Size and Possession Limits",url:"https://www.eregulations.com/newjersey/fishing/saltwater/state-size-possession-limits"},
+    {name:"NJ Finfish Regulations and Wanton Waste",url:"https://www.eregulations.com/newjersey/fishing/saltwater/finfish-regulations/"}
+  ]
+};
