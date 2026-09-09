@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#143d3a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Tacklebox">
+  <meta name="description" content="A practical field guide to freshwater and saltwater fishing techniques, gear, baits, and seasonal timing.">
+  <title>Tacklebox Field Guide</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to field guide</a>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Tacklebox Field Guide home">
+      <svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 23c9-13 24-18 42-14l11-5-3 12 6 8-13-1C30 34 14 32 4 23Z"/><circle cx="43" cy="15" r="2"/><path d="M15 23c8 2 17 1 24-4M7 19 1 13m8 15-5 7"/></svg>
+      <span><strong>Tacklebox</strong><small>Field Guide</small></span>
+    </a>
+    <div class="header-actions">
+      <button class="icon-button" id="sunlight-toggle" type="button" aria-pressed="false" title="Toggle sunlight mode">
+        <span aria-hidden="true">☀</span><span class="sr-only">Sunlight mode</span>
+      </button>
+      <button class="icon-button" id="saved-toggle" type="button" aria-pressed="false" title="Show saved techniques">
+        <span aria-hidden="true">♡</span><span class="sr-only">Show saved techniques</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Pick water. Read conditions. Rig with purpose.</p>
+        <h1 id="hero-title">Fish the moment,<br><em>not the myth.</em></h1>
+        <p class="hero-lede">A practical U.S. field guide that matches versatile tackle, proven lure families, and seasonal windows to the way you actually fish.</p>
+      </div>
+      <div class="hero-mark" aria-hidden="true">
+        <svg viewBox="0 0 340 240"><path class="water-line" d="M5 183c52-23 93 19 142-1s88-3 126 4 58-1 64-9"/><path class="water-line delay" d="M22 205c44-16 73 10 119-2s93 4 129 1 55-9 65-19"/><path class="hook-line" d="M227 4c-3 62 1 100 24 111 25 12 42-30 15-39-26-8-52 31-35 67"/><path class="lure" d="M103 109c25-20 63-23 91-5-27 25-64 32-91 5Zm-1 0-24-17 4 25 20-8Z"/><circle cx="176" cy="104" r="3"/></svg>
+      </div>
+      <div class="water-switch" role="group" aria-label="Water type">
+        <button type="button" data-water="all" aria-pressed="true">All water</button>
+        <button type="button" data-water="fresh" aria-pressed="false">Freshwater</button>
+        <button type="button" data-water="salt" aria-pressed="false">Saltwater</button>
+      </div>
+    </section>
+
+    <section class="quick-pick" aria-labelledby="quick-title">
+      <div>
+        <p class="section-kicker">Start here</p>
+        <h2 id="quick-title">What are you doing today?</h2>
+      </div>
+      <form id="quick-form" class="quick-form">
+        <label><span>Season</span><select id="season-filter"><option value="all">Any season</option><option value="winter">Winter</option><option value="spring">Spring</option><option value="summer">Summer</option><option value="fall">Fall</option></select></label>
+        <label><span>Access</span><select id="access-filter"><option value="all">Anywhere</option><option value="bank">Bank / shore</option><option value="boat">Boat</option><option value="kayak">Kayak</option><option value="surf">Surf</option><option value="pier">Pier / jetty</option></select></label>
+        <label><span>Find a technique</span><input id="search-filter" type="search" autocomplete="off" placeholder="Bass, jig, live bait…"></label>
+      </form>
+      <p id="result-status" class="result-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <div class="content-shell">
+      <aside class="technique-rail" aria-label="Technique filters">
+        <p>Technique</p>
+        <div id="technique-filters" class="filter-list"></div>
+        <button id="clear-filters" class="text-button" type="button">Reset filters</button>
+      </aside>
+
+      <section class="guide" aria-labelledby="guide-title">
+        <div class="section-heading">
+          <div><p class="section-kicker">Technique library</p><h2 id="guide-title">Build the right setup</h2></div>
+          <button id="compare-button" class="compare-button" type="button" disabled>Compare <span id="compare-count">0</span></button>
+        </div>
+        <div id="technique-grid" class="technique-grid"></div>
+        <div id="empty-state" class="empty-state" hidden>
+          <svg viewBox="0 0 120 80" aria-hidden="true"><path d="M11 55c26-12 46 9 72-2 15-7 24-5 31-1M73 7c0 25 2 37 12 41 11 5 17-13 6-17-11-3-23 14-15 28"/></svg>
+          <h3>No clean match</h3><p>Broaden the season or access filters. Fish rarely respect a perfect checklist.</p>
+          <button type="button" id="empty-reset">Show all techniques</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="quiver" aria-labelledby="quiver-title">
+      <div class="quiver-intro"><p class="section-kicker">The practical quiver</p><h2 id="quiver-title">Three setups cover most water.</h2><p>No single combo is truly universal. Start with the medium spinning outfit, add power or heavy salt gear only when the technique demands it.</p></div>
+      <div id="quiver-list" class="quiver-list"></div>
+    </section>
+
+    <section class="season-board" aria-labelledby="season-title">
+      <div class="section-heading"><div><p class="section-kicker">Seasonal compass</p><h2 id="season-title">Follow behavior, not the calendar.</h2></div></div>
+      <div id="season-grid" class="season-grid"></div>
+      <p class="season-note">Calendar seasons are shorthand. Water temperature, daylight, forage, spawning cycles, tide, and migration matter more. Southern and coastal fisheries can run weeks or months ahead of northern patterns.</p>
+    </section>
+
+    <section class="field-notes" aria-labelledby="notes-title">
+      <div><p class="section-kicker">Before every cast</p><h2 id="notes-title">Field notes that save fish, gear, and days.</h2></div>
+      <div id="field-note-list" class="note-list"></div>
+    </section>
+
+    <section class="sources" aria-labelledby="sources-title">
+      <details>
+        <summary><span><span class="section-kicker">Evidence & limits</span><strong id="sources-title">Sources, assumptions, and local rules</strong></span><span aria-hidden="true">＋</span></summary>
+        <div class="source-content"><p>This guide recommends gear classes and working ranges, not a universal brand winner. Reel sizes are not standardized across manufacturers. Check current state and federal regulations, seasonal closures, hook rules, bait restrictions, and lead-tackle rules before fishing.</p><div id="source-list" class="source-list"></div></div>
+      </details>
+    </section>
+  </main>
+
+  <footer><span>Tacklebox Field Guide</span><p>Built for better decisions at the water.</p></footer>
+
+  <dialog id="detail-dialog" class="detail-dialog"><button class="dialog-close" type="button" aria-label="Close details">×</button><div id="detail-content"></div></dialog>
+  <dialog id="compare-dialog" class="compare-dialog"><button class="dialog-close" type="button" aria-label="Close comparison">×</button><div id="compare-content"></div></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
