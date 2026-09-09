@@ -47,4 +47,7 @@ test("PWA assets are complete", async () => {
     expect(await Bun.file(new URL(icon.src, root)).exists()).toBe(true);
   }
   expect(await Bun.file(new URL("icons/apple-touch-icon.png", root)).exists()).toBe(true);
+  expect(await Bun.file(new URL("manual-data.js", root)).exists()).toBe(true);
+  const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
+  expect(serviceWorker).toContain("./manual-data.js?v=6");
 });

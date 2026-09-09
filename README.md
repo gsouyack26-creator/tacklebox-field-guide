@@ -28,7 +28,10 @@ Saved field cards stay on that browser/device. Clearing site data removes saved 
 
 ## Features
 
-- NJ shore playbook for striped bass, fluke, and sheepshead
+- Striper-heavy Northeast field manual with step-by-step casting, retrieval, bait presentation, and hooksets
+- Illustrated rig and knot bench for surf, inlet, bay, and structure fishing
+- Public NJ hotspot area guide for striped bass, fluke, bluefish, and sheepshead
+- NJ shore playbook for striped bass, fluke, bluefish, and sheepshead
 - Species-specific selectors for current conditions, structure, bait, and presentation
 - 2026 NJ regulatory summaries with live-source links
 - Freshwater, saltwater, season, access, technique, and text filters

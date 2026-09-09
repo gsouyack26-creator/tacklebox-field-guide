@@ -8,13 +8,14 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Striper Guide">
-  <meta name="description" content="A New Jersey striped bass, fluke, and sheepshead shore-fishing guide backed by a complete tackle library.">
+  <meta name="description" content="A New Jersey and Northeast striped bass field manual with casting, retrieves, rigs, knots, hotspots, fluke, bluefish, and sheepshead.">
   <title>Striper Tacklebox | NJ Coastal Field Guide</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="styles.css">
-  <script src="data.js" defer></script>
-  <script src="app.js" defer></script>
+  <link rel="stylesheet" href="styles.css?v=6">
+  <script src="data.js?v=6" defer></script>
+  <script src="manual-data.js?v=6" defer></script>
+  <script src="app.js?v=6" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to field guide</a>
@@ -39,7 +40,7 @@
         <p class="eyebrow">New Jersey · Atlantic surf · Striped bass</p>
         <h1 id="hero-title">Follow the run.<br><em>Find the stripes.</em></h1>
         <p class="hero-lede">A striper-first coastal field guide for reading bait, tide, wind, and migration, backed by the complete freshwater and saltwater tackle library.</p>
-        <button id="striper-focus" class="hero-cta" type="button">Show striper setups <span aria-hidden="true">→</span></button>
+        <button id="striper-focus" class="hero-cta" type="button">Open Striper How-To <span aria-hidden="true">→</span></button>
       </div>
       <div class="hero-mark" aria-hidden="true">
         <svg viewBox="0 0 420 250"><path class="striper-body" d="M62 121 8 73l13 52-11 57 54-43c66 71 214 57 339-12-111-82-268-86-341-6Z"/><path class="striper-line" d="M72 103c88-29 211-21 307 16M65 119c95-18 220-10 317 5M68 137c94 2 204 2 299-10M85 153c78 15 175 8 255-12"/><path class="striper-gill" d="M319 85c-17 22-15 57 3 78"/><circle cx="354" cy="97" r="5"/><path class="water-line" d="M52 206c60-17 104 11 165-3s116 9 177-2"/></svg>
@@ -49,6 +50,28 @@
         <button type="button" data-water="fresh" aria-pressed="false">Freshwater</button>
         <button type="button" data-water="salt" aria-pressed="false">Saltwater</button>
       </div>
+    </section>
+
+    <section id="field-manual" class="field-manual" aria-labelledby="manual-title">
+      <div class="manual-heading"><div><p class="section-kicker">Northeast how-to manual</p><h2 id="manual-title">Cast it. Work it. Rig it right.</h2></div><p>Striped bass first, with focused NJ procedures for fluke, bluefish, and sheepshead. Open any card for cast targets, retrieve cadence, hookset, rig, and knot steps.</p></div>
+      <div id="manual-species" class="manual-filters" role="group" aria-label="Filter how-to procedures by species"></div>
+      <div id="manual-grid" class="manual-grid"></div>
+    </section>
+
+    <section id="rig-bench" class="rig-bench" aria-labelledby="rig-title">
+      <div class="manual-heading"><div><p class="section-kicker">Rig and knot bench</p><h2 id="rig-title">Build it before the tide turns.</h2></div><p>Five field knots and nine Northeast rigs cover the core striper, fluke, bluefish, and sheepshead systems.</p></div>
+      <div class="bench-columns"><div><h3>Knots</h3><div id="knot-grid" class="bench-grid"></div></div><div><h3>Rigs</h3><div id="rig-grid-manual" class="bench-grid"></div></div></div>
+    </section>
+
+    <section id="hotspots" class="hotspots" aria-labelledby="hotspot-title">
+      <div class="manual-heading"><div><p class="section-kicker">Public NJ fishing areas</p><h2 id="hotspot-title">Start with habitat, not a secret pin.</h2></div><p>These are publicly known regions and access areas, not guaranteed spots or private coordinates. Recheck access, parking, closures, and conditions before every trip.</p></div>
+      <div id="hotspot-species" class="manual-filters" role="group" aria-label="Filter hotspots by target species"></div>
+      <div id="hotspot-grid" class="hotspot-grid"></div>
+    </section>
+
+    <section id="nj-regulations" class="regulation-band" aria-labelledby="regulation-title">
+      <div class="manual-heading"><div><p class="section-kicker">2026 quick reference</p><h2 id="regulation-title">NJ target-species regulations.</h2></div><p>Summaries are planning aids. Binding rules and in-season changes come from NJDEP, eRegulations, ASMFC, and federal law.</p></div>
+      <div id="regulation-grid" class="regulation-grid"></div>
     </section>
 
     <section class="quick-pick" aria-labelledby="quick-title">

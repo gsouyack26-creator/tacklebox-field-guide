@@ -7,6 +7,7 @@
   const state = {
     water: "all", season: "all", access: "all", search: "", group: "all",
     savedOnly: false, saved: new Set(safeLoad("tacklebox-saved", [])), compare: new Set(),
+    manualSpecies: "striper", hotspotSpecies: "all",
     nj: safeLoad("tacklebox-nj", { species: data.nj.defaultSpecies, values: {} })
   };
   const elements = {
@@ -27,6 +28,67 @@
       && (!state.search || haystack.includes(state.search.toLowerCase()))
       && (!state.savedOnly || state.saved.has(item.id));
   });
+
+  const speciesLabels = { all: "All targets", striper: "Striped bass", fluke: "Fluke", bluefish: "Bluefish", sheeps: "Sheepshead" };
+  const manual = data.manual;
+  const knotSvg = id => {
+    const paths = {
+      palomar: `<path d="M18 56h115c35 0 31-38 65-38s32 38 65 38h239"/><path class="working" d="M198 18c-38 17-36 64 5 73 46 10 81-36 48-65-22-19-60-3-49 24 8 20 38 21 53 8"/>`,
+      "improved-clinch": `<path d="M18 58h130c40 0 38-42 75-42s34 42 71 42h208"/><path class="working" d="M219 17c-18 18-18 60 7 76M231 22c-18 18-18 52 5 67M243 28c-15 17-14 42 4 56"/>`,
+      loop: `<path d="M18 61h125c32 0 32-46 69-46s39 46 75 46h215"/><path class="working" d="M212 15c-42 10-48 68-8 79 39 11 67-31 45-55-17-19-48-4-37 18 7 15 28 15 40 4"/>`,
+      "double-uni": `<path d="M15 39h155c24 0 28 38 58 38h274"/><path class="working" d="M15 78h145c32 0 35-39 68-39h274M176 31c-20 12-19 45 7 53M193 28c-20 17-16 47 8 55M228 34c18 10 22 34 5 49M247 34c18 14 19 36 2 50"/>`,
+      "dropper-loop": `<path d="M18 57h170c29 0 29-40 64-40s35 40 67 40h183"/><path class="working" d="M252 17v80M230 31c21 10 21 43 0 54M272 31c-21 10-21 43 0 54"/>`
+    };
+    return `<svg class="instruction-svg" viewBox="0 0 520 110" aria-hidden="true">${paths[id] || paths.loop}</svg>`;
+  };
+  const ordered = items => `<ol class="instruction-steps">${items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol>`;
+
+  function procedureMarkup(item) {
+    const knot = manual.knots[item.knot]; const rig = manual.rigs[item.rig];
+    return `<article class="detail-inner howto-detail"><p class="section-kicker">${escapeHtml(speciesLabels[item.species])} · Field procedure</p><h2>${escapeHtml(item.title)}</h2><p class="detail-deck">${escapeHtml(item.when)}</p><section class="detail-section"><h3>Working setup</h3><p>${escapeHtml(item.setup)}</p></section><section class="detail-section"><h3>1. Where and how to cast</h3>${ordered(item.cast)}</section><section class="detail-section"><h3>2. Retrieve or present the bait</h3>${ordered(item.retrieve)}</section><section class="detail-section"><h3>3. Bite and hookset</h3><p>${escapeHtml(item.hookset)}</p></section><section class="detail-section diagram-section"><h3>4. Build the ${escapeHtml(rig.name)}</h3><div class="rig-chain">${rig.parts.map((part,index) => `<span><b>${index + 1}</b>${escapeHtml(part)}</span>`).join("")}</div></section><section class="detail-section diagram-section"><h3>5. Tie the ${escapeHtml(knot.name)}</h3><p>${escapeHtml(knot.use)}</p>${knotSvg(item.knot)}${ordered(knot.steps)}<aside class="nj-caution"><strong>Avoid</strong><span>${escapeHtml(knot.avoid)}</span></aside></section><aside class="tip-callout"><strong>Most common mistake</strong><br>${escapeHtml(item.mistakes)}</aside></article>`;
+  }
+
+  function renderManual() {
+    const filters = ["striper", "fluke", "bluefish", "sheeps"];
+    $("#manual-species").innerHTML = filters.map(id => `<button type="button" data-manual-species="${id}" aria-pressed="${id === state.manualSpecies}">${speciesLabels[id]}</button>`).join("");
+    const procedures = manual.procedures.filter(item => item.species === state.manualSpecies);
+    $("#manual-grid").innerHTML = procedures.map((item,index) => `<article class="manual-card ${item.species === "striper" ? "primary" : ""}"><span class="manual-number">${String(index + 1).padStart(2, "0")}</span><p class="manual-when">${escapeHtml(item.when)}</p><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.setup)}</p><button type="button" data-procedure="${item.id}">Open step-by-step</button></article>`).join("");
+  }
+
+  function renderBench() {
+    $("#knot-grid").innerHTML = Object.entries(manual.knots).map(([id,item]) => `<button type="button" class="bench-card" data-knot="${id}"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.use)}</span></button>`).join("");
+    $("#rig-grid-manual").innerHTML = Object.entries(manual.rigs).map(([id,item]) => `<button type="button" class="bench-card" data-rig="${id}"><strong>${escapeHtml(item.name)}</strong><span>${item.parts.length} parts · view build</span></button>`).join("");
+  }
+
+  function renderHotspots() {
+    const filters = ["all", "striper", "fluke", "bluefish", "sheeps"];
+    $("#hotspot-species").innerHTML = filters.map(id => `<button type="button" data-hotspot-species="${id}" aria-pressed="${id === state.hotspotSpecies}">${speciesLabels[id]}</button>`).join("");
+    const spots = manual.hotspots.filter(item => state.hotspotSpecies === "all" || item.species.includes(state.hotspotSpecies));
+    $("#hotspot-grid").innerHTML = spots.map(item => `<article class="hotspot-card"><p class="section-kicker">${escapeHtml(item.region)}</p><h3>${escapeHtml(item.name)}</h3><div class="hotspot-tags">${item.species.map(id => `<span>${speciesLabels[id]}</span>`).join("")}</div><p><strong>Window:</strong> ${escapeHtml(item.season)}</p><p><strong>Target:</strong> ${escapeHtml(item.habitat)}</p><p><strong>First cast:</strong> ${escapeHtml(item.first)}</p><button type="button" data-hotspot="${item.id}">Access, tide, and safety</button></article>`).join("");
+  }
+
+  function renderRegulations() {
+    $("#regulation-grid").innerHTML = manual.regulations.map(item => `<article><h3>${escapeHtml(item.species)}</h3><p>${escapeHtml(item.summary)}</p><a href="${escapeHtml(item.source)}" target="_blank" rel="noopener noreferrer">Verify current rule</a></article>`).join("");
+  }
+
+  function knotMarkup(id) {
+    const item = manual.knots[id];
+    return `<article class="detail-inner howto-detail"><p class="section-kicker">Field knot</p><h2>${escapeHtml(item.name)}</h2><p class="detail-deck">${escapeHtml(item.use)}</p><section class="detail-section diagram-section">${knotSvg(id)}${ordered(item.steps)}</section><aside class="tip-callout"><strong>Avoid</strong><br>${escapeHtml(item.avoid)}</aside></article>`;
+  }
+
+  function rigMarkup(id) {
+    const item = manual.rigs[id];
+    return `<article class="detail-inner howto-detail"><p class="section-kicker">Rig build</p><h2>${escapeHtml(item.name)}</h2><section class="detail-section diagram-section"><div class="rig-chain">${item.parts.map((part,index) => `<span><b>${index + 1}</b>${escapeHtml(part)}</span>`).join("")}</div></section><aside class="tip-callout"><strong>Before casting</strong><br>Pull-test every knot, expose the hook point, inspect leader for abrasion, and confirm the sinker or lure matches current and crowd conditions.</aside></article>`;
+  }
+
+  function hotspotMarkup(item) {
+    return `<article class="detail-inner"><p class="section-kicker">${escapeHtml(item.region)} · Public access guide</p><h2>${escapeHtml(item.name)}</h2><p class="detail-deck">Fish habitat and conditions, not a guaranteed pin.</p><section class="detail-section"><h3>Access</h3><p>${escapeHtml(item.access)}</p></section><section class="detail-section"><h3>Where to cast</h3><p>${escapeHtml(item.cast)}</p></section><section class="detail-section"><h3>Tide, wind, and season</h3><p>${escapeHtml(item.conditions)}</p><p><strong>Window:</strong> ${escapeHtml(item.season)}</p></section><section class="detail-section"><h3>Start with</h3><p>${escapeHtml(item.first)}</p></section><aside class="tip-callout"><strong>Access and safety</strong><br>${escapeHtml(item.safety)}</aside><p><a href="${escapeHtml(item.source)}" target="_blank" rel="noopener noreferrer">Verify official access information</a></p></article>`;
+  }
+
+  function openManualDialog(markup) {
+    elements.detailContent.innerHTML = markup;
+    elements.detail.showModal();
+  }
 
   const njSpecies = () => data.nj.species[state.nj.species];
   const njOptionLabel = (field, value) => field.options.find(option => option[0] === value)?.[1] || "Any";
@@ -147,6 +209,12 @@
   document.addEventListener("click", event => {
     const button = event.target.closest("button"); if (!button) return;
     if (button.dataset.water) { state.water = button.dataset.water; state.group = "all"; render(); }
+    else if (button.dataset.manualSpecies) { state.manualSpecies = button.dataset.manualSpecies; renderManual(); }
+    else if (button.dataset.hotspotSpecies) { state.hotspotSpecies = button.dataset.hotspotSpecies; renderHotspots(); }
+    else if (button.dataset.procedure) { const item = manual.procedures.find(entry => entry.id === button.dataset.procedure); if (item) openManualDialog(procedureMarkup(item)); }
+    else if (button.dataset.knot) openManualDialog(knotMarkup(button.dataset.knot));
+    else if (button.dataset.rig) openManualDialog(rigMarkup(button.dataset.rig));
+    else if (button.dataset.hotspot) { const item = manual.hotspots.find(entry => entry.id === button.dataset.hotspot); if (item) openManualDialog(hotspotMarkup(item)); }
     else if (button.dataset.njSpecies) activateNjSpecies(button.dataset.njSpecies);
     else if (button.dataset.njPlay) {
       const play = njSpecies().plays.find(item => item.id === button.dataset.njPlay);
@@ -173,8 +241,8 @@
   $("#saved-toggle").addEventListener("click", () => { state.savedOnly = !state.savedOnly; render(); });
   $("#sunlight-toggle").addEventListener("click", event => { const active = document.body.classList.toggle("sunlight"); event.currentTarget.setAttribute("aria-pressed", active); });
   $("#striper-focus").addEventListener("click", () => {
-    activateNjSpecies("striper");
-    $("#nj-playbook").scrollIntoView({ behavior: "smooth" });
+    state.manualSpecies = "striper"; renderManual();
+    $("#field-manual").scrollIntoView({ behavior: "smooth" });
   });
   $("#nj-selector").addEventListener("change", event => {
     if (!event.target.dataset.njField) return;
@@ -194,7 +262,12 @@
   $("#season-grid").innerHTML = data.seasons.map(item => `<article class="season-card"><span>${escapeHtml(item.signal)}</span><h3>${escapeHtml(item.name)}</h3><ul>${item.points.map(point => `<li>${escapeHtml(point)}</li>`).join("")}</ul></article>`).join("");
   $("#field-note-list").innerHTML = data.notes.map(item => `<article class="note-item"><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.text)}</p></article>`).join("");
   $("#source-list").innerHTML = data.sources.map((source,index) => `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${index + 1}. ${escapeHtml(source.name)}</a>`).join("");
-  if (!data.nj.species[state.nj.species]) state.nj = { species: data.nj.defaultSpecies, values: {} };
+  renderManual();
+  renderBench();
+  renderHotspots();
+  renderRegulations();
+  if (!state.nj || !data.nj.species[state.nj.species]) state.nj = { species: data.nj.defaultSpecies, values: {} };
+  if (!state.nj.values || typeof state.nj.values !== "object") state.nj.values = {};
   renderNjPlaybook();
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("./sw.js").catch(() => {});
   render();

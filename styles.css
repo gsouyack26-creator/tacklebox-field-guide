@@ -75,6 +75,53 @@ h1 em { color: var(--amber); font-weight: 400; }
 .water-switch button { min-height: 4.5rem; padding: 0 clamp(1rem, 3vw, 2rem); border: 0; border-bottom: 4px solid transparent; background: transparent; color: oklch(87% .025 180); }
 .water-switch button[aria-pressed="true"] { color: var(--paper); border-bottom-color: var(--amber); }
 
+.field-manual, .rig-bench, .hotspots, .regulation-band { padding: clamp(4rem, 9vw, 8rem) clamp(1rem, 7vw, 7rem); }
+.field-manual { background: var(--paper); }
+.rig-bench { background: var(--river-deep); color: var(--paper); }
+.hotspots { background: var(--paper-deep); }
+.regulation-band { background: var(--paper); border-block: 1px solid var(--line); }
+.manual-heading { display: grid; gap: 1rem; margin-bottom: 2rem; max-width: 72rem; }
+.manual-heading > p { max-width: 56rem; margin: 0; color: var(--muted); font-size: 1.08rem; }
+.rig-bench .manual-heading > p { color: oklch(88% .025 220); }
+.manual-filters { display: flex; gap: .55rem; overflow-x: auto; padding-bottom: 1.2rem; }
+.manual-filters button { flex: 0 0 auto; min-height: 2.9rem; padding: .55rem .95rem; border: 1px solid var(--line); border-radius: 99px; background: transparent; font-weight: 800; }
+.manual-filters button[aria-pressed="true"] { background: var(--river-deep); border-color: var(--river-deep); color: var(--paper); }
+.manual-grid { display: grid; gap: 1px; border: 1px solid var(--line); background: var(--line); }
+.manual-card { position: relative; display: grid; align-content: start; gap: .8rem; min-height: 20rem; padding: 1.4rem; background: var(--surface); }
+.manual-card.primary { border-top: 4px solid var(--strike); }
+.manual-card h3 { margin: 0; max-width: 15ch; font-size: 1.65rem; }
+.manual-card p { margin: 0; color: var(--muted); }
+.manual-card button, .hotspot-card button { align-self: end; min-height: 3rem; margin-top: auto; border: 0; background: var(--ink); color: var(--paper); font-weight: 850; }
+.manual-number { position: absolute; top: 1rem; right: 1rem; color: var(--line); font: 700 2.5rem var(--font-display); }
+.manual-when { padding-right: 3rem; color: var(--coral) !important; font-size: .72rem; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+.bench-columns { display: grid; gap: 2.5rem; }
+.bench-columns h3 { color: var(--strike); font-size: 1.5rem; }
+.bench-grid { display: grid; gap: .65rem; }
+.bench-card { display: grid; gap: .25rem; min-height: 4.5rem; padding: .9rem 1rem; border: 1px solid oklch(80% .03 220 / .35); background: oklch(26% .05 230); color: var(--paper); text-align: left; }
+.bench-card span { color: oklch(84% .025 220); font-size: .86rem; }
+.hotspot-grid { display: grid; gap: 1rem; }
+.hotspot-card { display: grid; gap: .75rem; padding: 1.35rem; background: var(--surface); border: 1px solid var(--line); }
+.hotspot-card h3, .regulation-grid h3 { margin: 0; font-size: 1.55rem; }
+.hotspot-card p { margin: 0; color: var(--muted); }
+.hotspot-tags { display: flex; flex-wrap: wrap; gap: .35rem; }
+.hotspot-tags span { padding: .2rem .5rem; border-radius: 99px; background: oklch(89% .04 220); color: var(--river-deep); font-size: .72rem; font-weight: 800; }
+.regulation-grid { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.regulation-grid article { padding: 1.25rem; background: var(--surface); }
+.regulation-grid p { color: var(--muted); }
+.regulation-grid a { color: var(--river); font-weight: 800; }
+.instruction-steps { display: grid; gap: .8rem; padding-left: 1.6rem; }
+.instruction-steps li::marker { color: var(--coral); font-weight: 900; }
+.instruction-svg { width: 100%; min-height: 7rem; margin: 1rem 0; border: 1px solid var(--line); background: var(--paper-deep); }
+.instruction-svg path, .instruction-svg circle { fill: none; stroke: var(--river); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.instruction-svg .working { stroke: var(--strike); stroke-width: 5; }
+.rig-chain { display: flex; align-items: stretch; gap: .4rem; overflow-x: auto; padding-bottom: .5rem; }
+.rig-chain span { flex: 0 0 8rem; display: grid; gap: .4rem; place-items: center; padding: .75rem; border: 1px solid var(--line); background: var(--surface); text-align: center; font-size: .83rem; }
+.rig-chain b { display: grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--river-deep); color: var(--paper); }
+.rig-chain span:not(:last-child)::after { content: "→"; position: absolute; }
+.howto-detail .detail-section p { max-width: 65ch; }
+@media (min-width: 42rem) { .manual-grid, .hotspot-grid, .regulation-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } .bench-columns { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (min-width: 62rem) { .manual-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } .hotspot-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } .regulation-grid { grid-template-columns: repeat(4,minmax(0,1fr)); } }
+
 .quick-pick { padding: clamp(3rem, 7vw, 6rem) clamp(1rem, 7vw, 7rem); display: grid; gap: 2rem; border-bottom: 1px solid var(--line); }
 h2 { margin: 0; font-size: clamp(2.2rem, 5vw, 4.5rem); letter-spacing: -.035em; }
 .quick-form { display: grid; gap: 1rem; }
