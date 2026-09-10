@@ -33,6 +33,7 @@ Saved field cards stay on that browser/device. Clearing site data removes saved 
 - Optional click-to-load YouTube knot tutorials using privacy-enhanced embeds; offline steps remain available
 - Budget, Mid-tier, and High-tier rod/reel examples for every procedure, including Penn, Shimano, Daiwa, and Jigging World options
 - Task-first module sidebar with one-section-at-a-time navigation, mobile drawer, desktop rail, and bookmarkable URLs
+- Conditions Advisor with transparent fresh/salt pattern matching and a one-change no-bite troubleshooter
 - Standalone Recommended Setups module showing which techniques each complete tackle system fits, plus verified Tsunami, St. Croix, Lamiglas, Ugly Stik Bigwater, Daiwa, and Shimano Tiralejo rod alternatives
 - Public NJ hotspot area guide for striped bass, fluke, bluefish, and sheepshead
 - NJ shore playbook for striped bass, fluke, bluefish, and sheepshead
@@ -55,6 +56,9 @@ Every push to `main` runs the tests and browser builds, then deploys the reposit
 bun test tests
 bun build app.js --target browser --outfile app-check.js
 bun build data.js --target browser --outfile data-check.js
+bun build manual-data.js --target browser --outfile manual-data-check.js
+bun build advisor-data.js --target browser --outfile advisor-data-check.js
+bun build advisor-engine.js --target browser --outfile advisor-engine-check.js
 bun build sw.js --target browser --outfile sw-check.js
 ```
 

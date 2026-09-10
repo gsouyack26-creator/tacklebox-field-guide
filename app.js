@@ -8,10 +8,12 @@
     water: "all", season: "all", access: "all", search: "", group: "all",
     savedOnly: false, saved: new Set(safeLoad("tacklebox-saved", [])), compare: new Set(),
     manualSpecies: "striper", hotspotSpecies: "all",
-    nj: safeLoad("tacklebox-nj", { species: data.nj.defaultSpecies, values: {} })
+    nj: safeLoad("tacklebox-nj", { species: data.nj.defaultSpecies, values: {} }),
+    advisor: safeLoad("tacklebox-advisor", {water:"fresh",target:"general",trend:"stable",clarity:"stained",wind:"moderate",structure:"open",forage:"unknown",current:"moderate",light:"day",trouble:"none"})
   };
   const modules = [
     {id:"home", label:"Home", group:"Fish now"},
+    {id:"advisor", label:"Conditions Advisor", group:"Fish now"},
     {id:"how-to", label:"How-To", group:"Fish now"},
     {id:"setups", label:"Recommended Setups", group:"Fish now"},
     {id:"nj-playbook", label:"NJ Playbook", group:"Fish now"},
@@ -32,6 +34,8 @@
     detailContent: $("#detail-content"), compareContent: $("#compare-content"), toast: $("#toast")
   };
 
+  const advisor = window.TACKLEBOX_ADVISOR;
+  const advisorEngine = window.TACKLEBOX_ADVISOR_ENGINE;
   const moduleMedia = matchMedia("(min-width: 62rem)");
   function setModuleMenu(isOpen) {
     const open = isOpen && !moduleMedia.matches;
@@ -122,6 +126,52 @@
   function procedureMarkup(item) {
     const knot = manual.knots[item.knot]; const rig = manual.rigs[item.rig];
     return `<article class="detail-inner howto-detail"><p class="section-kicker">${escapeHtml(speciesLabels[item.species])} · Field procedure</p><h2>${escapeHtml(item.title)}</h2><p class="detail-deck">${escapeHtml(item.when)}</p><section class="detail-section"><h3>Working setup</h3><p>${escapeHtml(item.setup)}</p></section><section class="detail-section"><h3>1. Where and how to cast</h3>${ordered(item.cast)}</section><section class="detail-section"><h3>2. Retrieve or present the bait</h3>${ordered(item.retrieve)}</section><section class="detail-section"><h3>3. Bite and hookset</h3><p>${escapeHtml(item.hookset)}</p></section><section class="detail-section diagram-section"><h3>4. Build the ${escapeHtml(rig.name)}</h3><div class="rig-chain">${rig.parts.map((part,index) => `<span><b>${index + 1}</b>${escapeHtml(part)}</span>`).join("")}</div></section><section class="detail-section diagram-section"><h3>5. Tie the ${escapeHtml(knot.name)}</h3><p>${escapeHtml(knot.use)}</p>${knotSvg(item.knot)}${ordered(knot.steps)}<aside class="nj-caution"><strong>Avoid</strong><span>${escapeHtml(knot.avoid)}</span></aside></section>${videoMarkup(knot.video, knot.name)}<aside class="tip-callout"><strong>Most common mistake</strong><br>${escapeHtml(item.mistakes)}</aside>${setupMarkup(item.id)}</article>`;
+  }
+
+  const advisorOptionMarkup = options => options.map(([value,label]) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join("");
+
+  function advisorSelections() {
+    return Object.fromEntries(["water","target","trend","clarity","wind","structure","forage","current","light","trouble"].map(key => [key, $(`#advisor-${key}`).value]));
+  }
+
+  function populateAdvisorChoices() {
+    const water = $("#advisor-water").value;
+    for (const key of ["target","structure","forage"]) {
+      const select = $(`#advisor-${key}`);
+      const options = advisor[key === "target" ? "targets" : `${key}s`][water];
+      const preferred = state.advisor[key];
+      select.innerHTML = advisorOptionMarkup(options);
+      select.value = options.some(option => option[0] === preferred) ? preferred : options[0][0];
+    }
+    $("#advisor-current-field").hidden = water !== "salt";
+  }
+
+  function renderAdvisor() {
+    const selections = advisorSelections();
+    state.advisor = selections;
+    localStorage.setItem("tacklebox-advisor", JSON.stringify(selections));
+    const match = advisorEngine.recommend(advisor, selections);
+    if (!match) { $("#advisor-result").innerHTML = `<p>No matching pattern found. Open the Technique Library for the broad guide.</p>`; return; }
+    const technique = techniqueById(match.profile.technique);
+    const trouble = advisor.trouble[selections.trouble];
+    const adjustments = [
+      advisor.adjustments.trend[selections.trend], advisor.adjustments.clarity[selections.clarity],
+      advisor.adjustments.wind[selections.wind], selections.water === "salt" ? advisor.adjustments.current[selections.current] : "",
+      advisor.adjustments.light[selections.light], advisor.adjustments.forage[selections.forage]
+    ].filter(Boolean);
+    const procedureId = advisor.procedureByTarget[selections.target];
+    $("#advisor-result").innerHTML = `<p class="advisor-fit">${escapeHtml(match.fit)} · ${match.matched.length} signals matched</p><h3>${escapeHtml(technique.name)}</h3><div class="advisor-primary"><span>Start with</span><strong>${escapeHtml(match.profile.lure)}</strong><p>${escapeHtml(match.profile.presentation)}</p></div><section><h4>Why this pattern</h4><p>${escapeHtml(match.profile.why)}</p></section><section><h4>Tune it to today</h4><ul>${adjustments.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section><aside class="advisor-adjust"><strong>First controlled adjustment</strong><p>${escapeHtml(trouble.action)}</p><small>${escapeHtml(trouble.check)}</small></aside><div class="advisor-actions"><button type="button" data-open="${escapeHtml(technique.id)}">Open technique card</button>${procedureId ? `<button type="button" data-procedure="${escapeHtml(procedureId)}">Open NJ how-to</button>` : ""}</div>`;
+    $("#advisor-caveat").textContent = advisor.caveat;
+  }
+
+  function initializeAdvisor() {
+    for (const key of ["water","trend","clarity","wind","current","light"]) {
+      const select = $(`#advisor-${key}`); if (state.advisor[key]) select.value = state.advisor[key];
+    }
+    $("#advisor-trouble").innerHTML = advisorOptionMarkup(Object.entries(advisor.trouble).map(([id,item]) => [id,item.label]));
+    $("#advisor-trouble").value = state.advisor.trouble || "none";
+    populateAdvisorChoices();
+    renderAdvisor();
   }
 
   function renderManual() {
@@ -357,6 +407,10 @@
   $("#striper-focus").addEventListener("click", () => {
     state.manualSpecies = "striper"; renderManual(); navigateModule("how-to");
   });
+  $("#advisor-form").addEventListener("change", event => {
+    if (event.target.id === "advisor-water") populateAdvisorChoices();
+    renderAdvisor();
+  });
   $("#nj-selector").addEventListener("change", event => {
     if (!event.target.dataset.njField) return;
     state.nj.values[event.target.dataset.njField] = event.target.value;
@@ -390,6 +444,7 @@
   $("#season-grid").innerHTML = data.seasons.map(item => `<article class="season-card"><span>${escapeHtml(item.signal)}</span><h3>${escapeHtml(item.name)}</h3><ul>${item.points.map(point => `<li>${escapeHtml(point)}</li>`).join("")}</ul></article>`).join("");
   $("#field-note-list").innerHTML = data.notes.map(item => `<article class="note-item"><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.text)}</p></article>`).join("");
   $("#source-list").innerHTML = data.sources.map((source,index) => `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${index + 1}. ${escapeHtml(source.name)}</a>`).join("");
+  initializeAdvisor();
   renderManual();
   renderRecommendedSetups();
   renderBench();

@@ -48,8 +48,12 @@ test("PWA assets are complete", async () => {
   }
   expect(await Bun.file(new URL("icons/apple-touch-icon.png", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("manual-data.js", root)).exists()).toBe(true);
+  expect(await Bun.file(new URL("advisor-data.js", root)).exists()).toBe(true);
+  expect(await Bun.file(new URL("advisor-engine.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=12");
+  expect(serviceWorker).toContain("./manual-data.js?v=13");
+  expect(serviceWorker).toContain("./advisor-data.js?v=13");
+  expect(serviceWorker).toContain("./advisor-engine.js?v=13");
   expect(serviceWorker).not.toContain("youtube.com");
   const html = await Bun.file(new URL("index.html", root)).text();
   expect(html).toContain("frame-src https://www.youtube-nocookie.com");
@@ -62,9 +66,9 @@ test("module navigation is task-first and mobile ready", async () => {
   const html = await Bun.file(new URL("index.html", root)).text();
   const app = await Bun.file(new URL("app.js", root)).text();
   const css = await Bun.file(new URL("styles.css", root)).text();
-  const order = ["home","how-to","setups","nj-playbook","rigs","areas","regulations","library","quiver","seasons","notes","sources"];
-  expect((html.match(/data-module=/g) || []).length).toBe(12);
-  expect((html.match(/data-module="[^"]+" hidden/g) || []).length).toBe(11);
+  const order = ["home","advisor","how-to","setups","nj-playbook","rigs","areas","regulations","library","quiver","seasons","notes","sources"];
+  expect((html.match(/data-module=/g) || []).length).toBe(13);
+  expect((html.match(/data-module="[^"]+" hidden/g) || []).length).toBe(12);
   expect(html).toContain("id=\"module-sidebar\"");
   expect(html).toContain("id=\"module-menu-button\"");
   expect(app).toContain(`const modules = [`);
@@ -74,6 +78,21 @@ test("module navigation is task-first and mobile ready", async () => {
   expect(app).toContain("localStorage.setItem(\"tacklebox-module\", JSON.stringify(id))");
   expect(css).toContain(".module-menu-open .module-sidebar");
   expect(css).toContain("[data-module][hidden]");
+});
+
+test("conditions advisor is wired into the mobile app", async () => {
+  const root = new URL("../", import.meta.url);
+  const html = await Bun.file(new URL("index.html", root)).text();
+  const app = await Bun.file(new URL("app.js", root)).text();
+  const css = await Bun.file(new URL("styles.css", root)).text();
+  for (const id of ["advisor-water","advisor-target","advisor-trend","advisor-clarity","advisor-wind","advisor-structure","advisor-forage","advisor-current","advisor-light","advisor-trouble","advisor-result"]) expect(html).toContain(`id="${id}"`);
+  expect(app).toContain("advisorEngine.recommend");
+  expect(app).toContain("localStorage.setItem(\"tacklebox-advisor\"");
+  expect(app).toContain("button.dataset.procedure");
+  expect(app).toContain("button.dataset.open");
+  expect(app).toContain(`$("#advisor-current-field").hidden = water !== "salt"`);
+  expect(css).toContain(".advisor-layout");
+  expect(css).toContain(".advisor-adjust");
 });
 
 test("recommended setups use compact accessible disclosure", async () => {

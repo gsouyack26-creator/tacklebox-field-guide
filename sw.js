@@ -1,6 +1,7 @@
-const CACHE = "tacklebox-field-guide-v12";
+const CACHE = "tacklebox-field-guide-v13";
 const SHELL = [
-  "./", "./index.html", "./styles.css?v=12", "./data.js?v=12", "./manual-data.js?v=12", "./app.js?v=12",
+  "./", "./index.html", "./styles.css?v=13", "./data.js?v=13", "./manual-data.js?v=13", "./app.js?v=13",
+  "./advisor-data.js?v=13", "./advisor-engine.js?v=13",
   "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png",
   "./icons/icon-maskable-512.png", "./icons/apple-touch-icon.png"
 ];

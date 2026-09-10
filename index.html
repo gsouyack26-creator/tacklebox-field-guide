@@ -13,10 +13,12 @@
   <title>Striper Tacklebox | NJ Coastal Field Guide</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="styles.css?v=12">
-  <script src="data.js?v=12" defer></script>
-  <script src="manual-data.js?v=12" defer></script>
-  <script src="app.js?v=12" defer></script>
+  <link rel="stylesheet" href="styles.css?v=13">
+  <script src="data.js?v=13" defer></script>
+  <script src="manual-data.js?v=13" defer></script>
+  <script src="advisor-data.js?v=13" defer></script>
+  <script src="advisor-engine.js?v=13" defer></script>
+  <script src="app.js?v=13" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#module-content">Skip to active module</a>
@@ -57,6 +59,26 @@
         <button type="button" data-water="fresh" aria-pressed="false">Freshwater</button>
         <button type="button" data-water="salt" aria-pressed="false">Saltwater</button>
       </div>
+    </section>
+
+    <section class="conditions-advisor" data-module="advisor" hidden aria-labelledby="advisor-title">
+      <div class="advisor-heading"><div><p class="section-kicker">Conditions advisor</p><h2 id="advisor-title">Read the conditions. Make one change.</h2></div><p>Build a transparent starting pattern from what you can observe. This is guidance, not a fish forecast.</p></div>
+      <div class="advisor-layout">
+        <form id="advisor-form" class="advisor-form">
+          <label><span>Water</span><select id="advisor-water"><option value="fresh">Freshwater</option><option value="salt">Saltwater</option></select></label>
+          <label><span>Target</span><select id="advisor-target"></select></label>
+          <label><span>Temperature trend</span><select id="advisor-trend"><option value="warming">Warming</option><option value="stable" selected>Stable</option><option value="cooling">Cooling</option></select></label>
+          <label><span>Water clarity</span><select id="advisor-clarity"><option value="clear">Clear</option><option value="stained" selected>Stained</option><option value="muddy">Dirty / muddy</option></select></label>
+          <label><span>Wind / surface</span><select id="advisor-wind"><option value="calm">Calm</option><option value="moderate" selected>Moderate</option><option value="strong">Strong / rough</option></select></label>
+          <label><span>Structure</span><select id="advisor-structure"></select></label>
+          <label><span>Forage</span><select id="advisor-forage"></select></label>
+          <label id="advisor-current-field"><span>Tide / current</span><select id="advisor-current"><option value="slack">Slack</option><option value="moderate" selected>Moderate movement</option><option value="strong">Strong current</option></select></label>
+          <label><span>Light</span><select id="advisor-light"><option value="day">Bright / daytime</option><option value="low">Low light / night</option></select></label>
+          <label><span>What is going wrong?</span><select id="advisor-trouble"></select></label>
+        </form>
+        <article id="advisor-result" class="advisor-result" aria-live="polite"></article>
+      </div>
+      <p class="advisor-caveat" id="advisor-caveat"></p>
     </section>
 
     <section id="field-manual" class="field-manual" data-module="how-to" hidden aria-labelledby="manual-title">
