@@ -43,9 +43,23 @@
   };
   const ordered = items => `<ol class="instruction-steps">${items.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ol>`;
 
+  const videoMarkup = (video, knotName) => {
+    if (!video || !/^[A-Za-z0-9_-]{11}$/.test(video.id)) return "";
+    const watchUrl = `https://www.youtube.com/watch?v=${video.id}`;
+    return `<section class="detail-section knot-video"><h3>Video tutorial</h3><p><strong>${escapeHtml(video.title)}</strong><br><span>By ${escapeHtml(video.channel)} · requires an internet connection</span></p><div class="video-facade" data-video-container><button type="button" data-video-id="${escapeHtml(video.id)}" data-video-title="${escapeHtml(knotName)}">▶ Load YouTube tutorial</button><p class="video-offline" ${navigator.onLine ? "hidden" : ""}>You are offline. Use the diagram and numbered steps above.</p></div><a href="${escapeHtml(watchUrl)}" target="_blank" rel="noopener noreferrer">Open directly on YouTube</a><p class="video-privacy">YouTube does not receive a request until you press the load button.</p></section>`;
+  };
+
+  const setupMarkup = procedureId => {
+    const profile = manual.setupProfiles[manual.setupMap[procedureId]];
+    if (!profile) return "";
+    const tierOrder = {budget:0, mid:1, high:2};
+    const tiers = [...profile.tiers].sort((a,b) => tierOrder[a.tier] - tierOrder[b.tier]);
+    return `<details class="setup-examples"><summary>Budget, Mid-tier & High-tier setups</summary><p class="setup-profile-name">${escapeHtml(profile.name)} · examples, not universal best choices</p><div class="setup-tier-list">${tiers.map(tier => `<article class="setup-tier"><div><span class="setup-tier-label">${escapeHtml(tier.label)}</span><strong>${escapeHtml(tier.rod)}</strong></div><p><b>Primary reel:</b> ${escapeHtml(tier.reel)}</p><p><b>Penn / Shimano / Daiwa options:</b> ${escapeHtml(tier.reelOptions.join(" · "))}</p><p><b>Line:</b> ${escapeHtml(tier.line)}</p><p>${escapeHtml(tier.fit)}</p><a href="${escapeHtml(tier.url)}" target="_blank" rel="noopener noreferrer">Verify rod specs</a></article>`).join("")}</div><p class="setup-disclosure"><strong>Examples, not endorsements.</strong> Not sponsored. No affiliate links, referral codes, or commission. Reel size numbers are not standardized across Penn, Shimano, and Daiwa; compare capacity, drag, weight, and balance before buying.</p><div class="setup-brand-links">${Object.values(manual.brandLinks).map(brand => `<a href="${escapeHtml(brand.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(brand.label)} manufacturer site</a>`).join("")}</div></details>`;
+  };
+
   function procedureMarkup(item) {
     const knot = manual.knots[item.knot]; const rig = manual.rigs[item.rig];
-    return `<article class="detail-inner howto-detail"><p class="section-kicker">${escapeHtml(speciesLabels[item.species])} · Field procedure</p><h2>${escapeHtml(item.title)}</h2><p class="detail-deck">${escapeHtml(item.when)}</p><section class="detail-section"><h3>Working setup</h3><p>${escapeHtml(item.setup)}</p></section><section class="detail-section"><h3>1. Where and how to cast</h3>${ordered(item.cast)}</section><section class="detail-section"><h3>2. Retrieve or present the bait</h3>${ordered(item.retrieve)}</section><section class="detail-section"><h3>3. Bite and hookset</h3><p>${escapeHtml(item.hookset)}</p></section><section class="detail-section diagram-section"><h3>4. Build the ${escapeHtml(rig.name)}</h3><div class="rig-chain">${rig.parts.map((part,index) => `<span><b>${index + 1}</b>${escapeHtml(part)}</span>`).join("")}</div></section><section class="detail-section diagram-section"><h3>5. Tie the ${escapeHtml(knot.name)}</h3><p>${escapeHtml(knot.use)}</p>${knotSvg(item.knot)}${ordered(knot.steps)}<aside class="nj-caution"><strong>Avoid</strong><span>${escapeHtml(knot.avoid)}</span></aside></section><aside class="tip-callout"><strong>Most common mistake</strong><br>${escapeHtml(item.mistakes)}</aside></article>`;
+    return `<article class="detail-inner howto-detail"><p class="section-kicker">${escapeHtml(speciesLabels[item.species])} · Field procedure</p><h2>${escapeHtml(item.title)}</h2><p class="detail-deck">${escapeHtml(item.when)}</p><section class="detail-section"><h3>Working setup</h3><p>${escapeHtml(item.setup)}</p></section><section class="detail-section"><h3>1. Where and how to cast</h3>${ordered(item.cast)}</section><section class="detail-section"><h3>2. Retrieve or present the bait</h3>${ordered(item.retrieve)}</section><section class="detail-section"><h3>3. Bite and hookset</h3><p>${escapeHtml(item.hookset)}</p></section><section class="detail-section diagram-section"><h3>4. Build the ${escapeHtml(rig.name)}</h3><div class="rig-chain">${rig.parts.map((part,index) => `<span><b>${index + 1}</b>${escapeHtml(part)}</span>`).join("")}</div></section><section class="detail-section diagram-section"><h3>5. Tie the ${escapeHtml(knot.name)}</h3><p>${escapeHtml(knot.use)}</p>${knotSvg(item.knot)}${ordered(knot.steps)}<aside class="nj-caution"><strong>Avoid</strong><span>${escapeHtml(knot.avoid)}</span></aside></section>${videoMarkup(knot.video, knot.name)}<aside class="tip-callout"><strong>Most common mistake</strong><br>${escapeHtml(item.mistakes)}</aside>${setupMarkup(item.id)}</article>`;
   }
 
   function renderManual() {
@@ -73,7 +87,7 @@
 
   function knotMarkup(id) {
     const item = manual.knots[id];
-    return `<article class="detail-inner howto-detail"><p class="section-kicker">Field knot</p><h2>${escapeHtml(item.name)}</h2><p class="detail-deck">${escapeHtml(item.use)}</p><section class="detail-section diagram-section">${knotSvg(id)}${ordered(item.steps)}</section><aside class="tip-callout"><strong>Avoid</strong><br>${escapeHtml(item.avoid)}</aside></article>`;
+    return `<article class="detail-inner howto-detail"><p class="section-kicker">Field knot</p><h2>${escapeHtml(item.name)}</h2><p class="detail-deck">${escapeHtml(item.use)}</p><section class="detail-section diagram-section">${knotSvg(id)}${ordered(item.steps)}</section>${videoMarkup(item.video, item.name)}<aside class="tip-callout"><strong>Avoid</strong><br>${escapeHtml(item.avoid)}</aside></article>`;
   }
 
   function rigMarkup(id) {
@@ -88,6 +102,7 @@
   function openManualDialog(markup) {
     elements.detailContent.innerHTML = markup;
     elements.detail.showModal();
+    updateOnlineState();
   }
 
   const njSpecies = () => data.nj.species[state.nj.species];
@@ -201,6 +216,11 @@
   function persistSaved() { localStorage.setItem("tacklebox-saved", JSON.stringify([...state.saved])); }
   let toastTimer;
   function showToast(message) { clearTimeout(toastTimer); elements.toast.textContent = message; elements.toast.hidden = false; toastTimer = setTimeout(() => { elements.toast.hidden = true; }, 2200); }
+  function updateOnlineState() {
+    document.querySelectorAll("[data-video-id]").forEach(button => { button.disabled = !navigator.onLine; });
+    document.querySelectorAll(".video-offline").forEach(note => { note.hidden = navigator.onLine; });
+  }
+
   function resetFilters() {
     Object.assign(state, {water:"all", season:"all", access:"all", search:"", group:"all", savedOnly:false});
     elements.season.value = "all"; elements.access.value = "all"; elements.search.value = ""; render();
@@ -208,7 +228,23 @@
 
   document.addEventListener("click", event => {
     const button = event.target.closest("button"); if (!button) return;
-    if (button.dataset.water) { state.water = button.dataset.water; state.group = "all"; render(); }
+    if (button.dataset.videoId) {
+      const id = button.dataset.videoId;
+      if (!navigator.onLine) { showToast("Video requires an internet connection"); return; }
+      if (!/^[A-Za-z0-9_-]{11}$/.test(id)) { showToast("Invalid video link"); return; }
+      const container = button.closest("[data-video-container]");
+      const iframe = document.createElement("iframe");
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}`;
+      iframe.title = `How to tie the ${button.dataset.videoTitle} — video tutorial`;
+      iframe.loading = "lazy";
+      iframe.referrerPolicy = "strict-origin-when-cross-origin";
+      iframe.setAttribute("sandbox", "allow-scripts allow-same-origin allow-presentation");
+      iframe.setAttribute("allow", "encrypted-media; picture-in-picture; fullscreen");
+      iframe.setAttribute("allowfullscreen", "");
+      container.replaceChildren(iframe);
+      iframe.focus();
+    }
+    else if (button.dataset.water) { state.water = button.dataset.water; state.group = "all"; render(); }
     else if (button.dataset.manualSpecies) { state.manualSpecies = button.dataset.manualSpecies; renderManual(); }
     else if (button.dataset.hotspotSpecies) { state.hotspotSpecies = button.dataset.hotspotSpecies; renderHotspots(); }
     else if (button.dataset.procedure) { const item = manual.procedures.find(entry => entry.id === button.dataset.procedure); if (item) openManualDialog(procedureMarkup(item)); }
@@ -255,6 +291,8 @@
     const next = (current + (event.key === "ArrowRight" ? 1 : -1) + ids.length) % ids.length;
     activateNjSpecies(ids[next], true); event.preventDefault();
   });
+  window.addEventListener("online", updateOnlineState);
+  window.addEventListener("offline", updateOnlineState);
   elements.compareButton.addEventListener("click", renderComparison);
   $$("dialog").forEach(dialog => dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); }));
 

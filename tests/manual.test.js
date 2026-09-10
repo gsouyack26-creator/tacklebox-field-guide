@@ -40,6 +40,59 @@ describe("Northeast field manual", () => {
     for (const rig of Object.values(manual.rigs)) expect(rig.parts.length).toBeGreaterThanOrEqual(4);
   });
 
+
+  test("knot videos are verified IDs and remain optional supplements", () => {
+    const knots = window.TACKLEBOX_DATA.manual.knots;
+    expect(Object.keys(knots)).toHaveLength(5);
+    for (const knot of Object.values(knots)) {
+      expect(knot.video).toBeDefined();
+      expect(knot.video.id).toMatch(/^[A-Za-z0-9_-]{11}$/);
+      expect(knot.video.title.length).toBeGreaterThan(10);
+      expect(knot.video.channel.length).toBeGreaterThan(3);
+      expect(knot.steps.length).toBeGreaterThanOrEqual(4);
+    }
+  });
+
+  test("uses the five reviewed YouTube tutorials", () => {
+    const knots = window.TACKLEBOX_DATA.manual.knots;
+    expect(knots.palomar.video).toEqual({id:"TFk_Ktw2f1w", title:"Palomar Knot - Quick Tutorial on How to Tie This Strong Knot", channel:"Salt Strong"});
+    expect(knots["improved-clinch"].video.id).toBe("fXWRZe784QU");
+    expect(knots.loop.video.id).toBe("C0u5HQBiv_I");
+    expect(knots["double-uni"].video.id).toBe("6VgQLBpwJUY");
+    expect(knots["dropper-loop"].video.id).toBe("zDYQ-oIDbUo");
+  });
+
+  test("every procedure has budget mid-tier and high-tier setups", () => {
+    const manual = window.TACKLEBOX_DATA.manual;
+    const allowedTiers = ["budget", "mid", "high"];
+    for (const procedure of manual.procedures) {
+      const profileId = manual.setupMap[procedure.id];
+      expect(profileId).toBeDefined();
+      const profile = manual.setupProfiles[profileId];
+      expect(profile).toBeDefined();
+      expect(profile.tiers.map(item => item.tier)).toEqual(allowedTiers);
+      for (const tier of profile.tiers) {
+        expect(tier.rod.length).toBeGreaterThan(15);
+        expect(tier.reel.length).toBeGreaterThan(8);
+        expect(tier.reelOptions).toHaveLength(3);
+        expect(tier.reelOptions.some(item => item.includes("PENN"))).toBe(true);
+        expect(tier.reelOptions.some(item => item.includes("Shimano"))).toBe(true);
+        expect(tier.reelOptions.some(item => item.includes("Daiwa"))).toBe(true);
+        expect(tier.url.startsWith("https://")).toBe(true);
+        expect(tier.url).not.toMatch(/[?&](ref|utm_|aff|tag)=/i);
+      }
+    }
+  });
+
+  test("setup manufacturer registry is secure and non-affiliate", () => {
+    const links = window.TACKLEBOX_DATA.manual.brandLinks;
+    expect(Object.keys(links)).toEqual(["penn", "jigging-world", "shimano", "daiwa"]);
+    for (const item of Object.values(links)) {
+      expect(item.url.startsWith("https://")).toBe(true);
+      expect(item.url).not.toMatch(/[?&](ref|utm_|aff|tag)=/i);
+    }
+  });
+
   test("hotspots are public area guidance without coordinates", () => {
     const hotspots = window.TACKLEBOX_DATA.manual.hotspots;
     expect(hotspots.length).toBeGreaterThanOrEqual(8);

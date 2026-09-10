@@ -30,6 +30,8 @@ Saved field cards stay on that browser/device. Clearing site data removes saved 
 
 - Striper-heavy Northeast field manual with step-by-step casting, retrieval, bait presentation, and hooksets
 - Illustrated rig and knot bench for surf, inlet, bay, and structure fishing
+- Optional click-to-load YouTube knot tutorials using privacy-enhanced embeds; offline steps remain available
+- Budget, Mid-tier, and High-tier rod/reel examples for every procedure, including Penn, Shimano, Daiwa, and Jigging World options
 - Public NJ hotspot area guide for striped bass, fluke, bluefish, and sheepshead
 - NJ shore playbook for striped bass, fluke, bluefish, and sheepshead
 - Species-specific selectors for current conditions, structure, bait, and presentation
@@ -55,5 +57,7 @@ bun build sw.js --target browser --outfile sw-check.js
 ```
 
 ## Scope
+
+Gear examples are illustrative only — not endorsements, not sponsored, and contain no affiliate or referral links. Verify current specs, price, availability, reel capacity, and balance with the manufacturer or a local tackle shop.
 
 This is a U.S.-general planning guide, not a substitute for local regulations, current weather/marine forecasts, qualified instruction, or manufacturer limits. Verify licenses, seasons, closures, size/bag limits, hook and bait restrictions, lead rules, and safety requirements before fishing.

@@ -241,6 +241,28 @@ dialog::backdrop { background: oklch(18% .025 175 / .76); backdrop-filter: blur(
 .lure-row:last-child { border-bottom: 0; }
 .lure-row strong { color: var(--river); }
 .tip-callout { padding: 1.2rem; background: oklch(91% .07 73); border-left: 4px solid var(--amber); }
+.knot-video { display: grid; gap: .75rem; }
+.knot-video p { margin: 0; }
+.knot-video span, .video-privacy { color: var(--muted); font-size: .88rem; }
+.knot-video a { color: var(--river); font-weight: 800; width: fit-content; }
+.video-facade { position: relative; display: grid; place-items: center; min-height: 12rem; overflow: hidden; border: 1px solid var(--line); background: linear-gradient(145deg, var(--river-deep), oklch(30% .06 220)); aspect-ratio: 16 / 9; }
+.video-facade button { min-height: 3.4rem; padding: .75rem 1.1rem; border: 1px solid var(--strike); background: var(--strike); color: oklch(18% .05 235); font-weight: 900; }
+.video-facade iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video-offline { max-width: 28rem; padding: 0 1rem; color: var(--paper) !important; text-align: center; }
+
+.setup-examples { margin-top: 1.5rem; border-block: 1px solid var(--line); }
+.setup-examples > summary { min-height: 3.4rem; padding: .9rem 0; cursor: pointer; font: 800 1.1rem var(--font-body); }
+.setup-profile-name { color: var(--muted); }
+.setup-tier-list { display: grid; gap: .7rem; }
+.setup-tier { display: grid; gap: .45rem; padding: 1rem; border: 1px solid var(--line); background: var(--paper-deep); }
+.setup-tier > div { display: grid; gap: .35rem; }
+.setup-tier p { margin: 0; color: var(--muted); }
+.setup-tier a, .setup-brand-links a { color: var(--river); font-weight: 800; min-height: 2.75rem; display: inline-flex; align-items: center; }
+.setup-tier-label { width: fit-content; padding: .2rem .5rem; border-radius: 99px; background: var(--river-deep); color: var(--paper); font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.setup-disclosure { padding: 1rem; border-left: 4px solid var(--strike); background: var(--surface); color: var(--muted); }
+.setup-brand-links { display: flex; flex-wrap: wrap; gap: .4rem 1rem; padding-bottom: 1rem; }
+@media (min-width: 42rem) { .setup-tier-list { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
 .compare-table-wrap { padding: 4rem 1rem 2rem; overflow-x: auto; }
 .compare-table { width: 100%; min-width: 44rem; border-collapse: collapse; }
 .compare-table caption { text-align: left; font: 700 2rem var(--font-display); margin-bottom: 1rem; }
