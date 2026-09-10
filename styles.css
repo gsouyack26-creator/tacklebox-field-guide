@@ -77,6 +77,25 @@ h1 em { color: var(--amber); font-weight: 400; }
 
 .field-manual, .rig-bench, .hotspots, .regulation-band { padding: clamp(4rem, 9vw, 8rem) clamp(1rem, 7vw, 7rem); }
 .field-manual { background: var(--paper); }
+.recommended-setups { padding: clamp(4rem, 9vw, 8rem) clamp(1rem, 7vw, 7rem); background: var(--paper-deep); border-block: 1px solid var(--line); }
+.setup-module-grid { display: grid; gap: 1rem; }
+.setup-system-card { display: grid; gap: 1.2rem; padding: clamp(1.2rem, 3vw, 2rem); border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow); }
+.setup-system-heading h3 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.5rem); }
+.setup-system-tiers { display: grid; gap: .65rem; }
+.setup-system-tiers section { display: grid; gap: .4rem; padding: 1rem; border: 1px solid var(--line); background: var(--paper); }
+.setup-system-tiers p { margin: 0; color: var(--muted); }
+.setup-system-tiers a { display: inline-flex; align-items: center; min-height: 2.75rem; width: fit-content; color: var(--river); font-weight: 800; }
+.setup-techniques { border-top: 1px solid var(--line); padding-top: 1rem; }
+.setup-techniques > p { margin: 0 0 .65rem; color: var(--coral); font-size: .75rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.setup-techniques > div { display: flex; flex-wrap: wrap; gap: .45rem; }
+.setup-techniques button { min-height: 2.8rem; padding: .55rem .8rem; border: 1px solid var(--line); border-radius: 99px; background: var(--paper); color: var(--ink); }
+.setup-module-disclosure { max-width: 72rem; margin: 1.5rem 0 0; padding: 1rem; border-left: 4px solid var(--strike); background: var(--surface); color: var(--muted); }
+.rod-options { border-top: 1px solid var(--line); padding-top: .8rem; }
+.rod-options summary { min-height: 2.8rem; cursor: pointer; color: var(--river); font-weight: 850; }
+.rod-options ul { display: grid; gap: .65rem; margin: .4rem 0 0; padding-left: 1.2rem; }
+.rod-options a { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--ink); text-underline-offset: .2rem; }
+@media (min-width: 62rem) { .setup-module-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } .setup-system-card:last-child { grid-column: 1 / -1; } .setup-system-tiers { grid-template-columns: repeat(3, minmax(0,1fr)); } }
+
 .rig-bench { background: var(--river-deep); color: var(--ink); }
 .hotspots { background: var(--paper-deep); }
 .regulation-band { background: var(--paper); border-block: 1px solid var(--line); }
@@ -299,4 +318,4 @@ dialog::backdrop { background: oklch(18% .025 175 / .76); backdrop-filter: blur(
 }
 @media (pointer: coarse) { button, select, input { min-height: 2.75rem; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }
-@media print { :root { --ink: oklch(18% .02 230); --muted: oklch(38% .02 230); --paper: oklch(98% .005 220); --paper-deep: oklch(94% .01 220); --surface: oklch(100% 0 0); --line: oklch(70% .02 220); --river: oklch(35% .08 220); } .site-header, .water-switch, .quick-pick, .technique-rail, .card-actions, .compare-button { display: none !important; } body { background: white; color: var(--ink); } body::before { display: none; } .hero { min-height: auto; color: var(--ink); background: none; padding: 2rem 0; } .hero-mark { display: none; } .field-manual, .rig-bench, .hotspots, .regulation-band, .content-shell, .quiver, .nj-playbook, .season-board, .field-notes, .sources { padding: 2rem 0; background: white; color: var(--ink); } .technique-card, .manual-card, .hotspot-card, .regulation-grid article, .note-item, .bench-card, .setup-tier { break-inside: avoid; background: white; color: var(--ink); } .hero-lede, .note-item p, .bench-card span, .rig-bench .manual-heading > p, footer p { color: var(--muted) !important; } .note-item strong { color: var(--coral); } }
+@media print { :root { --ink: oklch(18% .02 230); --muted: oklch(38% .02 230); --paper: oklch(98% .005 220); --paper-deep: oklch(94% .01 220); --surface: oklch(100% 0 0); --line: oklch(70% .02 220); --river: oklch(35% .08 220); } .site-header, .water-switch, .quick-pick, .technique-rail, .card-actions, .compare-button { display: none !important; } body { background: white; color: var(--ink); } body::before { display: none; } .hero { min-height: auto; color: var(--ink); background: none; padding: 2rem 0; } .hero-mark { display: none; } .field-manual, .recommended-setups, .rig-bench, .hotspots, .regulation-band, .content-shell, .quiver, .nj-playbook, .season-board, .field-notes, .sources { padding: 2rem 0; background: white; color: var(--ink); } .technique-card, .manual-card, .setup-system-card, .setup-system-tiers section, .hotspot-card, .regulation-grid article, .note-item, .bench-card, .setup-tier { break-inside: avoid; background: white; color: var(--ink); } .hero-lede, .note-item p, .bench-card span, .rig-bench .manual-heading > p, footer p { color: var(--muted) !important; } .note-item strong { color: var(--coral); } }

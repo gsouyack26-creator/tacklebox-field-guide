@@ -49,7 +49,7 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("icons/apple-touch-icon.png", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("manual-data.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=9");
+  expect(serviceWorker).toContain("./manual-data.js?v=10");
   expect(serviceWorker).not.toContain("youtube.com");
   const html = await Bun.file(new URL("index.html", root)).text();
   expect(html).toContain("frame-src https://www.youtube-nocookie.com");
@@ -70,4 +70,6 @@ test("production UI is permanently dark themed", async () => {
   expect(manifest.background_color).toBe("#07131f");
   expect(manifest.theme_color).toBe("#07131f");
   expect(css).toContain("@media print { :root {");
+  expect(css).toContain(".field-manual, .recommended-setups, .rig-bench");
+  expect(css).toContain(".technique-card, .manual-card, .setup-system-card, .setup-system-tiers section");
 });

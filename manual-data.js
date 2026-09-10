@@ -60,6 +60,11 @@ window.TACKLEBOX_DATA.manual = {
   setupProfiles: {
     "surf-light":{
       name:"Light surf and plugs",
+      rodOptions:[
+        {name:"Tsunami Airwave Elite TSAWESS-882M · 8 ft 8 in Medium · 1/2–2 oz",url:"https://www.tsunamifishing.com/products/tsunami-airwave-elite-surf-rod"},
+        {name:"Lamiglas Carbon Surf LCS9LS · 9 ft Light, Moderate Fast · 3/8–2 oz",url:"https://www.lamiglas.com/products/carbon-surf"},
+        {name:"St. Croix Seage SES90MLMF2 · 9 ft Medium Light, Moderate Fast · 3/8–1.5 oz",url:"https://stcroixrods.com/products/seage-surf"}
+      ],
       tiers:[
         {tier:"budget",label:"Budget",brand:"penn",rod:"Battle IV combo, 8 ft Medium Heavy, Moderate Fast, 3/4–2 oz",reel:"PENN Battle IV 5000, 5.6:1, 25 lb max drag",reelOptions:["PENN Battle IV 5000","Shimano Spheros SW 5000","Daiwa BG MQ 5000"],line:"20–30 lb braid · 30–40 lb leader",fit:"A durable entry combo for bucktails, swimmers, tins, pencils, poppers, and beach fluke inside its lure rating.",url:"https://www.pennfishing.com/products/battle-iv-spinning-rod-and-reel-combo-1624413"},
         {tier:"mid",label:"Mid-tier",brand:"jigging-world",rod:"Onyx Surf JW-ONYX902-M, 9 ft Medium, 3/4–2 oz",reel:"Shimano Spheros SW 5000",reelOptions:["PENN Battle IV 4000/5000","Shimano Spheros SW 5000","Daiwa BG MQ 4000/5000"],line:"20 lb braid · 25–40 lb leader",fit:"Lightweight surf coverage for repeated casting when most offerings stay at or below 2 oz.",url:"https://www.jiggingworld.com/products/jigging-world-onyx-surf-rods"},
@@ -68,6 +73,11 @@ window.TACKLEBOX_DATA.manual = {
     },
     "surf-medium":{
       name:"Medium surf and current",
+      rodOptions:[
+        {name:"Tsunami Airwave Elite TSAWESS-962M · 9 ft 6 in Medium · 3/4–3 oz",url:"https://www.tsunamifishing.com/products/tsunami-airwave-elite-surf-rod"},
+        {name:"Lamiglas Carbon Surf LCS10MHS · 10 ft Medium Heavy, Moderate Fast · 3/4–3 oz",url:"https://www.lamiglas.com/products/carbon-surf"},
+        {name:"St. Croix Seage SES100MMF2 · 10 ft Medium, Moderate Fast · 1–4 oz",url:"https://stcroixrods.com/products/seage-surf"}
+      ],
       tiers:[
         {tier:"budget",label:"Budget",brand:"penn",rod:"Battle IV combo, 9 ft Medium Heavy, Moderate Fast, 1–3 oz",reel:"PENN Battle IV 6000, 5.6:1, 25 lb max drag",reelOptions:["PENN Battle IV 6000","Shimano Spheros SW 5000/6000","Daiwa BG MQ 5000/6000"],line:"30 lb braid · 30–50 lb leader",fit:"Entry current-and-whitewater setup for bucktails, darters, needles, poppers, metals, and bluefish.",url:"https://www.pennfishing.com/products/battle-iv-spinning-rod-and-reel-combo-1624413"},
         {tier:"mid",label:"Mid-tier",brand:"jigging-world",rod:"Onyx Surf JW-OX962S-MH, 9 ft 6 in Medium Heavy, 3/4–3 oz",reel:"Shimano Spheros SW 5000",reelOptions:["PENN Spinfisher VII 4500/5500","Shimano Spheros SW 5000/6000","Daiwa BG MQ 5000"],line:"20–30 lb braid · 30–50 lb leader",fit:"Verified 3/4–3 oz range for repeated lure casting and controlled current work.",url:"https://www.jiggingworld.com/products/jigging-world-onyx-surf-rods"},
@@ -76,6 +86,11 @@ window.TACKLEBOX_DATA.manual = {
     },
     "surf-heavy":{
       name:"Heavy surf and bait",
+      rodOptions:[
+        {name:"Tsunami Trophy II TSTIISS-1002MH · 10 ft Medium Heavy · 1–5 oz",url:"https://www.tsunamifishing.com/products/tsunami-trophy-ii-surf-rod"},
+        {name:"Ugly Stik Carbon Surf 1625092 · 11 ft · 2–6 oz",url:"https://www.uglystik.com/products/carbon-surf-spinning-rod-1637252"},
+        {name:"St. Croix Seage SES106MHMF2 · 10 ft 6 in Medium Heavy, Moderate Fast · 2–6 oz",url:"https://stcroixrods.com/products/seage-surf"}
+      ],
       tiers:[
         {tier:"budget",label:"Budget",brand:"penn",rod:"Battle IV combo, 10 ft Heavy, Moderate Fast, 1–5 oz",reel:"PENN Battle IV 8000, 4.7:1, 30 lb max drag",reelOptions:["PENN Battle IV 8000","Shimano Saragosa SW 8000","Daiwa Saltist MQ 6000"],line:"40–50 lb braid · shock/leader matched to sinker",fit:"An entry heavy-surf combo for larger swimmers, eels, bunker, clam, and fish-finder rigs within the 5 oz ceiling.",url:"https://www.pennfishing.com/products/battle-iv-spinning-rod-and-reel-combo-1624413"},
         {tier:"mid",label:"Mid-tier",brand:"penn",rod:"Squadron IV Surf, 10 ft Medium Heavy, Moderate Fast, 1–5 oz",reel:"Shimano Saragosa SW 6000",reelOptions:["PENN Battle IV 6000","Shimano Saragosa SW 6000","Daiwa BG MQ 6000"],line:"30–40 lb braid · 40–60 lb leader",fit:"A balanced bait-and-heavy-plug option with verified 1–5 oz casting range.",url:"https://www.pennfishing.com/products/squadron-iv-surf-spinning-rod"},
@@ -84,6 +99,11 @@ window.TACKLEBOX_DATA.manual = {
     },
     "inshore-light":{
       name:"Light inshore and finesse",
+      rodOptions:[
+        {name:"Daiwa Aird Coastal ACIN761MXS · 7 ft 6 in Medium, Extra Fast · 1/4–1 oz",url:"https://daiwa.us/products/aird-coastal-inshore-rods"},
+        {name:"Ugly Stik Carbon Inshore 1560471 · 7 ft Medium · 1/4–1 oz",url:"https://www.uglystik.com/products/carbon-inshore-spinning-rod-1573610"},
+        {name:"Tsunami SaltX II TSSTXIS721M · 7 ft 2 in Medium · 1/8–3/4 oz",url:"https://www.tsunamifishing.com/products/saltx-ii-inshore-spinning-rod"}
+      ],
       tiers:[
         {tier:"budget",label:"Budget",brand:"penn",rod:"Battle IV combo, 7 ft Medium, Fast, 1/4–1 oz",reel:"PENN Battle IV 4000, 6.2:1, 15 lb max drag",reelOptions:["PENN Battle IV 3000/4000","Shimano Stradic FM 3000/4000","Daiwa BG 3000/4000"],line:"15–20 lb braid · 20–30 lb leader",fit:"A ready-to-fish platform for bay paddletails, light fluke jigs, and finesse structure work.",url:"https://www.pennfishing.com/products/battle-iv-spinning-rod-and-reel-combo-1624413"},
         {tier:"mid",label:"Mid-tier",brand:"penn",rod:"Battalion II Inshore BATINII1017S76, 7 ft 6 in Medium, Fast, 1/4–1 oz",reel:"Shimano Stradic FM 3000/4000",reelOptions:["PENN Battle IV 3000/4000","Shimano Stradic FM 3000/4000","Daiwa BG 3000/4000"],line:"15–20 lb braid · 20–30 lb leader",fit:"More sensitivity and reach for fluke troughs, light jigheads, and subtle sheepshead bites.",url:"https://www.pennfishing.com/products/battalion-ii-inshore-spinning-rod"},
@@ -92,6 +112,11 @@ window.TACKLEBOX_DATA.manual = {
     },
     "inshore-heavy":{
       name:"Heavy inshore and structure",
+      rodOptions:[
+        {name:"Tsunami SaltX II TSSTXIS701H · 7 ft Heavy · 3/4–3 oz",url:"https://www.tsunamifishing.com/products/saltx-ii-inshore-spinning-rod"},
+        {name:"Tsunami SaltX II TSSTXIS771H · 7 ft 7 in Heavy · 3/8–2 oz",url:"https://www.tsunamifishing.com/products/saltx-ii-inshore-spinning-rod"},
+        {name:"Tsunami Trophy II TSTIISS-902MH · 9 ft Medium Heavy · 1–4 oz",url:"https://www.tsunamifishing.com/products/tsunami-trophy-ii-surf-rod"}
+      ],
       tiers:[
         {tier:"budget",label:"Budget",brand:"penn",rod:"Battle IV combo, 7 ft Medium Heavy, Fast, 1/2–1.5 oz",reel:"PENN Battle IV 5000, 5.6:1, 25 lb max drag",reelOptions:["PENN Battle IV 5000","Shimano Spheros SW 5000","Daiwa BG MQ 5000"],line:"20–30 lb braid · 30–50 lb leader",fit:"Strong entry setup for inlet edges, bluefish bait, live bunker, and pulling fish away from structure.",url:"https://www.pennfishing.com/products/battle-iv-spinning-rod-and-reel-combo-1624413"},
         {tier:"mid",label:"Mid-tier",brand:"penn",rod:"Battalion II Inshore BATINII1530S70, 7 ft Heavy, Fast, 3/4–2.5 oz",reel:"Shimano Saragosa SW 5000/6000",reelOptions:["PENN Battle IV 5000","Shimano Saragosa SW 5000/6000","Daiwa BG MQ 5000"],line:"30 lb braid · 30–50 lb leader",fit:"A sensitive but powerful structure and current setup for heavier jigs and bait presentations.",url:"https://www.pennfishing.com/products/battalion-ii-inshore-spinning-rod"},

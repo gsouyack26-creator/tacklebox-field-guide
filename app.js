@@ -49,12 +49,14 @@
     return `<section class="detail-section knot-video"><h3>Video tutorial</h3><p><strong>${escapeHtml(video.title)}</strong><br><span>By ${escapeHtml(video.channel)} · requires an internet connection</span></p><div class="video-facade" data-video-container><button type="button" data-video-id="${escapeHtml(video.id)}" data-video-title="${escapeHtml(knotName)}">▶ Load YouTube tutorial</button><p class="video-offline" ${navigator.onLine ? "hidden" : ""}>You are offline. Use the diagram and numbered steps above.</p></div><a href="${escapeHtml(watchUrl)}" target="_blank" rel="noopener noreferrer">Open directly on YouTube</a><p class="video-privacy">YouTube does not receive a request until you press the load button.</p></section>`;
   };
 
+  const rodOptionsMarkup = profile => !profile.rodOptions?.length ? "" : `<details class="rod-options"><summary>Other recommended rods</summary><ul>${profile.rodOptions.map(rod => `<li><a href="${escapeHtml(rod.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(rod.name)}</a></li>`).join("")}</ul></details>`;
+
   const setupMarkup = procedureId => {
     const profile = manual.setupProfiles[manual.setupMap[procedureId]];
     if (!profile) return "";
     const tierOrder = {budget:0, mid:1, high:2};
     const tiers = [...profile.tiers].sort((a,b) => tierOrder[a.tier] - tierOrder[b.tier]);
-    return `<details class="setup-examples"><summary>Budget, Mid-tier & High-tier setups</summary><p class="setup-profile-name">${escapeHtml(profile.name)} · examples, not universal best choices</p><div class="setup-tier-list">${tiers.map(tier => `<article class="setup-tier"><div><span class="setup-tier-label">${escapeHtml(tier.label)}</span><strong>${escapeHtml(tier.rod)}</strong></div><p><b>Primary reel:</b> ${escapeHtml(tier.reel)}</p><p><b>Penn / Shimano / Daiwa options:</b> ${escapeHtml(tier.reelOptions.join(" · "))}</p><p><b>Line:</b> ${escapeHtml(tier.line)}</p><p>${escapeHtml(tier.fit)}</p><a href="${escapeHtml(tier.url)}" target="_blank" rel="noopener noreferrer">Verify rod specs</a></article>`).join("")}</div><p class="setup-disclosure"><strong>Examples, not endorsements.</strong> Not sponsored. No affiliate links, referral codes, or commission. Reel size numbers are not standardized across Penn, Shimano, and Daiwa; compare capacity, drag, weight, and balance before buying.</p><div class="setup-brand-links">${Object.values(manual.brandLinks).map(brand => `<a href="${escapeHtml(brand.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(brand.label)} manufacturer site</a>`).join("")}</div></details>`;
+    return `<details class="setup-examples"><summary>Budget, Mid-tier & High-tier setups</summary><p class="setup-profile-name">${escapeHtml(profile.name)} · examples, not universal best choices</p><div class="setup-tier-list">${tiers.map(tier => `<article class="setup-tier"><div><span class="setup-tier-label">${escapeHtml(tier.label)}</span><strong>${escapeHtml(tier.rod)}</strong></div><p><b>Primary reel:</b> ${escapeHtml(tier.reel)}</p><p><b>Penn / Shimano / Daiwa options:</b> ${escapeHtml(tier.reelOptions.join(" · "))}</p><p><b>Line:</b> ${escapeHtml(tier.line)}</p><p>${escapeHtml(tier.fit)}</p><a href="${escapeHtml(tier.url)}" target="_blank" rel="noopener noreferrer">Verify rod specs</a></article>`).join("")}</div>${rodOptionsMarkup(profile)}<p class="setup-disclosure"><strong>Examples, not endorsements.</strong> Not sponsored. No affiliate links, referral codes, or commission. Reel size numbers are not standardized across Penn, Shimano, and Daiwa; compare capacity, drag, weight, and balance before buying.</p><div class="setup-brand-links">${Object.values(manual.brandLinks).map(brand => `<a href="${escapeHtml(brand.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(brand.label)} manufacturer site</a>`).join("")}</div></details>`;
   };
 
   function procedureMarkup(item) {
@@ -67,6 +69,20 @@
     $("#manual-species").innerHTML = filters.map(id => `<button type="button" data-manual-species="${id}" aria-pressed="${id === state.manualSpecies}">${speciesLabels[id]}</button>`).join("");
     const procedures = manual.procedures.filter(item => item.species === state.manualSpecies);
     $("#manual-grid").innerHTML = procedures.map((item,index) => `<article class="manual-card ${item.species === "striper" ? "primary" : ""}"><span class="manual-number">${String(index + 1).padStart(2, "0")}</span><p class="manual-when">${escapeHtml(item.when)}</p><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.setup)}</p><button type="button" data-procedure="${item.id}">Open step-by-step</button></article>`).join("");
+  }
+
+  function renderRecommendedSetups() {
+    const proceduresById = Object.fromEntries(manual.procedures.map(item => [item.id, item]));
+    const profileTechniques = Object.fromEntries(Object.keys(manual.setupProfiles).map(id => [id, []]));
+    Object.entries(manual.setupMap).forEach(([procedureId, profileId]) => {
+      if (profileTechniques[profileId] && proceduresById[procedureId]) profileTechniques[profileId].push(proceduresById[procedureId]);
+    });
+    const tierOrder = {budget:0, mid:1, high:2};
+    $("#setup-module-grid").innerHTML = Object.entries(manual.setupProfiles).map(([profileId, profile]) => {
+      const tiers = [...profile.tiers].sort((a,b) => tierOrder[a.tier] - tierOrder[b.tier]);
+      const techniques = profileTechniques[profileId];
+      return `<article class="setup-system-card"><div class="setup-system-heading"><p class="section-kicker">${techniques.length} matched techniques</p><h3>${escapeHtml(profile.name)}</h3></div><div class="setup-system-tiers">${tiers.map(tier => `<section><span class="setup-tier-label">${escapeHtml(tier.label)}</span><strong>${escapeHtml(tier.rod)}</strong><p><b>Primary reel:</b> ${escapeHtml(tier.reel)}</p><p><b>Reel alternatives:</b> ${escapeHtml(tier.reelOptions.join(" · "))}</p><p><b>Line:</b> ${escapeHtml(tier.line)}</p><p>${escapeHtml(tier.fit)}</p><a href="${escapeHtml(tier.url)}" target="_blank" rel="noopener noreferrer">Verify rod specs</a></section>`).join("")}</div>${rodOptionsMarkup(profile)}<div class="setup-techniques"><p>Best for</p><div>${techniques.map(item => `<button type="button" data-procedure="${escapeHtml(item.id)}">${escapeHtml(item.title)}</button>`).join("")}</div></div></article>`;
+    }).join("");
   }
 
   function renderBench() {
@@ -300,6 +316,7 @@
   $("#field-note-list").innerHTML = data.notes.map(item => `<article class="note-item"><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.text)}</p></article>`).join("");
   $("#source-list").innerHTML = data.sources.map((source,index) => `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${index + 1}. ${escapeHtml(source.name)}</a>`).join("");
   renderManual();
+  renderRecommendedSetups();
   renderBench();
   renderHotspots();
   renderRegulations();

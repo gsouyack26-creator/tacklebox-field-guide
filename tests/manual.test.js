@@ -84,6 +84,30 @@ describe("Northeast field manual", () => {
     }
   });
 
+  test("every setup profile includes verified alternate rods", () => {
+    const profiles = window.TACKLEBOX_DATA.manual.setupProfiles;
+    for (const profile of Object.values(profiles)) {
+      expect(profile.rodOptions).toHaveLength(3);
+      expect(new Set(profile.rodOptions.map(rod => rod.name)).size).toBe(3);
+      for (const rod of profile.rodOptions) {
+        expect(rod.name.length).toBeGreaterThan(30);
+        expect(rod.name).toMatch(/\d/);
+        expect(rod.url.startsWith("https://")).toBe(true);
+        expect(rod.url).not.toMatch(/[?&](ref|utm_|aff|tag)=/i);
+      }
+    }
+  });
+
+  test("recommended setup module can derive every matched technique", () => {
+    const manual = window.TACKLEBOX_DATA.manual;
+    const reverse = Object.fromEntries(Object.keys(manual.setupProfiles).map(id => [id, []]));
+    for (const [procedureId, profileId] of Object.entries(manual.setupMap)) reverse[profileId].push(procedureId);
+    expect(Object.keys(reverse)).toHaveLength(5);
+    expect(Object.values(reverse).flat()).toHaveLength(manual.procedures.length);
+    for (const ids of Object.values(reverse)) expect(ids.length).toBeGreaterThan(0);
+    for (const procedure of manual.procedures) expect(reverse[manual.setupMap[procedure.id]]).toContain(procedure.id);
+  });
+
   test("setup manufacturer registry is secure and non-affiliate", () => {
     const links = window.TACKLEBOX_DATA.manual.brandLinks;
     expect(Object.keys(links)).toEqual(["penn", "jigging-world", "shimano", "daiwa"]);
