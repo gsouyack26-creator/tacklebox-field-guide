@@ -39,7 +39,7 @@ window.TACKLEBOX_DATA = {
     {title:"Stop for lightning",text:"Carbon rods conduct electricity. Secure rods and leave exposed water before a storm reaches you."}
   ],
   sources:[
-    {name:"Take Me Fishing / RBFF — Fishing gear basics",url:"https://www.takemefishing.org/how-to-fish/fishing-gear/"},
+    {name:"Take Me Fishing / RBFF — Fishing resources",url:"https://www.takemefishing.org/how-to-fish/fishing-resources/"},
     {name:"NOAA Fisheries — Regulations and conservation",url:"https://www.fisheries.noaa.gov/"},
     {name:"U.S. Coast Guard — Recreational boating safety",url:"https://uscgboating.org/"},
     {name:"U.S. Fish & Wildlife Service — Fishing and lead-tackle context",url:"https://www.fws.gov/"},
@@ -127,11 +127,11 @@ window.TACKLEBOX_DATA.nj = {
         {id:"slack-precision",name:"Slack-tide precision",match:{structure:["piling","jetty"],bait:["crab","mussel"],tide:["slack"]},lure:"Small crab or fresh shellfish bait",rig:"Downsize sinker for a vertical natural fall",retrieve:"Hold still, watch line, and set on weight rather than repeated taps.",why:"Reduced flow lets a light bait remain beside the feeding face.",caution:"Verify current NJ species identification, season, size, and possession rules before retention."}
       ],
       rules:[
-        "Sheepshead is not listed in the complete 2026 NJ regulated-species table published in the NJ Marine Digest reprint.",
-        "No NJ minimum size, bag/possession limit, or closed season is listed for sheepshead in that table.",
+        "The 2026 NJ statewide summary table has no dedicated sheepshead entry.",
+        "Do not infer that no other rule applies; verify current NJDEP regulations and emergency changes before harvest.",
         "NJ wanton-waste rules still apply: intentionally killed fish must be retained and may not be discarded."
       ],
-      footer:"High-confidence 2026 Marine Digest reprint finding, but N.J.A.C. remains binding and mid-season changes are possible. Sheepshead are primarily a hard-structure shore target. Barnacles, waves, teeth, and dorsal spines demand abrasion leader, traction, and careful handling."
+      footer:"2026 Marine Digest summary-table finding only; N.J.A.C. and in-season changes remain binding. Sheepshead are primarily a hard-structure shore target. Barnacles, waves, teeth, and dorsal spines demand abrasion leader, traction, and careful handling."
     }
   },
   sources: [

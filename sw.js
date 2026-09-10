@@ -1,7 +1,7 @@
-const CACHE = "tacklebox-field-guide-v14";
+const CACHE = "tacklebox-field-guide-v15";
 const SHELL = [
-  "./", "./index.html", "./styles.css?v=14", "./data.js?v=14", "./manual-data.js?v=14", "./app.js?v=14",
-  "./advisor-data.js?v=14", "./advisor-engine.js?v=14", "./lure-products.js?v=14",
+  "./", "./index.html", "./styles.css?v=15", "./data.js?v=15", "./manual-data.js?v=15", "./app.js?v=15",
+  "./advisor-data.js?v=15", "./advisor-engine.js?v=15", "./lure-products.js?v=15",
   "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png",
   "./icons/icon-maskable-512.png", "./icons/apple-touch-icon.png"
 ];
@@ -13,7 +13,7 @@ self.addEventListener("install", event => {
 
 self.addEventListener("activate", event => {
   event.waitUntil(caches.keys()
-    .then(keys => Promise.all(keys.filter(key => key !== CACHE).map(key => caches.delete(key))))
+    .then(keys => Promise.all(keys.filter(key => key.startsWith("tacklebox-field-guide-") && key !== CACHE).map(key => caches.delete(key))))
     .then(() => self.clients.claim()));
 });
 
@@ -24,8 +24,7 @@ self.addEventListener("fetch", event => {
   if (request.mode === "navigate") {
     event.respondWith(fetch(request)
       .then(response => {
-        const copy = response.clone();
-        caches.open(CACHE).then(cache => cache.put(request, copy));
+        if (response.ok) caches.open(CACHE).then(cache => cache.put(request, response.clone()));
         return response;
       })
       .catch(() => caches.match("./index.html")));
@@ -36,7 +35,7 @@ self.addEventListener("fetch", event => {
     const update = fetch(request).then(response => {
       if (response.ok) caches.open(CACHE).then(cache => cache.put(request, response.clone()));
       return response;
-    });
+    }).catch(() => cached);
     return cached || update;
   }));
 });

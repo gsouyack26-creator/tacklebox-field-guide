@@ -37,6 +37,29 @@ describe("field-guide dataset", () => {
   });
 });
 
+test("storage access is failure-safe", async () => {
+  const app = await Bun.file(new URL("../app.js", import.meta.url)).text();
+  expect(app).toContain("const safeSave =");
+  expect(app).toContain("catch {}");
+  expect(app).toContain("Array.isArray");
+  expect(app).toContain("[...select.options].some");
+  expect(app).toContain("advisor.trouble[state.advisor.trouble]");
+  expect(app).not.toContain(`localStorage.setItem("tacklebox-module"`);
+  expect(app).not.toContain(`localStorage.setItem("tacklebox-advisor"`);
+  expect(app).not.toContain(`localStorage.setItem("tacklebox-nj"`);
+});
+
+test("time-sensitive links and claims stay maintainable", async () => {
+  const root = new URL("../", import.meta.url);
+  const data = await Bun.file(new URL("data.js", root)).text();
+  const manual = await Bun.file(new URL("manual-data.js", root)).text();
+  expect(data).not.toContain("/how-to-fish/fishing-gear/");
+  expect(manual).not.toContain("/dep/fgw/marine.htm");
+  expect(manual).not.toContain("passes are sold out");
+  expect(manual).not.toContain("no minimum, bag, or season is listed");
+  expect(manual).toContain("Verify current NJDEP rules");
+});
+
 test("PWA assets are complete", async () => {
   const root = new URL("../", import.meta.url);
   const manifest = await Bun.file(new URL("manifest.webmanifest", root)).json();
@@ -52,11 +75,13 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("advisor-engine.js", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("lure-products.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=14");
-  expect(serviceWorker).toContain("./advisor-data.js?v=14");
-  expect(serviceWorker).toContain("./advisor-engine.js?v=14");
-  expect(serviceWorker).toContain("./lure-products.js?v=14");
+  expect(serviceWorker).toContain("./manual-data.js?v=15");
+  expect(serviceWorker).toContain("./advisor-data.js?v=15");
+  expect(serviceWorker).toContain("./advisor-engine.js?v=15");
+  expect(serviceWorker).toContain("./lure-products.js?v=15");
   expect(serviceWorker).not.toContain("youtube.com");
+  expect(serviceWorker).toContain(`key.startsWith("tacklebox-field-guide-")`);
+  expect(serviceWorker).toContain(".catch(() => cached)");
   const html = await Bun.file(new URL("index.html", root)).text();
   expect(html).toContain("frame-src https://www.youtube-nocookie.com");
   expect(html).not.toContain("<iframe");
@@ -77,7 +102,7 @@ test("module navigation is task-first and mobile ready", async () => {
   let position = -1;
   for (const id of order) { const next = app.indexOf(`id:"${id}"`); expect(next).toBeGreaterThan(position); position = next; }
   expect(app).toContain("window.addEventListener(\"hashchange\"");
-  expect(app).toContain("localStorage.setItem(\"tacklebox-module\", JSON.stringify(id))");
+  expect(app).toContain("safeSave(\"tacklebox-module\", id)");
   expect(css).toContain(".module-menu-open .module-sidebar");
   expect(css).toContain("[data-module][hidden]");
 });
@@ -89,7 +114,7 @@ test("conditions advisor is wired into the mobile app", async () => {
   const css = await Bun.file(new URL("styles.css", root)).text();
   for (const id of ["advisor-water","advisor-target","advisor-trend","advisor-clarity","advisor-wind","advisor-structure","advisor-forage","advisor-current","advisor-light","advisor-trouble","advisor-result"]) expect(html).toContain(`id="${id}"`);
   expect(app).toContain("advisorEngine.recommend");
-  expect(app).toContain("localStorage.setItem(\"tacklebox-advisor\"");
+  expect(app).toContain("safeSave(\"tacklebox-advisor\", selections)");
   expect(app).toContain("button.dataset.procedure");
   expect(app).toContain("button.dataset.open");
   expect(app).toContain(`$("#advisor-current-field").hidden = water !== "salt"`);

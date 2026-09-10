@@ -3,13 +3,18 @@
   const data = window.TACKLEBOX_DATA;
   const $ = selector => document.querySelector(selector);
   const $$ = selector => [...document.querySelectorAll(selector)];
-  const safeLoad = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
+  const safeLoad = (key, fallback, isValid = () => true) => {
+    try { const value = JSON.parse(localStorage.getItem(key)); return value != null && isValid(value) ? value : fallback; }
+    catch { return fallback; }
+  };
+  const safeSave = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} };
+  const advisorDefault = {water:"fresh",target:"general",trend:"stable",clarity:"stained",wind:"moderate",structure:"open",forage:"unknown",current:"moderate",light:"day",trouble:"none"};
   const state = {
     water: "all", season: "all", access: "all", search: "", group: "all",
-    savedOnly: false, saved: new Set(safeLoad("tacklebox-saved", [])), compare: new Set(),
+    savedOnly: false, saved: new Set(safeLoad("tacklebox-saved", [], Array.isArray)), compare: new Set(),
     manualSpecies: "striper", hotspotSpecies: "all",
-    nj: safeLoad("tacklebox-nj", { species: data.nj.defaultSpecies, values: {} }),
-    advisor: safeLoad("tacklebox-advisor", {water:"fresh",target:"general",trend:"stable",clarity:"stained",wind:"moderate",structure:"open",forage:"unknown",current:"moderate",light:"day",trouble:"none"})
+    nj: safeLoad("tacklebox-nj", { species: data.nj.defaultSpecies, values: {} }, value => value && typeof value === "object" && typeof value.species === "string" && value.values && typeof value.values === "object"),
+    advisor: safeLoad("tacklebox-advisor", advisorDefault, value => value && typeof value === "object" && typeof value.water === "string")
   };
   const modules = [
     {id:"home", label:"Home", group:"Fish now"},
@@ -55,7 +60,7 @@
     $$(`[data-module-link]`).forEach(link => {
       link.toggleAttribute("aria-current", link.dataset.moduleLink === id);
     });
-    localStorage.setItem("tacklebox-module", JSON.stringify(id));
+    safeSave("tacklebox-module", id);
     const module = modules.find(item => item.id === id);
     document.title = `${module.label} | Striper Tacklebox`;
     setModuleMenu(false);
@@ -156,7 +161,7 @@
   function renderAdvisor() {
     const selections = advisorSelections();
     state.advisor = selections;
-    localStorage.setItem("tacklebox-advisor", JSON.stringify(selections));
+    safeSave("tacklebox-advisor", selections);
     const match = advisorEngine.recommend(advisor, selections);
     if (!match) { $("#advisor-result").innerHTML = `<p>No matching pattern found. Open the Technique Library for the broad guide.</p>`; return; }
     const technique = techniqueById(match.profile.technique);
@@ -173,10 +178,11 @@
 
   function initializeAdvisor() {
     for (const key of ["water","trend","clarity","wind","current","light"]) {
-      const select = $(`#advisor-${key}`); if (state.advisor[key]) select.value = state.advisor[key];
+      const select = $(`#advisor-${key}`);
+      if ([...select.options].some(option => option.value === state.advisor[key])) select.value = state.advisor[key];
     }
     $("#advisor-trouble").innerHTML = advisorOptionMarkup(Object.entries(advisor.trouble).map(([id,item]) => [id,item.label]));
-    $("#advisor-trouble").value = state.advisor.trouble || "none";
+    $("#advisor-trouble").value = advisor.trouble[state.advisor.trouble] ? state.advisor.trouble : "none";
     populateAdvisorChoices();
     renderAdvisor();
   }
@@ -268,7 +274,7 @@
     const rules = species.rules ? `<details class="nj-rules"><summary>2026 NJ ${escapeHtml(species.label)} rules</summary><ul>${species.rules.map(rule => `<li>${escapeHtml(rule)}</li>`).join("")}</ul></details>` : "";
     $("#nj-footer").innerHTML = `${rules}<strong>Regulations and safety</strong><span>${escapeHtml(species.footer)}</span><div class="nj-source-links">${data.nj.sources.map(source => `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(source.name)}</a>`).join("")}</div>`;
     renderNjResult(resolveNjPlay());
-    localStorage.setItem("tacklebox-nj", JSON.stringify(state.nj));
+    safeSave("tacklebox-nj", state.nj);
   }
 
   function activateNjSpecies(id, shouldFocus = false) {
@@ -347,7 +353,7 @@
     elements.compare.showModal();
   }
 
-  function persistSaved() { localStorage.setItem("tacklebox-saved", JSON.stringify([...state.saved])); }
+  function persistSaved() { safeSave("tacklebox-saved", [...state.saved]); }
   let toastTimer;
   function showToast(message) { clearTimeout(toastTimer); elements.toast.textContent = message; elements.toast.hidden = false; toastTimer = setTimeout(() => { elements.toast.hidden = true; }, 2200); }
   function updateOnlineState() {

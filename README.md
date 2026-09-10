@@ -68,4 +68,4 @@ bun build sw.js --target browser --outfile sw-check.js
 
 Gear examples are illustrative only — not endorsements, not sponsored, and contain no affiliate or referral links. Verify current specs, price, availability, reel capacity, and balance with the manufacturer or a local tackle shop.
 
-This is a U.S.-general planning guide, not a substitute for local regulations, current weather/marine forecasts, qualified instruction, or manufacturer limits. Verify licenses, seasons, closures, size/bag limits, hook and bait restrictions, lead rules, and safety requirements before fishing.
+This is a U.S.-general planning guide. Product examples are illustrative and incomplete; natural-bait and rig-only techniques may intentionally have none. This guide is not a substitute for local regulations, current weather/marine forecasts, qualified instruction, or manufacturer limits. Verify licenses, seasons, closures, size/bag limits, hook and bait restrictions, lead rules, and safety requirements before fishing.
