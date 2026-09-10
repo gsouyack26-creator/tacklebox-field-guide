@@ -49,7 +49,7 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("icons/apple-touch-icon.png", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("manual-data.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=11");
+  expect(serviceWorker).toContain("./manual-data.js?v=12");
   expect(serviceWorker).not.toContain("youtube.com");
   const html = await Bun.file(new URL("index.html", root)).text();
   expect(html).toContain("frame-src https://www.youtube-nocookie.com");
@@ -76,6 +76,19 @@ test("module navigation is task-first and mobile ready", async () => {
   expect(css).toContain("[data-module][hidden]");
 });
 
+test("recommended setups use compact accessible disclosure", async () => {
+  const root = new URL("../", import.meta.url);
+  const app = await Bun.file(new URL("app.js", root)).text();
+  const css = await Bun.file(new URL("styles.css", root)).text();
+  expect(app).toContain(`<details class="setup-system-card">`);
+  expect(app).not.toContain(`class="setup-system-card" open`);
+  expect(app).toContain(`class="setup-system-summary"`);
+  expect(app).toContain(`class="setup-system-preview"`);
+  expect(app).toContain(`<dl>`);
+  expect(app).toContain(`class="setup-system-tier"`);
+  expect(css).toContain(".setup-system-card > .setup-system-body { display: grid !important; }");
+});
+
 test("production UI is permanently dark themed", async () => {
   const root = new URL("../", import.meta.url);
   const css = await Bun.file(new URL("styles.css", root)).text();
@@ -88,8 +101,8 @@ test("production UI is permanently dark themed", async () => {
   expect(app).not.toContain("sunlight-toggle");
   expect(manifest.background_color).toBe("#07131f");
   expect(manifest.theme_color).toBe("#07131f");
-  expect(css).toContain("@media print { .module-sidebar");
+  expect(css).toContain("@media print { .setup-system-card > .setup-system-body");
   expect(css).toContain("[data-module][hidden] { display: block !important; }");
   expect(css).toContain(".field-manual, .recommended-setups, .rig-bench");
-  expect(css).toContain(".technique-card, .manual-card, .setup-system-card, .setup-system-tiers section");
+  expect(css).toContain(".technique-card, .manual-card, .setup-system-card, .setup-system-tier");
 });
