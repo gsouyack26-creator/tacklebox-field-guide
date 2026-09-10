@@ -17,5 +17,10 @@
     return {...best, fit};
   }
 
-  window.TACKLEBOX_ADVISOR_ENGINE = {recommend};
+  function choices(advisor, key, water) {
+    const collections = {target:"targets",structure:"structures",forage:"forage"};
+    return advisor[collections[key]]?.[water] || [];
+  }
+
+  window.TACKLEBOX_ADVISOR_ENGINE = {recommend,choices};
 })();

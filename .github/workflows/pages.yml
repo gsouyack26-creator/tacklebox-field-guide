@@ -26,6 +26,7 @@ jobs:
       - run: bun build manual-data.js --target browser --outfile /tmp/tacklebox-manual-data.js
       - run: bun build advisor-data.js --target browser --outfile /tmp/tacklebox-advisor-data.js
       - run: bun build advisor-engine.js --target browser --outfile /tmp/tacklebox-advisor-engine.js
+      - run: bun build lure-products.js --target browser --outfile /tmp/tacklebox-lure-products.js
       - run: bun build sw.js --target browser --outfile /tmp/tacklebox-sw.js
 
   deploy:

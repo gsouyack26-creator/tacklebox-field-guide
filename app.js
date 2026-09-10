@@ -34,6 +34,7 @@
     detailContent: $("#detail-content"), compareContent: $("#compare-content"), toast: $("#toast")
   };
 
+  const lureProducts = window.TACKLEBOX_LURE_PRODUCTS || [];
   const advisor = window.TACKLEBOX_ADVISOR;
   const advisorEngine = window.TACKLEBOX_ADVISOR_ENGINE;
   const moduleMedia = matchMedia("(min-width: 62rem)");
@@ -113,6 +114,12 @@
     return `<section class="detail-section knot-video"><h3>Video tutorial</h3><p><strong>${escapeHtml(video.title)}</strong><br><span>By ${escapeHtml(video.channel)} · requires an internet connection</span></p><div class="video-facade" data-video-container><button type="button" data-video-id="${escapeHtml(video.id)}" data-video-title="${escapeHtml(knotName)}">▶ Load YouTube tutorial</button><p class="video-offline" ${navigator.onLine ? "hidden" : ""}>You are offline. Use the diagram and numbered steps above.</p></div><a href="${escapeHtml(watchUrl)}" target="_blank" rel="noopener noreferrer">Open directly on YouTube</a><p class="video-privacy">YouTube does not receive a request until you press the load button.</p></section>`;
   };
 
+  const productExamplesMarkup = (field, id) => {
+    const products = lureProducts.filter(item => item[field]?.includes(id));
+    if (!products.length) return "";
+    return `<details class="product-examples"><summary>Actual lure examples (${products.length})</summary><div>${products.map(item => `<article><span>${escapeHtml(item.maker)}</span><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.spec)}</small><p>${escapeHtml(item.use)}</p><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">Official product page</a></article>`).join("")}</div><p>Examples only. Not ranked, sponsored, or affiliate-linked. Match size and weight to the rod, depth, current, forage, and local rules.</p></details>`;
+  };
+
   const rodOptionsMarkup = profile => !profile.rodOptions?.length ? "" : `<details class="rod-options"><summary>Other recommended rods</summary><ul>${profile.rodOptions.map(rod => `<li><a href="${escapeHtml(rod.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(rod.name)}</a></li>`).join("")}</ul></details>`;
 
   const setupMarkup = procedureId => {
@@ -125,7 +132,7 @@
 
   function procedureMarkup(item) {
     const knot = manual.knots[item.knot]; const rig = manual.rigs[item.rig];
-    return `<article class="detail-inner howto-detail"><p class="section-kicker">${escapeHtml(speciesLabels[item.species])} · Field procedure</p><h2>${escapeHtml(item.title)}</h2><p class="detail-deck">${escapeHtml(item.when)}</p><section class="detail-section"><h3>Working setup</h3><p>${escapeHtml(item.setup)}</p></section><section class="detail-section"><h3>1. Where and how to cast</h3>${ordered(item.cast)}</section><section class="detail-section"><h3>2. Retrieve or present the bait</h3>${ordered(item.retrieve)}</section><section class="detail-section"><h3>3. Bite and hookset</h3><p>${escapeHtml(item.hookset)}</p></section><section class="detail-section diagram-section"><h3>4. Build the ${escapeHtml(rig.name)}</h3><div class="rig-chain">${rig.parts.map((part,index) => `<span><b>${index + 1}</b>${escapeHtml(part)}</span>`).join("")}</div></section><section class="detail-section diagram-section"><h3>5. Tie the ${escapeHtml(knot.name)}</h3><p>${escapeHtml(knot.use)}</p>${knotSvg(item.knot)}${ordered(knot.steps)}<aside class="nj-caution"><strong>Avoid</strong><span>${escapeHtml(knot.avoid)}</span></aside></section>${videoMarkup(knot.video, knot.name)}<aside class="tip-callout"><strong>Most common mistake</strong><br>${escapeHtml(item.mistakes)}</aside>${setupMarkup(item.id)}</article>`;
+    return `<article class="detail-inner howto-detail"><p class="section-kicker">${escapeHtml(speciesLabels[item.species])} · Field procedure</p><h2>${escapeHtml(item.title)}</h2><p class="detail-deck">${escapeHtml(item.when)}</p><section class="detail-section"><h3>Working setup</h3><p>${escapeHtml(item.setup)}</p></section><section class="detail-section"><h3>1. Where and how to cast</h3>${ordered(item.cast)}</section><section class="detail-section"><h3>2. Retrieve or present the bait</h3>${ordered(item.retrieve)}</section><section class="detail-section"><h3>3. Bite and hookset</h3><p>${escapeHtml(item.hookset)}</p></section><section class="detail-section diagram-section"><h3>4. Build the ${escapeHtml(rig.name)}</h3><div class="rig-chain">${rig.parts.map((part,index) => `<span><b>${index + 1}</b>${escapeHtml(part)}</span>`).join("")}</div></section><section class="detail-section diagram-section"><h3>5. Tie the ${escapeHtml(knot.name)}</h3><p>${escapeHtml(knot.use)}</p>${knotSvg(item.knot)}${ordered(knot.steps)}<aside class="nj-caution"><strong>Avoid</strong><span>${escapeHtml(knot.avoid)}</span></aside></section>${videoMarkup(knot.video, knot.name)}<aside class="tip-callout"><strong>Most common mistake</strong><br>${escapeHtml(item.mistakes)}</aside>${productExamplesMarkup("procedures", item.id)}${setupMarkup(item.id)}</article>`;
   }
 
   const advisorOptionMarkup = options => options.map(([value,label]) => `<option value="${escapeHtml(value)}">${escapeHtml(label)}</option>`).join("");
@@ -138,7 +145,7 @@
     const water = $("#advisor-water").value;
     for (const key of ["target","structure","forage"]) {
       const select = $(`#advisor-${key}`);
-      const options = advisor[key === "target" ? "targets" : `${key}s`][water];
+      const options = advisorEngine.choices(advisor, key, water);
       const preferred = state.advisor[key];
       select.innerHTML = advisorOptionMarkup(options);
       select.value = options.some(option => option[0] === preferred) ? preferred : options[0][0];
@@ -160,7 +167,7 @@
       advisor.adjustments.light[selections.light], advisor.adjustments.forage[selections.forage]
     ].filter(Boolean);
     const procedureId = advisor.procedureByTarget[selections.target];
-    $("#advisor-result").innerHTML = `<p class="advisor-fit">${escapeHtml(match.fit)} · ${match.matched.length} signals matched</p><h3>${escapeHtml(technique.name)}</h3><div class="advisor-primary"><span>Start with</span><strong>${escapeHtml(match.profile.lure)}</strong><p>${escapeHtml(match.profile.presentation)}</p></div><section><h4>Why this pattern</h4><p>${escapeHtml(match.profile.why)}</p></section><section><h4>Tune it to today</h4><ul>${adjustments.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section><aside class="advisor-adjust"><strong>First controlled adjustment</strong><p>${escapeHtml(trouble.action)}</p><small>${escapeHtml(trouble.check)}</small></aside><div class="advisor-actions"><button type="button" data-open="${escapeHtml(technique.id)}">Open technique card</button>${procedureId ? `<button type="button" data-procedure="${escapeHtml(procedureId)}">Open NJ how-to</button>` : ""}</div>`;
+    $("#advisor-result").innerHTML = `<p class="advisor-fit">${escapeHtml(match.fit)} · ${match.matched.length} signals matched</p><h3>${escapeHtml(technique.name)}</h3><div class="advisor-primary"><span>Start with</span><strong>${escapeHtml(match.profile.lure)}</strong><p>${escapeHtml(match.profile.presentation)}</p></div><section><h4>Why this pattern</h4><p>${escapeHtml(match.profile.why)}</p></section><section><h4>Tune it to today</h4><ul>${adjustments.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul></section><aside class="advisor-adjust"><strong>First controlled adjustment</strong><p>${escapeHtml(trouble.action)}</p><small>${escapeHtml(trouble.check)}</small></aside><div class="advisor-actions"><button type="button" data-open="${escapeHtml(technique.id)}">Open technique card</button>${procedureId ? `<button type="button" data-procedure="${escapeHtml(procedureId)}">Open NJ how-to</button>` : ""}</div>${productExamplesMarkup("techniques", technique.id)}`;
     $("#advisor-caveat").textContent = advisor.caveat;
   }
 
@@ -316,7 +323,7 @@
       <section class="detail-section"><h3>Working setup</h3><div class="rig-grid">${Object.entries(item.rig).map(([key,value]) => `<div><span>${escapeHtml(key)}</span><strong>${escapeHtml(value)}</strong></div>`).join("")}</div></section>
       <section class="detail-section"><h3>Baits and lures by window</h3><div class="lure-list">${item.lures.map(lure => `<div class="lure-row"><strong>${escapeHtml(lure.name)}</strong><span>${escapeHtml(lure.when)}</span></div>`).join("")}</div></section>
       <section class="detail-section"><h3>Season and targets</h3><p><strong>Peak:</strong> ${escapeHtml(item.peak)}</p><p><strong>Common targets:</strong> ${escapeHtml(item.species.join(", "))}</p><p><strong>Access:</strong> ${escapeHtml(item.access.join(", "))}</p></section>
-      <aside class="tip-callout"><strong>Field note</strong><br>${escapeHtml(item.tip)}</aside>
+      <aside class="tip-callout"><strong>Field note</strong><br>${escapeHtml(item.tip)}</aside>${productExamplesMarkup("techniques", item.id)}
     </article>`;
   }
 

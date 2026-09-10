@@ -24,6 +24,14 @@ describe("conditions advisor", () => {
     expect(profiles).toEqual(techniques);
   });
 
+  test("resolves water-specific choice collections without startup errors", () => {
+    const engine = window.TACKLEBOX_ADVISOR_ENGINE;
+    expect(engine.choices(window.TACKLEBOX_ADVISOR, "target", "fresh")).toEqual(window.TACKLEBOX_ADVISOR.targets.fresh);
+    expect(engine.choices(window.TACKLEBOX_ADVISOR, "structure", "salt")).toEqual(window.TACKLEBOX_ADVISOR.structures.salt);
+    expect(engine.choices(window.TACKLEBOX_ADVISOR, "forage", "fresh")).toEqual(window.TACKLEBOX_ADVISOR.forage.fresh);
+    expect(engine.choices(window.TACKLEBOX_ADVISOR, "missing", "fresh")).toEqual([]);
+  });
+
   test("selects finesse for clear calm cooling freshwater", () => {
     const result = window.TACKLEBOX_ADVISOR_ENGINE.recommend(window.TACKLEBOX_ADVISOR, pick({target:"bass",trend:"cooling",clarity:"clear",wind:"calm",structure:"open"}));
     expect(result.profile.technique).toBe("finesse");

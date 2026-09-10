@@ -50,10 +50,12 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("manual-data.js", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("advisor-data.js", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("advisor-engine.js", root)).exists()).toBe(true);
+  expect(await Bun.file(new URL("lure-products.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=13");
-  expect(serviceWorker).toContain("./advisor-data.js?v=13");
-  expect(serviceWorker).toContain("./advisor-engine.js?v=13");
+  expect(serviceWorker).toContain("./manual-data.js?v=14");
+  expect(serviceWorker).toContain("./advisor-data.js?v=14");
+  expect(serviceWorker).toContain("./advisor-engine.js?v=14");
+  expect(serviceWorker).toContain("./lure-products.js?v=14");
   expect(serviceWorker).not.toContain("youtube.com");
   const html = await Bun.file(new URL("index.html", root)).text();
   expect(html).toContain("frame-src https://www.youtube-nocookie.com");
