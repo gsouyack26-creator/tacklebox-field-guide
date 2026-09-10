@@ -489,6 +489,7 @@
   renderRecommendedSetups();
   renderBench();
   renderHotspots();
+  renderWaterReading();
   renderRegulations();
   if (!state.nj || !data.nj.species[state.nj.species]) state.nj = { species: data.nj.defaultSpecies, values: {} };
   if (!state.nj.values || typeof state.nj.values !== "object") state.nj.values = {};
