@@ -47,7 +47,10 @@ window.TACKLEBOX_DATA = {
     {name:"Wired2Fish — Walleye techniques",url:"https://www.wired2fish.com/walleye/how-to-catch-walleye"},
     {name:"Bassmaster — Finesse rod selection",url:"https://www.bassmaster.com/how-to/news/choosing-your-finesse-fishing-rod/"},
     {name:"Salt Water Sportsman — Jetty fishing",url:"https://www.saltwatersportsman.com/howto/jetty-fishing-tips/"},
-    {name:"Texas Saltwater Fishing Magazine — Jetty tackle",url:"https://www.texassaltwaterfishingmagazine.com/fishing/jetty-tackle"}
+    {name:"Texas Saltwater Fishing Magazine — Jetty tackle",url:"https://www.texassaltwaterfishingmagazine.com/fishing/jetty-tackle"},
+    {name:"NOAA Ocean Service — Rip currents and coastal currents",url:"https://oceanservice.noaa.gov/education/tutorial_currents/"},
+    {name:"National Weather Service — Rip current safety",url:"https://www.weather.gov/safety/ripcurrent"},
+    {name:"Pennsylvania Fish and Boat Commission — Learn to fish",url:"https://www.fishandboat.com/Learn/Pages/default.aspx"}
   ]
 };
 
