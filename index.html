@@ -13,27 +13,36 @@
   <title>Striper Tacklebox | NJ Coastal Field Guide</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="styles.css?v=10">
-  <script src="data.js?v=10" defer></script>
-  <script src="manual-data.js?v=10" defer></script>
-  <script src="app.js?v=10" defer></script>
+  <link rel="stylesheet" href="styles.css?v=11">
+  <script src="data.js?v=11" defer></script>
+  <script src="manual-data.js?v=11" defer></script>
+  <script src="app.js?v=11" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#main-content">Skip to field guide</a>
+  <a class="skip-link" href="#module-content">Skip to active module</a>
   <header class="site-header">
-    <a class="brand" href="#top" aria-label="Striper Tacklebox home">
+    <a class="brand" href="#home" data-module-link="home" aria-label="Striper Tacklebox home">
       <svg viewBox="0 0 88 42" aria-hidden="true"><path class="brand-fish" d="M7 21 1 7l16 10C30 5 57 6 79 20 59 37 31 37 17 25L2 36 7 21Z"/><path class="brand-stripe" d="M18 18c16-5 39-5 57 2M18 22c17 4 39 4 56 0M22 27c15 4 32 3 45-1"/><circle cx="66" cy="16" r="1.8"/></svg>
       <span><strong>Striper Tacklebox</strong><small>New Jersey Field Guide</small></span>
     </a>
     <div class="header-actions">
+      <button class="menu-button" id="module-menu-button" type="button" aria-expanded="false" aria-controls="module-sidebar"><span aria-hidden="true">☰</span><span>Menu</span></button>
       <button class="icon-button" id="saved-toggle" type="button" aria-pressed="false" title="Show saved techniques">
         <span aria-hidden="true">♡</span><span class="sr-only">Show saved techniques</span>
       </button>
     </div>
   </header>
 
+  <aside id="module-sidebar" class="module-sidebar" aria-label="Field guide modules" aria-hidden="true" inert>
+    <div class="module-sidebar-heading"><div><span>Field guide</span><strong>Choose a module</strong></div><button id="module-menu-close" type="button" aria-label="Close module menu">×</button></div>
+    <nav id="module-nav" class="module-nav"></nav>
+  </aside>
+  <button id="module-scrim" class="module-scrim" type="button" aria-label="Close module menu" hidden></button>
+
+  <div class="app-shell">
   <main id="main-content">
-    <section class="hero" id="top" aria-labelledby="hero-title">
+    <div id="module-content" tabindex="-1">
+    <section class="hero" id="top" data-module="home" aria-labelledby="hero-title">
       <div class="hero-copy">
         <p class="eyebrow">New Jersey · Atlantic surf · Striped bass</p>
         <h1 id="hero-title">Follow the run.<br><em>Find the stripes.</em></h1>
@@ -50,34 +59,35 @@
       </div>
     </section>
 
-    <section id="field-manual" class="field-manual" aria-labelledby="manual-title">
+    <section id="field-manual" class="field-manual" data-module="how-to" hidden aria-labelledby="manual-title">
       <div class="manual-heading"><div><p class="section-kicker">Northeast how-to manual</p><h2 id="manual-title">Cast it. Work it. Rig it right.</h2></div><p>Striped bass first, with focused NJ procedures for fluke, bluefish, and sheepshead. Open any card for cast targets, retrieve cadence, hookset, rig, and knot steps.</p></div>
       <div id="manual-species" class="manual-filters" role="group" aria-label="Filter how-to procedures by species"></div>
       <div id="manual-grid" class="manual-grid"></div>
     </section>
 
-    <section id="recommended-setups" class="recommended-setups" aria-labelledby="setups-title">
+    <section id="recommended-setups" class="recommended-setups" data-module="setups" hidden aria-labelledby="setups-title">
       <div class="manual-heading"><div><p class="section-kicker">Complete tackle systems</p><h2 id="setups-title">Recommended setups by technique.</h2></div><p>Choose the fishing job first, then compare Budget, Mid-tier, and High-tier rod-and-reel systems. Each card links directly to the techniques that fit its verified lure range.</p></div>
       <div id="setup-module-grid" class="setup-module-grid"></div>
       <p class="setup-module-disclosure"><strong>Examples, not endorsements.</strong> Not sponsored. No affiliate links, referral codes, or commission. Reel size numbers vary across Penn, Shimano, and Daiwa; compare capacity, drag, weight, and balance before buying.</p>
     </section>
 
-    <section id="rig-bench" class="rig-bench" aria-labelledby="rig-title">
+    <section id="rig-bench" class="rig-bench" data-module="rigs" hidden aria-labelledby="rig-title">
       <div class="manual-heading"><div><p class="section-kicker">Rig and knot bench</p><h2 id="rig-title">Build it before the tide turns.</h2></div><p>Five field knots and nine Northeast rigs cover the core striper, fluke, bluefish, and sheepshead systems.</p></div>
       <div class="bench-columns"><div><h3>Knots</h3><div id="knot-grid" class="bench-grid"></div></div><div><h3>Rigs</h3><div id="rig-grid-manual" class="bench-grid"></div></div></div>
     </section>
 
-    <section id="hotspots" class="hotspots" aria-labelledby="hotspot-title">
+    <section id="hotspots" class="hotspots" data-module="areas" hidden aria-labelledby="hotspot-title">
       <div class="manual-heading"><div><p class="section-kicker">Public NJ fishing areas</p><h2 id="hotspot-title">Start with habitat, not a secret pin.</h2></div><p>These are publicly known regions and access areas, not guaranteed spots or private coordinates. Recheck access, parking, closures, and conditions before every trip.</p></div>
       <div id="hotspot-species" class="manual-filters" role="group" aria-label="Filter hotspots by target species"></div>
       <div id="hotspot-grid" class="hotspot-grid"></div>
     </section>
 
-    <section id="nj-regulations" class="regulation-band" aria-labelledby="regulation-title">
+    <section id="nj-regulations" class="regulation-band" data-module="regulations" hidden aria-labelledby="regulation-title">
       <div class="manual-heading"><div><p class="section-kicker">2026 quick reference</p><h2 id="regulation-title">NJ target-species regulations.</h2></div><p>Summaries are planning aids. Binding rules and in-season changes come from NJDEP, eRegulations, ASMFC, and federal law.</p></div>
       <div id="regulation-grid" class="regulation-grid"></div>
     </section>
 
+    <div class="library-module" data-module="library" hidden>
     <section class="quick-pick" aria-labelledby="quick-title">
       <div>
         <p class="section-kicker">Start here</p>
@@ -111,13 +121,14 @@
         </div>
       </section>
     </div>
+    </div>
 
-    <section class="quiver" aria-labelledby="quiver-title">
+    <section class="quiver" data-module="quiver" hidden aria-labelledby="quiver-title">
       <div class="quiver-intro"><p class="section-kicker">The practical quiver</p><h2 id="quiver-title">Three setups cover most water.</h2><p>No single combo is truly universal. Start with the medium spinning outfit, add power or heavy salt gear only when the technique demands it.</p></div>
       <div id="quiver-list" class="quiver-list"></div>
     </section>
 
-    <section id="nj-playbook" class="nj-playbook" aria-labelledby="nj-title">
+    <section id="nj-playbook" class="nj-playbook" data-module="nj-playbook" hidden aria-labelledby="nj-title">
       <div class="nj-heading">
         <div><p class="section-kicker">Regional playbook</p><h2 id="nj-title">New Jersey shore</h2></div>
         <p>Choose a species, answer what the water is doing, and get one practical lure, rig, and presentation. Confirm live regulations before keeping fish.</p>
@@ -133,24 +144,26 @@
       </div>
     </section>
 
-    <section class="season-board" aria-labelledby="season-title">
+    <section class="season-board" data-module="seasons" hidden aria-labelledby="season-title">
       <div class="section-heading"><div><p class="section-kicker">Seasonal compass</p><h2 id="season-title">Follow behavior, not the calendar.</h2></div></div>
       <div id="season-grid" class="season-grid"></div>
       <p class="season-note">Calendar seasons are shorthand. Water temperature, daylight, forage, spawning cycles, tide, and migration matter more. Southern and coastal fisheries can run weeks or months ahead of northern patterns.</p>
     </section>
 
-    <section class="field-notes" aria-labelledby="notes-title">
+    <section class="field-notes" data-module="notes" hidden aria-labelledby="notes-title">
       <div><p class="section-kicker">Before every cast</p><h2 id="notes-title">Field notes that save fish, gear, and days.</h2></div>
       <div id="field-note-list" class="note-list"></div>
     </section>
 
-    <section class="sources" aria-labelledby="sources-title">
+    <section class="sources" data-module="sources" hidden aria-labelledby="sources-title">
       <details>
         <summary><span><span class="section-kicker">Evidence & limits</span><strong id="sources-title">Sources, assumptions, and local rules</strong></span><span aria-hidden="true">＋</span></summary>
         <div class="source-content"><p>This guide recommends gear classes and working ranges, not a universal brand winner. Reel sizes are not standardized across manufacturers. Check current state and federal regulations, seasonal closures, hook rules, bait restrictions, and lead-tackle rules before fishing.</p><div id="source-list" class="source-list"></div></div>
       </details>
     </section>
+    </div>
   </main>
+  </div>
 
   <footer><span>Striper Tacklebox · NJ Field Guide</span><p>Read the water. Respect the run.</p></footer>
 

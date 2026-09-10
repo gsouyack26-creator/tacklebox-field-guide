@@ -10,12 +10,72 @@
     manualSpecies: "striper", hotspotSpecies: "all",
     nj: safeLoad("tacklebox-nj", { species: data.nj.defaultSpecies, values: {} })
   };
+  const modules = [
+    {id:"home", label:"Home", group:"Fish now"},
+    {id:"how-to", label:"How-To", group:"Fish now"},
+    {id:"setups", label:"Recommended Setups", group:"Fish now"},
+    {id:"nj-playbook", label:"NJ Playbook", group:"Fish now"},
+    {id:"rigs", label:"Rigs & Knots", group:"Fish now"},
+    {id:"areas", label:"Fishing Areas", group:"Plan & reference"},
+    {id:"regulations", label:"Regulations", group:"Plan & reference"},
+    {id:"library", label:"Technique Library", group:"Plan & reference"},
+    {id:"quiver", label:"Practical Quiver", group:"Plan & reference"},
+    {id:"seasons", label:"Seasonal Compass", group:"Plan & reference"},
+    {id:"notes", label:"Field Notes", group:"Plan & reference"},
+    {id:"sources", label:"Sources & Limits", group:"Plan & reference"}
+  ];
+  const moduleIds = new Set(modules.map(item => item.id));
   const elements = {
     grid: $("#technique-grid"), empty: $("#empty-state"), status: $("#result-status"),
     groupFilters: $("#technique-filters"), season: $("#season-filter"), access: $("#access-filter"), search: $("#search-filter"),
     compareButton: $("#compare-button"), compareCount: $("#compare-count"), detail: $("#detail-dialog"), compare: $("#compare-dialog"),
     detailContent: $("#detail-content"), compareContent: $("#compare-content"), toast: $("#toast")
   };
+
+  const moduleMedia = matchMedia("(min-width: 62rem)");
+  function setModuleMenu(isOpen) {
+    const open = isOpen && !moduleMedia.matches;
+    document.body.classList.toggle("module-menu-open", open);
+    $("#module-menu-button").setAttribute("aria-expanded", String(open));
+    const sidebar = $("#module-sidebar");
+    sidebar.setAttribute("aria-hidden", String(!moduleMedia.matches && !open));
+    sidebar.inert = !moduleMedia.matches && !open;
+    $("#module-scrim").hidden = !open;
+    if (open) requestAnimationFrame(() => $("#module-nav a")?.focus());
+  }
+
+  function activateModule(id, shouldFocus = false) {
+    if (!moduleIds.has(id)) id = "home";
+    $$(`[data-module]`).forEach(section => { section.hidden = section.dataset.module !== id; });
+    $$(`[data-module-link]`).forEach(link => {
+      link.toggleAttribute("aria-current", link.dataset.moduleLink === id);
+    });
+    localStorage.setItem("tacklebox-module", JSON.stringify(id));
+    const module = modules.find(item => item.id === id);
+    document.title = `${module.label} | Striper Tacklebox`;
+    setModuleMenu(false);
+    scrollTo(0, 0);
+    if (shouldFocus) {
+      const section = $(`[data-module="${id}"]`);
+      section?.setAttribute("tabindex", "-1");
+      section?.focus({preventScroll:true});
+    }
+  }
+
+  function navigateModule(id, shouldFocus = true) {
+    if (!moduleIds.has(id)) id = "home";
+    if (location.hash === `#${id}`) activateModule(id, shouldFocus);
+    else location.hash = id;
+  }
+
+  function renderModuleNav() {
+    let group = "";
+    $("#module-nav").innerHTML = modules.map((item, index) => {
+      const heading = item.group === group ? "" : `<p>${escapeHtml(item.group)}</p>`;
+      group = item.group;
+      return `${heading}<a href="#${item.id}" data-module-link="${item.id}"><span>${String(index + 1).padStart(2, "0")}</span>${escapeHtml(item.label)}</a>`;
+    }).join("");
+  }
 
   const escapeHtml = value => String(value).replace(/[&<>"\x27]/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","\x27":"&#39;"}[char]));
   const techniqueById = id => data.techniques.find(item => item.id === id);
@@ -260,7 +320,9 @@
       container.replaceChildren(iframe);
       iframe.focus();
     }
-    else if (button.dataset.water) { state.water = button.dataset.water; state.group = "all"; render(); }
+    else if (button.id === "module-menu-button") setModuleMenu(true);
+    else if (button.id === "module-menu-close" || button.id === "module-scrim") { setModuleMenu(false); $("#module-menu-button").focus(); }
+    else if (button.dataset.water) { state.water = button.dataset.water; state.group = "all"; render(); navigateModule("library"); }
     else if (button.dataset.manualSpecies) { state.manualSpecies = button.dataset.manualSpecies; renderManual(); }
     else if (button.dataset.hotspotSpecies) { state.hotspotSpecies = button.dataset.hotspotSpecies; renderHotspots(); }
     else if (button.dataset.procedure) { const item = manual.procedures.find(entry => entry.id === button.dataset.procedure); if (item) openManualDialog(procedureMarkup(item)); }
@@ -290,10 +352,9 @@
   elements.search.addEventListener("input", event => { state.search = event.target.value.trim(); render(); });
   $("#clear-filters").addEventListener("click", resetFilters);
   $("#empty-reset").addEventListener("click", resetFilters);
-  $("#saved-toggle").addEventListener("click", () => { state.savedOnly = !state.savedOnly; render(); });
+  $("#saved-toggle").addEventListener("click", () => { state.savedOnly = !state.savedOnly; render(); navigateModule("library"); });
   $("#striper-focus").addEventListener("click", () => {
-    state.manualSpecies = "striper"; renderManual();
-    $("#field-manual").scrollIntoView({ behavior: "smooth" });
+    state.manualSpecies = "striper"; renderManual(); navigateModule("how-to");
   });
   $("#nj-selector").addEventListener("change", event => {
     if (!event.target.dataset.njField) return;
@@ -306,11 +367,24 @@
     const next = (current + (event.key === "ArrowRight" ? 1 : -1) + ids.length) % ids.length;
     activateNjSpecies(ids[next], true); event.preventDefault();
   });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && document.body.classList.contains("module-menu-open")) {
+      setModuleMenu(false); $("#module-menu-button").focus();
+    }
+  });
+  window.addEventListener("hashchange", () => activateModule(location.hash.slice(1), true));
+  moduleMedia.addEventListener("change", () => setModuleMenu(false));
+  $("#module-nav").addEventListener("click", event => {
+    const link = event.target.closest("[data-module-link]");
+    if (link) { event.preventDefault(); navigateModule(link.dataset.moduleLink); }
+  });
   window.addEventListener("online", updateOnlineState);
   window.addEventListener("offline", updateOnlineState);
   elements.compareButton.addEventListener("click", renderComparison);
   $$("dialog").forEach(dialog => dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); }));
 
+  renderModuleNav();
+  document.querySelectorAll(".brand[data-module-link]").forEach(link => link.addEventListener("click", event => { event.preventDefault(); navigateModule(link.dataset.moduleLink); }));
   $("#quiver-list").innerHTML = data.quiver.map((item,index) => `<article class="quiver-item"><span class="quiver-number">0${index + 1}</span><div><h3>${escapeHtml(item.name)}</h3><p class="spec-line">${escapeHtml(item.spec)}</p></div><p>${escapeHtml(item.use)}</p></article>`).join("");
   $("#season-grid").innerHTML = data.seasons.map(item => `<article class="season-card"><span>${escapeHtml(item.signal)}</span><h3>${escapeHtml(item.name)}</h3><ul>${item.points.map(point => `<li>${escapeHtml(point)}</li>`).join("")}</ul></article>`).join("");
   $("#field-note-list").innerHTML = data.notes.map(item => `<article class="note-item"><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.text)}</p></article>`).join("");
@@ -324,5 +398,9 @@
   if (!state.nj.values || typeof state.nj.values !== "object") state.nj.values = {};
   renderNjPlaybook();
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) navigator.serviceWorker.register("./sw.js").catch(() => {});
+  const requestedModule = location.hash.slice(1) || safeLoad("tacklebox-module", "home");
+  const initialModule = moduleIds.has(requestedModule) ? requestedModule : "home";
+  if (location.hash !== `#${initialModule}`) history.replaceState(null, "", `#${initialModule}`);
+  activateModule(initialModule);
   render();
 })();

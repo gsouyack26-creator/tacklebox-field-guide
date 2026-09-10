@@ -34,6 +34,27 @@ svg { display: block; }
 .skip-link:focus { transform: none; }
 
 .site-header { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; min-height: 4.5rem; padding: .75rem clamp(1rem, 4vw, 4rem); background: oklch(13% .04 235 / .94); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); }
+[data-module][hidden] { display: none !important; }
+.app-shell { min-height: calc(100vh - 4.5rem); }
+.menu-button { display: inline-flex; align-items: center; gap: .5rem; min-height: 2.85rem; padding: .5rem .8rem; border: 1px solid var(--line); background: transparent; font-weight: 850; }
+.menu-button > span:first-child { color: var(--strike); font-size: 1.15rem; }
+.module-sidebar { position: fixed; z-index: 40; inset: 0 auto 0 0; width: min(20rem, 88vw); padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom)); overflow-y: auto; background: var(--river-deep); border-right: 1px solid var(--line); box-shadow: var(--shadow); transform: translateX(-105%); transition: transform .22s ease-out; }
+.module-menu-open { overflow: hidden; }
+.module-menu-open .module-sidebar { transform: translateX(0); }
+.module-sidebar-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .35rem .35rem 1rem; border-bottom: 1px solid var(--line); }
+.module-sidebar-heading div { display: grid; }
+.module-sidebar-heading span, .module-nav p { color: var(--coral); font-size: .69rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+.module-sidebar-heading strong { font: 700 1.35rem var(--font-display); }
+.module-sidebar-heading button { width: 2.8rem; height: 2.8rem; border: 1px solid var(--line); border-radius: 50%; background: transparent; font-size: 1.4rem; }
+.module-nav { display: grid; padding: .8rem 0; }
+.module-nav p { margin: 1rem .65rem .4rem; }
+.module-nav a { display: grid; grid-template-columns: 2rem 1fr; align-items: center; min-height: 3.1rem; padding: .55rem .65rem; border-left: 3px solid transparent; color: var(--muted); text-decoration: none; font-weight: 800; }
+.module-nav a span { color: var(--line); font: 700 .75rem var(--font-display); }
+.module-nav a[aria-current] { border-left-color: var(--strike); background: var(--surface); color: var(--ink); }
+.module-nav a[aria-current] span { color: var(--strike); }
+.module-scrim { position: fixed; z-index: 35; inset: 0; width: 100%; height: 100%; border: 0; background: oklch(4% .02 240 / .72); }
+.module-scrim[hidden] { display: none; }
+.library-module { min-height: calc(100vh - 4.5rem); }
 .brand { display: flex; align-items: center; gap: .7rem; text-decoration: none; line-height: 1; }
 .brand svg { width: 4.2rem; fill: none; stroke: var(--river); stroke-width: 1.7; }
 .brand .brand-fish { fill: oklch(82% .025 220); stroke: var(--river); }
@@ -42,6 +63,7 @@ svg { display: block; }
 .brand strong { display: block; font: 700 1.2rem/1 var(--font-display); }
 .brand small { color: var(--muted); font-size: .69rem; text-transform: uppercase; letter-spacing: .16em; }
 .header-actions { display: flex; gap: .5rem; }
+@media (max-width: 27rem) { .brand svg { width: 3.2rem; } .brand small { display: none; } .menu-button span:last-child { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
 .icon-button { width: 2.85rem; height: 2.85rem; border: 1px solid var(--line); border-radius: 50%; background: transparent; font-size: 1.2rem; }
 .icon-button[aria-pressed="true"] { background: var(--strike); color: oklch(16% .04 235); border-color: var(--strike); }
 
@@ -299,6 +321,10 @@ dialog::backdrop { background: oklch(18% .025 175 / .76); backdrop-filter: blur(
   .rig-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (min-width: 62rem) {
+  .module-sidebar { z-index: 15; top: 4.5rem; width: 16.5rem; padding: 1rem; box-shadow: none; transform: none; }
+  .module-sidebar-heading { display: none; }
+  .menu-button, .module-scrim { display: none !important; }
+  .app-shell, footer { margin-left: 16.5rem; }
   .quick-pick { grid-template-columns: .8fr 1.5fr; align-items: end; }
   .quick-pick .result-status { grid-column: 2; }
   .content-shell { grid-template-columns: 12rem 1fr; align-items: start; }
@@ -318,4 +344,4 @@ dialog::backdrop { background: oklch(18% .025 175 / .76); backdrop-filter: blur(
 }
 @media (pointer: coarse) { button, select, input { min-height: 2.75rem; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }
-@media print { :root { --ink: oklch(18% .02 230); --muted: oklch(38% .02 230); --paper: oklch(98% .005 220); --paper-deep: oklch(94% .01 220); --surface: oklch(100% 0 0); --line: oklch(70% .02 220); --river: oklch(35% .08 220); } .site-header, .water-switch, .quick-pick, .technique-rail, .card-actions, .compare-button { display: none !important; } body { background: white; color: var(--ink); } body::before { display: none; } .hero { min-height: auto; color: var(--ink); background: none; padding: 2rem 0; } .hero-mark { display: none; } .field-manual, .recommended-setups, .rig-bench, .hotspots, .regulation-band, .content-shell, .quiver, .nj-playbook, .season-board, .field-notes, .sources { padding: 2rem 0; background: white; color: var(--ink); } .technique-card, .manual-card, .setup-system-card, .setup-system-tiers section, .hotspot-card, .regulation-grid article, .note-item, .bench-card, .setup-tier { break-inside: avoid; background: white; color: var(--ink); } .hero-lede, .note-item p, .bench-card span, .rig-bench .manual-heading > p, footer p { color: var(--muted) !important; } .note-item strong { color: var(--coral); } }
+@media print { .module-sidebar, .module-scrim, .menu-button { display: none !important; } .app-shell, footer { margin-left: 0; } [data-module][hidden] { display: block !important; } :root { --ink: oklch(18% .02 230); --muted: oklch(38% .02 230); --paper: oklch(98% .005 220); --paper-deep: oklch(94% .01 220); --surface: oklch(100% 0 0); --line: oklch(70% .02 220); --river: oklch(35% .08 220); } .site-header, .water-switch, .quick-pick, .technique-rail, .card-actions, .compare-button { display: none !important; } body { background: white; color: var(--ink); } body::before { display: none; } .hero { min-height: auto; color: var(--ink); background: none; padding: 2rem 0; } .hero-mark { display: none; } .field-manual, .recommended-setups, .rig-bench, .hotspots, .regulation-band, .content-shell, .quiver, .nj-playbook, .season-board, .field-notes, .sources { padding: 2rem 0; background: white; color: var(--ink); } .technique-card, .manual-card, .setup-system-card, .setup-system-tiers section, .hotspot-card, .regulation-grid article, .note-item, .bench-card, .setup-tier { break-inside: avoid; background: white; color: var(--ink); } .hero-lede, .note-item p, .bench-card span, .rig-bench .manual-heading > p, footer p { color: var(--muted) !important; } .note-item strong { color: var(--coral); } }

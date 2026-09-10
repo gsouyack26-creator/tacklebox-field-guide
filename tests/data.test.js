@@ -49,13 +49,32 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("icons/apple-touch-icon.png", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("manual-data.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=10");
+  expect(serviceWorker).toContain("./manual-data.js?v=11");
   expect(serviceWorker).not.toContain("youtube.com");
   const html = await Bun.file(new URL("index.html", root)).text();
   expect(html).toContain("frame-src https://www.youtube-nocookie.com");
   expect(html).not.toContain("<iframe");
 });
 
+
+test("module navigation is task-first and mobile ready", async () => {
+  const root = new URL("../", import.meta.url);
+  const html = await Bun.file(new URL("index.html", root)).text();
+  const app = await Bun.file(new URL("app.js", root)).text();
+  const css = await Bun.file(new URL("styles.css", root)).text();
+  const order = ["home","how-to","setups","nj-playbook","rigs","areas","regulations","library","quiver","seasons","notes","sources"];
+  expect((html.match(/data-module=/g) || []).length).toBe(12);
+  expect((html.match(/data-module="[^"]+" hidden/g) || []).length).toBe(11);
+  expect(html).toContain("id=\"module-sidebar\"");
+  expect(html).toContain("id=\"module-menu-button\"");
+  expect(app).toContain(`const modules = [`);
+  let position = -1;
+  for (const id of order) { const next = app.indexOf(`id:"${id}"`); expect(next).toBeGreaterThan(position); position = next; }
+  expect(app).toContain("window.addEventListener(\"hashchange\"");
+  expect(app).toContain("localStorage.setItem(\"tacklebox-module\", JSON.stringify(id))");
+  expect(css).toContain(".module-menu-open .module-sidebar");
+  expect(css).toContain("[data-module][hidden]");
+});
 
 test("production UI is permanently dark themed", async () => {
   const root = new URL("../", import.meta.url);
@@ -69,7 +88,8 @@ test("production UI is permanently dark themed", async () => {
   expect(app).not.toContain("sunlight-toggle");
   expect(manifest.background_color).toBe("#07131f");
   expect(manifest.theme_color).toBe("#07131f");
-  expect(css).toContain("@media print { :root {");
+  expect(css).toContain("@media print { .module-sidebar");
+  expect(css).toContain("[data-module][hidden] { display: block !important; }");
   expect(css).toContain(".field-manual, .recommended-setups, .rig-bench");
   expect(css).toContain(".technique-card, .manual-card, .setup-system-card, .setup-system-tiers section");
 });
