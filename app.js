@@ -275,7 +275,6 @@
   $("#clear-filters").addEventListener("click", resetFilters);
   $("#empty-reset").addEventListener("click", resetFilters);
   $("#saved-toggle").addEventListener("click", () => { state.savedOnly = !state.savedOnly; render(); });
-  $("#sunlight-toggle").addEventListener("click", event => { const active = document.body.classList.toggle("sunlight"); event.currentTarget.setAttribute("aria-pressed", active); });
   $("#striper-focus").addEventListener("click", () => {
     state.manualSpecies = "striper"; renderManual();
     $("#field-manual").scrollIntoView({ behavior: "smooth" });

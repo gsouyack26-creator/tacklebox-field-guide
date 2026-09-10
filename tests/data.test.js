@@ -49,9 +49,25 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("icons/apple-touch-icon.png", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("manual-data.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=8");
+  expect(serviceWorker).toContain("./manual-data.js?v=9");
   expect(serviceWorker).not.toContain("youtube.com");
   const html = await Bun.file(new URL("index.html", root)).text();
   expect(html).toContain("frame-src https://www.youtube-nocookie.com");
   expect(html).not.toContain("<iframe");
+});
+
+
+test("production UI is permanently dark themed", async () => {
+  const root = new URL("../", import.meta.url);
+  const css = await Bun.file(new URL("styles.css", root)).text();
+  const html = await Bun.file(new URL("index.html", root)).text();
+  const app = await Bun.file(new URL("app.js", root)).text();
+  const manifest = await Bun.file(new URL("manifest.webmanifest", root)).json();
+  expect(css).toContain("color-scheme: dark");
+  expect(css).not.toContain("body.sunlight");
+  expect(html).not.toContain("sunlight-toggle");
+  expect(app).not.toContain("sunlight-toggle");
+  expect(manifest.background_color).toBe("#07131f");
+  expect(manifest.theme_color).toBe("#07131f");
+  expect(css).toContain("@media print { :root {");
 });

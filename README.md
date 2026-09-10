@@ -39,7 +39,7 @@ Saved field cards stay on that browser/device. Clearing site data removes saved 
 - Freshwater, saltwater, season, access, technique, and text filters
 - Saved field cards stored on the phone
 - Side-by-side comparison of up to three techniques
-- Sunlight/high-contrast mode for outdoor visibility
+- Permanent high-contrast dark theme designed for low-light and nighttime fishing
 - Installable PWA with an offline app shell
 - Responsive layout, large touch targets, and no external runtime dependencies
 
