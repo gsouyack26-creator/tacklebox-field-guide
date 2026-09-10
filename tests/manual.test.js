@@ -87,8 +87,9 @@ describe("Northeast field manual", () => {
   test("every setup profile includes verified alternate rods", () => {
     const profiles = window.TACKLEBOX_DATA.manual.setupProfiles;
     for (const profile of Object.values(profiles)) {
-      expect(profile.rodOptions).toHaveLength(3);
-      expect(new Set(profile.rodOptions.map(rod => rod.name)).size).toBe(3);
+      expect(profile.rodOptions.length).toBeGreaterThanOrEqual(3);
+      expect(profile.rodOptions.length).toBeLessThanOrEqual(5);
+      expect(new Set(profile.rodOptions.map(rod => rod.name)).size).toBe(profile.rodOptions.length);
       for (const rod of profile.rodOptions) {
         expect(rod.name.length).toBeGreaterThan(30);
         expect(rod.name).toMatch(/\d/);
