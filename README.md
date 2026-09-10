@@ -32,7 +32,7 @@ Saved field cards stay on that browser/device. Clearing site data removes saved 
 - Illustrated rig and knot bench for surf, inlet, bay, and structure fishing
 - Optional click-to-load YouTube knot tutorials using privacy-enhanced embeds; offline steps remain available
 - Budget, Mid-tier, and High-tier rod/reel examples for every procedure, including Penn, Shimano, Daiwa, and Jigging World options
-- Standalone Recommended Setups module showing which techniques each complete tackle system fits, plus verified Tsunami, St. Croix, Lamiglas, Ugly Stik, and Daiwa rod alternatives
+- Standalone Recommended Setups module showing which techniques each complete tackle system fits, plus verified Tsunami, St. Croix, Lamiglas, Ugly Stik Bigwater, Daiwa, and Shimano Tiralejo rod alternatives
 - Public NJ hotspot area guide for striped bass, fluke, bluefish, and sheepshead
 - NJ shore playbook for striped bass, fluke, bluefish, and sheepshead
 - Species-specific selectors for current conditions, structure, bait, and presentation

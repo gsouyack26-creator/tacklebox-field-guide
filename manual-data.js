@@ -76,7 +76,8 @@ window.TACKLEBOX_DATA.manual = {
       rodOptions:[
         {name:"Tsunami Airwave Elite TSAWESS-962M · 9 ft 6 in Medium · 3/4–3 oz",url:"https://www.tsunamifishing.com/products/tsunami-airwave-elite-surf-rod"},
         {name:"Lamiglas Carbon Surf LCS10MHS · 10 ft Medium Heavy, Moderate Fast · 3/4–3 oz",url:"https://www.lamiglas.com/products/carbon-surf"},
-        {name:"St. Croix Seage SES100MMF2 · 10 ft Medium, Moderate Fast · 1–4 oz",url:"https://stcroixrods.com/products/seage-surf"}
+        {name:"St. Croix Seage SES100MMF2 · 10 ft Medium, Moderate Fast · 1–4 oz",url:"https://stcroixrods.com/products/seage-surf"},
+        {name:"Shimano Tiralejo TRS96MA · 9 ft 6 in · 3/4–3 oz",url:"https://www.fishusa.com/Shimano-Tiralejo-Surf-Spinning-Rod"}
       ],
       tiers:[
         {tier:"budget",label:"Budget",brand:"penn",rod:"Battle IV combo, 9 ft Medium Heavy, Moderate Fast, 1–3 oz",reel:"PENN Battle IV 6000, 5.6:1, 25 lb max drag",reelOptions:["PENN Battle IV 6000","Shimano Spheros SW 5000/6000","Daiwa BG MQ 5000/6000"],line:"30 lb braid · 30–50 lb leader",fit:"Entry current-and-whitewater setup for bucktails, darters, needles, poppers, metals, and bluefish.",url:"https://www.pennfishing.com/products/battle-iv-spinning-rod-and-reel-combo-1624413"},
@@ -89,7 +90,9 @@ window.TACKLEBOX_DATA.manual = {
       rodOptions:[
         {name:"Tsunami Trophy II TSTIISS-1002MH · 10 ft Medium Heavy · 1–5 oz",url:"https://www.tsunamifishing.com/products/tsunami-trophy-ii-surf-rod"},
         {name:"Ugly Stik Carbon Surf 1625092 · 11 ft · 2–6 oz",url:"https://www.uglystik.com/products/carbon-surf-spinning-rod-1637252"},
-        {name:"St. Croix Seage SES106MHMF2 · 10 ft 6 in Medium Heavy, Moderate Fast · 2–6 oz",url:"https://stcroixrods.com/products/seage-surf"}
+        {name:"St. Croix Seage SES106MHMF2 · 10 ft 6 in Medium Heavy, Moderate Fast · 2–6 oz",url:"https://stcroixrods.com/products/seage-surf"},
+        {name:"Shimano Tiralejo TRS110MHA · 11 ft · 2–6 oz",url:"https://www.fishusa.com/Shimano-Tiralejo-Surf-Spinning-Rod"},
+        {name:"Ugly Stik Bigwater BWSF1530S102 · 10 ft Medium Heavy · 2–6 oz",url:"https://www.uglystik.com/products/bigwater-spinning-rod-1292633"}
       ],
       tiers:[
         {tier:"budget",label:"Budget",brand:"penn",rod:"Battle IV combo, 10 ft Heavy, Moderate Fast, 1–5 oz",reel:"PENN Battle IV 8000, 4.7:1, 30 lb max drag",reelOptions:["PENN Battle IV 8000","Shimano Saragosa SW 8000","Daiwa Saltist MQ 6000"],line:"40–50 lb braid · shock/leader matched to sinker",fit:"An entry heavy-surf combo for larger swimmers, eels, bunker, clam, and fish-finder rigs within the 5 oz ceiling.",url:"https://www.pennfishing.com/products/battle-iv-spinning-rod-and-reel-combo-1624413"},

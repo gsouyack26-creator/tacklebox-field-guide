@@ -98,6 +98,13 @@ describe("Northeast field manual", () => {
     }
   });
 
+  test("surf alternatives include Bigwater and Tiralejo in supported classes", () => {
+    const profiles = window.TACKLEBOX_DATA.manual.setupProfiles;
+    expect(profiles["surf-medium"].rodOptions.some(rod => rod.name.includes("Tiralejo TRS96MA"))).toBe(true);
+    expect(profiles["surf-heavy"].rodOptions.some(rod => rod.name.includes("Tiralejo TRS110MHA"))).toBe(true);
+    expect(profiles["surf-heavy"].rodOptions.some(rod => rod.name.includes("Bigwater BWSF1530S102"))).toBe(true);
+  });
+
   test("recommended setup module can derive every matched technique", () => {
     const manual = window.TACKLEBOX_DATA.manual;
     const reverse = Object.fromEntries(Object.keys(manual.setupProfiles).map(id => [id, []]));
