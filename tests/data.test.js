@@ -35,6 +35,30 @@ describe("field-guide dataset", () => {
     expect(data.sources.length).toBeGreaterThanOrEqual(8);
     for (const source of data.sources) expect(source.url.startsWith("https://")).toBe(true);
   });
+
+
+  test("structures data has 12 entries with required fields", () => {
+    const structures = window.TACKLEBOX_DATA.structures;
+    expect(Array.isArray(structures)).toBe(true);
+    expect(structures).toHaveLength(12);
+    expect(structures.filter(item => item.water === "fresh")).toHaveLength(6);
+    expect(structures.filter(item => item.water === "salt")).toHaveLength(6);
+    const ids = new Set(structures.map(item => item.id));
+    expect(ids.size).toBe(12);
+    for (const item of structures) {
+      expect(item.id.length).toBeGreaterThan(2);
+      expect(item.name.length).toBeGreaterThan(4);
+      expect(item.identify.length).toBeGreaterThan(20);
+      expect(item.firstCast.length).toBeGreaterThan(20);
+      expect(item.depthZone.length).toBeGreaterThan(20);
+      expect(Array.isArray(item.techniques)).toBe(true);
+      expect(Array.isArray(item.lureFamilies)).toBe(true);
+      expect(item.lureFamilies.length).toBeGreaterThanOrEqual(3);
+      expect(item.adjustment.length).toBeGreaterThan(20);
+      expect(Array.isArray(item.access)).toBe(true);
+      expect(item.access.length).toBeGreaterThan(0);
+    }
+  });
 });
 
 test("storage access is failure-safe", async () => {
@@ -75,10 +99,10 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("advisor-engine.js", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("lure-products.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=15");
-  expect(serviceWorker).toContain("./advisor-data.js?v=15");
-  expect(serviceWorker).toContain("./advisor-engine.js?v=15");
-  expect(serviceWorker).toContain("./lure-products.js?v=15");
+  expect(serviceWorker).toContain("./manual-data.js?v=16");
+  expect(serviceWorker).toContain("./advisor-data.js?v=16");
+  expect(serviceWorker).toContain("./advisor-engine.js?v=16");
+  expect(serviceWorker).toContain("./lure-products.js?v=16");
   expect(serviceWorker).not.toContain("youtube.com");
   expect(serviceWorker).toContain(`key.startsWith("tacklebox-field-guide-")`);
   expect(serviceWorker).toContain(".catch(() => cached)");
@@ -93,9 +117,9 @@ test("module navigation is task-first and mobile ready", async () => {
   const html = await Bun.file(new URL("index.html", root)).text();
   const app = await Bun.file(new URL("app.js", root)).text();
   const css = await Bun.file(new URL("styles.css", root)).text();
-  const order = ["home","advisor","how-to","setups","nj-playbook","rigs","areas","regulations","library","quiver","seasons","notes","sources"];
-  expect((html.match(/data-module=/g) || []).length).toBe(13);
-  expect((html.match(/data-module="[^"]+" hidden/g) || []).length).toBe(12);
+  const order = ["home","advisor","how-to","setups","nj-playbook","water-reading","rigs","areas","regulations","library","quiver","seasons","notes","sources"];
+  expect((html.match(/data-module=/g) || []).length).toBe(14);
+  expect((html.match(/data-module="[^"]+" hidden/g) || []).length).toBe(13);
   expect(html).toContain("id=\"module-sidebar\"");
   expect(html).toContain("id=\"module-menu-button\"");
   expect(app).toContain(`const modules = [`);

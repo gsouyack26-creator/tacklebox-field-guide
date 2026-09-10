@@ -123,7 +123,7 @@ h1 em { color: var(--amber); font-weight: 400; }
 @media (min-width: 42rem) { .advisor-form { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (min-width: 62rem) { .advisor-layout { grid-template-columns: minmax(18rem,.7fr) minmax(0,1.3fr); align-items: start; } }
 
-.conditions-advisor, .field-manual, .rig-bench, .hotspots, .regulation-band { padding: clamp(4rem, 9vw, 8rem) clamp(1rem, 7vw, 7rem); }
+.conditions-advisor, .field-manual, .rig-bench, .hotspots, .structure-reading, .regulation-band { padding: clamp(4rem, 9vw, 8rem) clamp(1rem, 7vw, 7rem); }
 .field-manual { background: var(--paper); }
 .recommended-setups { padding: clamp(4rem, 9vw, 8rem) clamp(1rem, 7vw, 7rem); background: var(--paper-deep); border-block: 1px solid var(--line); }
 .setup-module-grid { display: grid; gap: .75rem; max-width: 76rem; }
@@ -160,7 +160,7 @@ h1 em { color: var(--amber); font-weight: 400; }
 @media (min-width: 62rem) { .setup-system-tiers { grid-template-columns: repeat(3, minmax(0,1fr)); } }
 
 .rig-bench { background: var(--river-deep); color: var(--ink); }
-.hotspots { background: var(--paper-deep); }
+.hotspots, .structure-reading { background: var(--paper-deep); }
 .regulation-band { background: var(--paper); border-block: 1px solid var(--line); }
 .manual-heading { display: grid; gap: 1rem; margin-bottom: 2rem; max-width: 72rem; }
 .manual-heading > p { max-width: 56rem; margin: 0; color: var(--muted); font-size: 1.08rem; }
@@ -396,4 +396,4 @@ dialog::backdrop { background: oklch(18% .025 175 / .76); backdrop-filter: blur(
 }
 @media (pointer: coarse) { button, select, input { min-height: 2.75rem; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; } }
-@media print { .setup-system-card > .setup-system-body { display: grid !important; } .setup-system-card > .setup-system-summary > b { display: none; } .module-sidebar, .module-scrim, .menu-button { display: none !important; } .app-shell, footer { margin-left: 0; } [data-module][hidden] { display: block !important; } :root { --ink: oklch(18% .02 230); --muted: oklch(38% .02 230); --paper: oklch(98% .005 220); --paper-deep: oklch(94% .01 220); --surface: oklch(100% 0 0); --line: oklch(70% .02 220); --river: oklch(35% .08 220); } .site-header, .water-switch, .quick-pick, .technique-rail, .card-actions, .compare-button { display: none !important; } body { background: white; color: var(--ink); } body::before { display: none; } .hero { min-height: auto; color: var(--ink); background: none; padding: 2rem 0; } .hero-mark { display: none; } .conditions-advisor, .field-manual, .recommended-setups, .rig-bench, .hotspots, .regulation-band, .content-shell, .quiver, .nj-playbook, .season-board, .field-notes, .sources { padding: 2rem 0; background: white; color: var(--ink); } .technique-card, .manual-card, .setup-system-card, .setup-system-tier, .hotspot-card, .regulation-grid article, .note-item, .bench-card, .setup-tier { break-inside: avoid; background: white; color: var(--ink); } .hero-lede, .note-item p, .bench-card span, .rig-bench .manual-heading > p, footer p { color: var(--muted) !important; } .note-item strong { color: var(--coral); } }
+@media print { .setup-system-card > .setup-system-body { display: grid !important; } .setup-system-card > .setup-system-summary > b { display: none; } .module-sidebar, .module-scrim, .menu-button { display: none !important; } .app-shell, footer { margin-left: 0; } [data-module][hidden] { display: block !important; } :root { --ink: oklch(18% .02 230); --muted: oklch(38% .02 230); --paper: oklch(98% .005 220); --paper-deep: oklch(94% .01 220); --surface: oklch(100% 0 0); --line: oklch(70% .02 220); --river: oklch(35% .08 220); } .site-header, .water-switch, .quick-pick, .technique-rail, .card-actions, .compare-button { display: none !important; } body { background: white; color: var(--ink); } body::before { display: none; } .hero { min-height: auto; color: var(--ink); background: none; padding: 2rem 0; } .hero-mark { display: none; } .conditions-advisor, .field-manual, .recommended-setups, .rig-bench, .hotspots, .structure-reading, .regulation-band, .content-shell, .quiver, .nj-playbook, .season-board, .field-notes, .sources { padding: 2rem 0; background: white; color: var(--ink); } .technique-card, .manual-card, .setup-system-card, .setup-system-tier, .hotspot-card, .regulation-grid article, .note-item, .bench-card, .setup-tier { break-inside: avoid; background: white; color: var(--ink); } .hero-lede, .note-item p, .bench-card span, .rig-bench .manual-heading > p, footer p { color: var(--muted) !important; } .note-item strong { color: var(--coral); } }

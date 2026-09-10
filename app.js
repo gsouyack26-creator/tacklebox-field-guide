@@ -22,6 +22,7 @@
     {id:"how-to", label:"How-To", group:"Fish now"},
     {id:"setups", label:"Recommended Setups", group:"Fish now"},
     {id:"nj-playbook", label:"NJ Playbook", group:"Fish now"},
+    {id:"water-reading", label:"Water Reading", group:"Fish now"},
     {id:"rigs", label:"Rigs & Knots", group:"Fish now"},
     {id:"areas", label:"Fishing Areas", group:"Plan & reference"},
     {id:"regulations", label:"Regulations", group:"Plan & reference"},
@@ -221,6 +222,30 @@
     $("#hotspot-grid").innerHTML = spots.map(item => `<article class="hotspot-card"><p class="section-kicker">${escapeHtml(item.region)}</p><h3>${escapeHtml(item.name)}</h3><div class="hotspot-tags">${item.species.map(id => `<span>${speciesLabels[id]}</span>`).join("")}</div><p><strong>Window:</strong> ${escapeHtml(item.season)}</p><p><strong>Target:</strong> ${escapeHtml(item.habitat)}</p><p><strong>First cast:</strong> ${escapeHtml(item.first)}</p><button type="button" data-hotspot="${item.id}">Access, tide, and safety</button></article>`).join("");
   }
 
+  function renderWaterReading() {
+    const structures = data.structures || [];
+    const filters = ["all","fresh","salt"];
+    const filterLabels = {all:"All water",fresh:"Freshwater",salt:"Saltwater"};
+    const activeWater = state.water === "all" ? "all" : state.water;
+    const aLabels = {bank:"Bank",boat:"Boat",kayak:"Kayak",surf:"Surf",pier:"Pier"};
+    const techById = id => data.techniques.find(t => t.id === id);
+    $("#structure-water-filter").innerHTML = filters.map(id =>
+      `<button type="button" data-structure-water="${id}" aria-pressed="${id === activeWater}">${escapeHtml(filterLabels[id])}</button>`
+    ).join("");
+    const visible = activeWater === "all" ? structures : structures.filter(item => item.water === activeWater);
+    $("#structure-grid").innerHTML = visible.map(item => {
+      const waterLabel = item.water === "fresh" ? "Freshwater" : "Saltwater";
+      return `<article class="hotspot-card"><p class="section-kicker">${escapeHtml(waterLabel)}</p><h3>${escapeHtml(item.name)}</h3><div class="hotspot-tags">${item.access.map(a => `<span>${escapeHtml(aLabels[a] || a)}</span>`).join("")}</div><p><strong>Identify:</strong> ${escapeHtml(item.identify.slice(0, 90))}${item.identify.length > 90 ? "\u2026" : ""}</p><p><strong>First cast:</strong> ${escapeHtml(item.firstCast.slice(0, 80))}${item.firstCast.length > 80 ? "\u2026" : ""}</p><button type="button" data-structure="${item.id}">Cast path and adjustments</button></article>`;
+    }).join("") || `<p class="result-status">No structures for the current filter.</p>`;
+  }
+
+  function structureMarkup(item) {
+    const aLabels = {bank:"Bank",boat:"Boat",kayak:"Kayak",surf:"Surf",pier:"Pier"};
+    const techById = id => data.techniques.find(t => t.id === id);
+    const techs = (item.techniques || []).map(id => techById(id)).filter(Boolean);
+    return `<article class="detail-inner"><p class="section-kicker">${item.water === "fresh" ? "Freshwater" : "Saltwater"} structure</p><h2>${escapeHtml(item.name)}</h2><p class="detail-deck">Read the water. Place the cast.</p><section class="detail-section"><h3>How to identify it</h3><p>${escapeHtml(item.identify)}</p></section><section class="detail-section"><h3>First cast</h3><p>${escapeHtml(item.firstCast)}</p></section><section class="detail-section"><h3>Depth zone</h3><p>${escapeHtml(item.depthZone)}</p></section><section class="detail-section"><h3>Lure families</h3><ul>${(item.lureFamilies || []).map(l => `<li>${escapeHtml(l)}</li>`).join("")}</ul></section><section class="detail-section"><h3>Adjustment</h3><p>${escapeHtml(item.adjustment)}</p></section>${techs.length ? `<section class="detail-section"><h3>Techniques to open</h3><ul>${techs.map(t => `<li><strong>${escapeHtml(t.name)}</strong> \u2014 ${escapeHtml(t.summary)}</li>`).join("")}</ul></section>` : ""}<aside class="tip-callout"><strong>Access</strong><br>${item.access.map(a => aLabels[a] || a).join(", ")}</aside></article>`;
+  }
+
   function renderRegulations() {
     $("#regulation-grid").innerHTML = manual.regulations.map(item => `<article><h3>${escapeHtml(item.species)}</h3><p>${escapeHtml(item.summary)}</p><a href="${escapeHtml(item.source)}" target="_blank" rel="noopener noreferrer">Verify current rule</a></article>`).join("");
   }
@@ -393,6 +418,8 @@
     else if (button.dataset.knot) openManualDialog(knotMarkup(button.dataset.knot));
     else if (button.dataset.rig) openManualDialog(rigMarkup(button.dataset.rig));
     else if (button.dataset.hotspot) { const item = manual.hotspots.find(entry => entry.id === button.dataset.hotspot); if (item) openManualDialog(hotspotMarkup(item)); }
+    else if (button.dataset.structureWater) { state.water = button.dataset.structureWater; renderWaterReading(); }
+    else if (button.dataset.structure) { const item = (data.structures || []).find(entry => entry.id === button.dataset.structure); if (item) openManualDialog(structureMarkup(item)); }
     else if (button.dataset.njSpecies) activateNjSpecies(button.dataset.njSpecies);
     else if (button.dataset.njPlay) {
       const play = njSpecies().plays.find(item => item.id === button.dataset.njPlay);
