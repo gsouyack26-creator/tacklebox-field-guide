@@ -107,11 +107,13 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("advisor-data.js", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("advisor-engine.js", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("lure-products.js", root)).exists()).toBe(true);
+  expect(await Bun.file(new URL("salt-line-products.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=19");
-  expect(serviceWorker).toContain("./advisor-data.js?v=19");
-  expect(serviceWorker).toContain("./advisor-engine.js?v=19");
-  expect(serviceWorker).toContain("./lure-products.js?v=19");
+  expect(serviceWorker).toContain("./manual-data.js?v=20");
+  expect(serviceWorker).toContain("./advisor-data.js?v=20");
+  expect(serviceWorker).toContain("./advisor-engine.js?v=20");
+  expect(serviceWorker).toContain("./lure-products.js?v=20");
+  expect(serviceWorker).toContain("./salt-line-products.js?v=20");
   expect(serviceWorker).not.toContain("youtube.com");
   expect(serviceWorker).toContain(`key.startsWith("tacklebox-field-guide-")`);
   expect(serviceWorker).toContain(".catch(() => cached)");
@@ -126,9 +128,9 @@ test("module navigation is task-first and mobile ready", async () => {
   const html = await Bun.file(new URL("index.html", root)).text();
   const app = await Bun.file(new URL("app.js", root)).text();
   const css = await Bun.file(new URL("styles.css", root)).text();
-  const order = ["home","advisor","session","how-to","setups","nj-playbook","water-reading","rigs","areas","regulations","library","quiver","seasons","notes","sources"];
-  expect((html.match(/data-module=/g) || []).length).toBe(15);
-  expect((html.match(/data-module="[^"]+" hidden/g) || []).length).toBe(14);
+  const order = ["home","advisor","session","how-to","setups","line-comparison","nj-playbook","water-reading","rigs","areas","regulations","library","quiver","seasons","notes","sources"];
+  expect((html.match(/data-module=/g) || []).length).toBe(16);
+  expect((html.match(/data-module="[^"]+" hidden/g) || []).length).toBe(15);
   expect(html).toContain("id=\"module-sidebar\"");
   expect(html).toContain("id=\"module-menu-button\"");
   expect(app).toContain(`const modules = [`);
@@ -202,4 +204,51 @@ test("production UI is permanently dark themed", async () => {
   expect(css).toContain("[data-module][hidden] { display: block !important; }");
   expect(css).toContain(".field-manual, .recommended-setups, .rig-bench");
   expect(css).toContain(".technique-card, .manual-card, .setup-system-card, .setup-system-tier");
+});
+
+test("every saltwater technique has a sourced top-rated line pick", async () => {
+  globalThis.window = window;
+  await import("../salt-line-products.js?line-picks");
+  const saltTechniques = window.TACKLEBOX_DATA.techniques.filter(item => item.water === "salt");
+  const picks = window.TACKLEBOX_SALT_LINES;
+  expect(Object.keys(picks)).toHaveLength(saltTechniques.length);
+  for (const technique of saltTechniques) {
+    const pick = picks[technique.id];
+    expect(pick).toBeDefined();
+    expect(pick.product.length).toBeGreaterThan(3);
+    expect(pick.test).toBe(technique.rig.Mainline.match(/\d+–\d+ lb/)[0]);
+    expect(pick.url.startsWith("https://")).toBe(true);
+    expect(pick.evidence.startsWith("https://")).toBe(true);
+    expect(pick.url).not.toMatch(/[?&](ref|utm_|aff|tag)=/i);
+    expect(pick.evidence).not.toMatch(/[?&](ref|utm_|aff|tag)=/i);
+  }
+  const app = await Bun.file(new URL("../app.js", import.meta.url)).text();
+  const css = await Bun.file(new URL("../styles.css", import.meta.url)).text();
+  expect(app).toContain("saltLineMarkup(item.id)");
+  expect(app).toContain('Top-rated salt line');
+  expect(css).toContain(".salt-line-pick");
+});
+
+test("Line Comparison explains category winners and tradeoffs", async () => {
+  if (!window.TACKLEBOX_LINE_COMPARISON) await import("../salt-line-products.js?line-comparison");
+  const comparison = window.TACKLEBOX_LINE_COMPARISON;
+  expect(comparison.products).toHaveLength(3);
+  expect(comparison.categories).toHaveLength(5);
+  const covered = comparison.categories.flatMap(item => item.techniques);
+  const saltIds = window.TACKLEBOX_DATA.techniques.filter(item => item.water === "salt").map(item => item.id);
+  expect(new Set(covered)).toEqual(new Set(saltIds));
+  for (const category of comparison.categories) {
+    expect(comparison.products.some(item => item.id === category.winner)).toBe(true);
+    expect(category.why.length).toBeGreaterThan(40);
+    expect(category.watch.length).toBeGreaterThan(40);
+  }
+  const root = new URL("../", import.meta.url);
+  const html = await Bun.file(new URL("index.html", root)).text();
+  const app = await Bun.file(new URL("app.js", root)).text();
+  const css = await Bun.file(new URL("styles.css", root)).text();
+  for (const id of ["line-comparison-title","line-product-grid","line-comparison-body","line-category-grid","line-comparison-basis"]) expect(html).toContain(`id="${id}"`);
+  expect(app).toContain("function renderLineComparison()");
+  expect(app).toContain("renderLineComparison();");
+  expect(css).toContain(".line-table-wrap");
+  expect(css).toContain(".line-category-card");
 });

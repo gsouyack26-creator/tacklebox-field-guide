@@ -27,6 +27,7 @@
     {id:"session", label:"Build My Session", group:"Fish now"},
     {id:"how-to", label:"How-To", group:"Fish now"},
     {id:"setups", label:"Recommended Setups", group:"Fish now"},
+    {id:"line-comparison", label:"Line Comparison", group:"Fish now"},
     {id:"nj-playbook", label:"NJ Playbook", group:"Fish now"},
     {id:"water-reading", label:"Water Reading", group:"Fish now"},
     {id:"rigs", label:"Rigs & Knots", group:"Fish now"},
@@ -47,6 +48,8 @@
   };
 
   const lureProducts = window.TACKLEBOX_LURE_PRODUCTS || [];
+  const saltLines = window.TACKLEBOX_SALT_LINES || {};
+  const lineComparison = window.TACKLEBOX_LINE_COMPARISON || {products:[],categories:[],basis:""};
   const advisor = window.TACKLEBOX_ADVISOR;
   const advisorEngine = window.TACKLEBOX_ADVISOR_ENGINE;
   const moduleMedia = matchMedia("(min-width: 62rem)");
@@ -130,6 +133,12 @@
     const products = lureProducts.filter(item => item[field]?.includes(id));
     if (!products.length) return "";
     return `<details class="product-examples"><summary>Actual lure examples (${products.length})</summary><div>${products.map(item => `<article><span>${escapeHtml(item.maker)}</span><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.spec)}</small><p>${escapeHtml(item.use)}</p><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">Official product page</a></article>`).join("")}</div><p>Examples only. Not ranked, sponsored, or affiliate-linked. Match size and weight to the rod, depth, current, forage, and local rules.</p></details>`;
+  };
+
+  const saltLineMarkup = id => {
+    const line = saltLines[id];
+    if (!line) return "";
+    return `<section class="detail-section salt-line-pick"><div class="salt-line-heading"><div><p class="section-kicker">Saltwater line pick</p><h3>${escapeHtml(line.maker)} ${escapeHtml(line.product)}</h3></div><span>${escapeHtml(line.rating)}</span></div><div class="salt-line-specs"><div><span>Line</span><strong>${escapeHtml(line.type)}</strong></div><div><span>Test</span><strong>${escapeHtml(line.test)}</strong></div><div><span>Color</span><strong>${escapeHtml(line.color)}</strong></div></div><p>${escapeHtml(line.why)}</p><div class="salt-line-links"><a href="${escapeHtml(line.url)}" target="_blank" rel="noopener noreferrer">Official product details</a><a href="${escapeHtml(line.evidence)}" target="_blank" rel="noopener noreferrer">Why it is top rated</a></div><small>Match line test to the rod, reel, drag, leader, target, structure, and local conditions. No affiliate links.</small></section>`;
   };
 
   const rodOptionsMarkup = profile => !profile.rodOptions?.length ? "" : `<details class="rod-options"><summary>Other recommended rods</summary><ul>${profile.rodOptions.map(rod => `<li><a href="${escapeHtml(rod.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(rod.name)}</a></li>`).join("")}</ul></details>`;
@@ -468,11 +477,20 @@
     $("#nj-playbook").classList.toggle("nj-muted", state.water === "fresh");
   }
 
+  function renderLineComparison() {
+    const products = Object.fromEntries(lineComparison.products.map(item => [item.id,item]));
+    $("#line-product-grid").innerHTML = lineComparison.products.map(item => `<article class="line-product-card"><p class="section-kicker">${escapeHtml(item.maker)}</p><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.construction)}</p><strong>Best for</strong><p>${escapeHtml(item.bestFor)}</p><aside><b>Tradeoff</b><span>${escapeHtml(item.tradeoff)}</span></aside><div><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">Official details</a><a href="${escapeHtml(item.evidence)}" target="_blank" rel="noopener noreferrer">Independent rating</a></div></article>`).join("");
+    const fields = [["Construction","construction"],["Stretch","stretch"],["Diameter","diameter"],["Sensitivity","sensitivity"],["Casting","casting"],["Abrasion role","abrasion"],["Handling","handling"],["Best use","bestFor"],["Main compromise","tradeoff"]];
+    $("#line-comparison-body").innerHTML = fields.map(([label,key]) => `<tr><th scope="row">${escapeHtml(label)}</th>${lineComparison.products.map(item => `<td>${escapeHtml(item[key])}</td>`).join("")}</tr>`).join("");
+    $("#line-category-grid").innerHTML = lineComparison.categories.map(category => { const winner = products[category.winner]; const techniques = category.techniques.map(techniqueById).filter(Boolean); return `<article class="line-category-card"><div><span>${escapeHtml(category.test)}</span><h3>${escapeHtml(category.name)}</h3><p class="line-winner">Pick: ${escapeHtml(winner.maker)} ${escapeHtml(winner.name)}</p></div><section><strong>Why it leads here</strong><p>${escapeHtml(category.why)}</p></section><section><strong>Watch the tradeoff</strong><p>${escapeHtml(category.watch)}</p></section><details><summary>Covered techniques (${techniques.length})</summary><ul>${techniques.map(item => `<li><button type="button" data-open="${escapeHtml(item.id)}">${escapeHtml(item.name)} · ${escapeHtml(saltLines[item.id].test)}</button></li>`).join("")}</ul></details></article>`; }).join("");
+    $("#line-comparison-basis").innerHTML = `<strong>How these picks were selected</strong><p>${escapeHtml(lineComparison.basis)}</p>`;
+  }
+
   function detailMarkup(item) {
     return `<article class="detail-inner">
       <p class="section-kicker">${item.water === "fresh" ? "Freshwater" : "Saltwater"} · ${escapeHtml(item.group)}</p>
       <h2>${escapeHtml(item.name)}</h2><p class="detail-deck">${escapeHtml(item.summary)}</p>
-      <section class="detail-section"><h3>Working setup</h3><div class="rig-grid">${Object.entries(item.rig).map(([key,value]) => `<div><span>${escapeHtml(key)}</span><strong>${escapeHtml(value)}</strong></div>`).join("")}</div></section>
+      <section class="detail-section"><h3>Working setup</h3><div class="rig-grid">${Object.entries(item.rig).map(([key,value]) => `<div><span>${escapeHtml(key)}</span><strong>${escapeHtml(value)}</strong></div>`).join("")}</div></section>${saltLineMarkup(item.id)}
       <section class="detail-section"><h3>Baits and lures by window</h3><div class="lure-list">${item.lures.map(lure => `<div class="lure-row"><strong>${escapeHtml(lure.name)}</strong><span>${escapeHtml(lure.when)}</span></div>`).join("")}</div></section>
       <section class="detail-section"><h3>Season and targets</h3><p><strong>Peak:</strong> ${escapeHtml(item.peak)}</p><p><strong>Common targets:</strong> ${escapeHtml(item.species.join(", "))}</p><p><strong>Access:</strong> ${escapeHtml(item.access.join(", "))}</p></section>
       <aside class="tip-callout"><strong>Field note</strong><br>${escapeHtml(item.tip)}</aside>${productExamplesMarkup("techniques", item.id)}
@@ -492,6 +510,7 @@
       ["Best window", item => item.peak],
       ["Rod", item => item.rig.Rod], ["Reel", item => item.rig.Reel],
       ["Mainline", item => item.rig.Mainline], ["Leader", item => item.rig.Leader],
+      ["Top-rated salt line", item => saltLines[item.id] ? `${saltLines[item.id].maker} ${saltLines[item.id].product}, ${saltLines[item.id].test}` : "Not applicable"],
       ["Top choices", item => item.lures.map(lure => lure.name).join(", ")],
       ["Field note", item => item.tip]
     ];
@@ -621,6 +640,7 @@
   initializeSession();
   renderManual();
   renderRecommendedSetups();
+  renderLineComparison();
   renderBench();
   renderHotspots();
   renderWaterReading();
