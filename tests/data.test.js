@@ -59,6 +59,15 @@ describe("field-guide dataset", () => {
       expect(item.access.length).toBeGreaterThan(0);
     }
   });
+
+  test("every structure has a distinct accessible cast-path diagram", async () => {
+    const structures = window.TACKLEBOX_DATA.structures;
+    const app = await Bun.file(new URL("../app.js", import.meta.url)).text();
+    expect(app).toContain('function castDiagramMarkup(item)');
+    expect(app).toContain('role="img"');
+    expect(app).toContain('Schematic, not to scale.');
+    for (const item of structures) expect(app).toContain(`"${item.id}":`);
+  });
 });
 
 test("storage access is failure-safe", async () => {
@@ -99,10 +108,10 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("advisor-engine.js", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("lure-products.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=17");
-  expect(serviceWorker).toContain("./advisor-data.js?v=17");
-  expect(serviceWorker).toContain("./advisor-engine.js?v=17");
-  expect(serviceWorker).toContain("./lure-products.js?v=17");
+  expect(serviceWorker).toContain("./manual-data.js?v=18");
+  expect(serviceWorker).toContain("./advisor-data.js?v=18");
+  expect(serviceWorker).toContain("./advisor-engine.js?v=18");
+  expect(serviceWorker).toContain("./lure-products.js?v=18");
   expect(serviceWorker).not.toContain("youtube.com");
   expect(serviceWorker).toContain(`key.startsWith("tacklebox-field-guide-")`);
   expect(serviceWorker).toContain(".catch(() => cached)");

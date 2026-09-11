@@ -193,6 +193,40 @@ h1 em { color: var(--amber); font-weight: 400; }
 .regulation-grid a { color: var(--river); font-weight: 800; }
 .instruction-steps { display: grid; gap: .8rem; padding-left: 1.6rem; }
 .instruction-steps li::marker { color: var(--coral); font-weight: 900; }
+.cast-diagram { margin: 1.7rem 0 2rem; border: 1px solid var(--line); background: var(--river-deep); overflow: hidden; }
+.cast-diagram-heading { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: .8rem 1.5rem; padding: 1rem; border-bottom: 1px solid var(--line); }
+.cast-diagram-heading > div:first-child { display: grid; gap: .1rem; }
+.cast-diagram-heading span { color: var(--coral); font-size: .68rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.cast-diagram-heading strong { font: 700 1.1rem var(--font-display); }
+.cast-diagram-legend { display: flex; flex-wrap: wrap; gap: .8rem; }
+.cast-diagram-legend span { display: inline-flex; align-items: center; gap: .38rem; color: var(--muted); font-size: .72rem; font-weight: 800; letter-spacing: 0; text-transform: none; }
+.cast-diagram-legend span::before { content: ""; width: 1.4rem; height: .3rem; background: currentColor; }
+.cast-diagram-legend .legend-cast::before { color: var(--strike); }
+.cast-diagram-legend .legend-hold::before { height: .7rem; color: var(--reed); opacity: .75; }
+.cast-diagram-legend .legend-hazard::before { height: .7rem; color: oklch(68% .17 35); opacity: .7; }
+.cast-diagram svg { width: 100%; height: auto; aspect-ratio: 16 / 8.5; background: oklch(20% .055 224); }
+.cast-diagram svg text { fill: oklch(92% .02 220); font: 800 15px var(--font-body); letter-spacing: .08em; paint-order: stroke; stroke: oklch(12% .04 235 / .8); stroke-width: 4px; }
+.cast-diagram .terrain { fill: oklch(37% .07 102); stroke: oklch(60% .09 105); stroke-width: 3; }
+.cast-diagram .bar { fill: oklch(48% .08 82 / .75); stroke: oklch(72% .10 84); stroke-width: 3; }
+.cast-diagram .vegetation { fill: oklch(39% .09 132 / .8); }
+.cast-diagram .weed-edge { fill: none; stroke: oklch(70% .14 125); stroke-width: 8; }
+.cast-diagram .cover, .cast-diagram .rocks { fill: none; stroke: oklch(62% .08 72); stroke-width: 16; stroke-linecap: round; stroke-linejoin: round; }
+.cast-diagram .jetty, .cast-diagram .bridge, .cast-diagram .dam { fill: oklch(31% .025 235); stroke: oklch(67% .025 225); stroke-width: 3; }
+.cast-diagram .piling { fill: oklch(27% .025 235); stroke: oklch(72% .03 220); stroke-width: 3; }
+.cast-diagram .shadow { fill: oklch(8% .03 238 / .72); }
+.cast-diagram .current-band { fill: oklch(29% .08 218 / .52); }
+.cast-diagram marker[id^="cast-arrow-"] path { fill: var(--strike); }
+.cast-diagram marker[id^="flow-arrow-"] path { fill: var(--river); }
+.cast-diagram .current, .cast-diagram .wave { fill: none; stroke: var(--river); stroke-width: 4; stroke-linecap: round; marker-end: var(--flow-arrow); opacity: .8; }
+.cast-diagram .wave { marker-end: none; opacity: .65; }
+.cast-diagram .seam, .cast-diagram .depth-line { fill: none; stroke: oklch(79% .04 218); stroke-width: 3; stroke-dasharray: 9 9; }
+.cast-diagram .faint { opacity: .45; }
+.cast-diagram .holding-zone { fill: oklch(70% .14 125 / .42); stroke: var(--reed); stroke-width: 3; stroke-dasharray: 7 6; }
+.cast-diagram .hazard { fill: oklch(57% .18 35 / .28); stroke: oklch(68% .17 35); stroke-width: 3; stroke-dasharray: 7 6; }
+.cast-diagram .cast-path, .cast-diagram .follow-path { fill: none; stroke: var(--strike); stroke-width: 7; stroke-linecap: round; marker-end: var(--cast-arrow); }
+.cast-diagram .follow-path { stroke-width: 4; stroke-dasharray: 10 9; opacity: .82; }
+.cast-diagram figcaption { padding: .75rem 1rem; color: var(--muted); font-size: .8rem; }
+@media (max-width: 31rem) { .cast-diagram svg { aspect-ratio: 4 / 3; } .cast-diagram svg text { font-size: 17px; } }
 .instruction-svg { width: 100%; min-height: 7rem; margin: 1rem 0; border: 1px solid var(--line); background: var(--paper-deep); }
 .instruction-svg path, .instruction-svg circle { fill: none; stroke: var(--river); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .instruction-svg .working { stroke: var(--strike); stroke-width: 5; }
