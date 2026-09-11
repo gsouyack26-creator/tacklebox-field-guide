@@ -1,8 +1,8 @@
-const CACHE = "tacklebox-field-guide-v21";
+const CACHE = "tacklebox-field-guide-v22";
 const SHELL = [
-  "./", "./index.html", "./styles.css?v=21", "./data.js?v=21", "./manual-data.js?v=21", "./app.js?v=21",
-  "./advisor-data.js?v=21", "./advisor-engine.js?v=21", "./lure-products.js?v=21", "./salt-line-products.js?v=21",
-  "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png",
+  "./", "./index.html", "./styles.css?v=22", "./data.js?v=22", "./manual-data.js?v=22", "./app.js?v=22",
+  "./advisor-data.js?v=22", "./advisor-engine.js?v=22", "./lure-products.js?v=22", "./salt-line-products.js?v=22",
+  "./coastal-report.json", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png",
   "./icons/icon-maskable-512.png", "./icons/apple-touch-icon.png"
 ];
 

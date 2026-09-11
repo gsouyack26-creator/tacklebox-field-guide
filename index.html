@@ -13,14 +13,14 @@
   <title>Striper Tacklebox | NJ Coastal Field Guide</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="styles.css?v=21">
-  <script src="data.js?v=21" defer></script>
-  <script src="manual-data.js?v=21" defer></script>
-  <script src="advisor-data.js?v=21" defer></script>
-  <script src="advisor-engine.js?v=21" defer></script>
-  <script src="lure-products.js?v=21" defer></script>
-  <script src="salt-line-products.js?v=21" defer></script>
-  <script src="app.js?v=21" defer></script>
+  <link rel="stylesheet" href="styles.css?v=22">
+  <script src="data.js?v=22" defer></script>
+  <script src="manual-data.js?v=22" defer></script>
+  <script src="advisor-data.js?v=22" defer></script>
+  <script src="advisor-engine.js?v=22" defer></script>
+  <script src="lure-products.js?v=22" defer></script>
+  <script src="salt-line-products.js?v=22" defer></script>
+  <script src="app.js?v=22" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#module-content">Skip to active module</a>
@@ -61,6 +61,14 @@
         <button type="button" data-water="fresh" aria-pressed="false">Freshwater</button>
         <button type="button" data-water="salt" aria-pressed="false">Saltwater</button>
       </div>
+    </section>
+
+    <section class="coastal-report" data-module="coastal-report" hidden aria-labelledby="coastal-report-title">
+      <div class="coastal-report-heading"><div><p class="section-kicker">Updated daily</p><h2 id="coastal-report-title">NJ coastal report</h2></div><p>Official NOAA marine conditions and tides, paired with attributed local fishing reports when a recent one is available.</p></div>
+      <div id="coastal-report-status" class="coastal-report-status" role="status" aria-live="polite">Loading the latest saved report…</div>
+      <div id="coastal-zone-tabs" class="coastal-zone-tabs" role="tablist" aria-label="New Jersey coastal report zones"></div>
+      <article id="coastal-zone-panel" class="coastal-zone-panel" role="tabpanel"></article>
+      <details class="coastal-sources"><summary>Sources and report limits</summary><div id="coastal-source-list"></div><p id="coastal-disclaimer"></p></details>
     </section>
 
     <section class="conditions-advisor" data-module="advisor" hidden aria-labelledby="advisor-title">

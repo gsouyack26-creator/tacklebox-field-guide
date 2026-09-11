@@ -510,3 +510,41 @@ dialog::backdrop { background: oklch(18% .025 175 / .76); backdrop-filter: blur(
 .line-comparison-basis p { margin: .35rem 0 0; color: var(--muted); }
 @media (min-width: 50rem) { .line-product-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .line-category-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (min-width: 75rem) { .line-category-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+
+/* Daily NJ coastal report */
+.coastal-report { min-height: calc(100vh - 4.5rem); padding: clamp(3rem,7vw,6rem) clamp(1rem,7vw,7rem); background: var(--paper-deep); }
+.coastal-report-heading { display: grid; gap: 1rem; max-width: 78rem; }
+.coastal-report-heading h2 { margin: 0; font-size: clamp(2.7rem,7vw,5.8rem); }
+.coastal-report-heading > p { max-width: 58rem; margin: 0; color: var(--muted); font-size: 1.05rem; }
+.coastal-report-status { display: flex; flex-wrap: wrap; gap: .35rem 1rem; max-width: 82rem; margin: 1.5rem 0 1rem; padding: .85rem 1rem; border-left: 4px solid var(--strike); background: var(--surface); }
+.coastal-report-status span { color: var(--muted); }
+.coastal-zone-tabs { display: flex; gap: .5rem; max-width: 82rem; overflow-x: auto; padding: .35rem 0 1rem; scrollbar-width: thin; }
+.coastal-zone-tabs button { flex: 0 0 auto; min-height: 3rem; padding: .6rem .9rem; border: 1px solid var(--line); background: var(--paper); color: var(--muted); font-weight: 850; }
+.coastal-zone-tabs button[aria-selected="true"] { border-color: var(--strike); background: var(--strike); color: var(--river-deep); }
+.coastal-zone-panel { display: grid; gap: 1px; max-width: 82rem; border: 1px solid var(--line); background: var(--line); box-shadow: var(--shadow); }
+.coastal-zone-panel > header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem; padding: clamp(1.2rem,4vw,2rem); background: var(--surface); }
+.coastal-zone-panel h3 { margin: 0; font-size: clamp(2rem,6vw,4rem); }
+.coastal-zone-panel > header > span { padding: .55rem .75rem; background: var(--river-deep); color: var(--river); font-weight: 900; }
+.coastal-condition-grid { display: grid; gap: 1px; background: var(--line); }
+.coastal-condition-grid > section, .coastal-forecast, .coastal-catch-report, .coastal-no-report, .coastal-techniques { padding: 1.2rem; background: var(--surface); }
+.coastal-condition-grid section > span, .coastal-forecast > span, .coastal-techniques > span, .coastal-catch-report span { display: block; margin-bottom: .4rem; color: var(--coral); font-size: .7rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.coastal-condition-grid p { margin: .25rem 0; color: var(--muted); }
+.coastal-condition-grid ol { display: grid; gap: .5rem; margin: .5rem 0 0; padding: 0; list-style: none; }
+.coastal-condition-grid li { display: grid; grid-template-columns: 3rem 1fr auto; gap: .6rem; padding: .45rem 0; border-top: 1px solid var(--line); }
+.coastal-condition-grid time, .coastal-condition-grid small { color: var(--muted); }
+.coastal-forecast { display: grid; gap: .8rem; }
+.coastal-forecast > div { display: grid; gap: .25rem; padding: .85rem; background: var(--paper); }
+.coastal-forecast p, .coastal-catch-report p, .coastal-no-report p { margin: 0; color: var(--muted); }
+.coastal-catch-report { border-left: 4px solid var(--reed); }
+.coastal-catch-report h4 { margin: .8rem 0; font: 700 1.55rem var(--font-display); }
+.coastal-catch-report .coastal-freshness { margin-top: .8rem; font-size: .86rem; }
+.coastal-no-report { border-left: 4px solid var(--amber); }
+.coastal-techniques > div { display: flex; flex-wrap: wrap; gap: .55rem; }
+.coastal-techniques button { min-height: 3rem; padding: .65rem .9rem; border: 1px solid var(--river); background: var(--river-deep); font-weight: 850; }
+.coastal-zone-panel a, .coastal-sources a { color: var(--river); font-weight: 800; }
+.coastal-sources { max-width: 82rem; margin-top: 1rem; padding: 1rem; border: 1px solid var(--line); background: var(--surface); }
+.coastal-sources summary { cursor: pointer; font-weight: 900; }
+.coastal-sources > div { display: grid; gap: .5rem; margin-top: 1rem; }
+.coastal-sources a { display: grid; text-decoration: none; }
+.coastal-sources a span, .coastal-sources p { color: var(--muted); font-size: .86rem; }
+@media (min-width: 48rem) { .coastal-condition-grid { grid-template-columns: .8fr 1.2fr; } .coastal-report-heading { grid-template-columns: 1fr .8fr; align-items: end; } }

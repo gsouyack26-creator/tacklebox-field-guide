@@ -19,10 +19,12 @@
     nj: safeLoad("tacklebox-nj", { species: data.nj.defaultSpecies, values: {} }, value => value && typeof value === "object" && typeof value.species === "string" && value.values && typeof value.values === "object"),
     advisor: safeLoad("tacklebox-advisor", advisorDefault, value => value && typeof value === "object" && typeof value.water === "string"),
     session: safeLoad("tacklebox-session", sessionDefault, validSession),
-    savedSessions: safeLoad("tacklebox-session-plans", [], validSavedSessions).slice(0, 5)
+    savedSessions: safeLoad("tacklebox-session-plans", [], validSavedSessions).slice(0, 5),
+    coastalZone: safeLoad("tacklebox-coastal-zone", "sandy-hook", value => typeof value === "string"), coastalReport: null
   };
   const modules = [
     {id:"home", label:"Home", group:"Fish now"},
+    {id:"coastal-report", label:"NJ Coastal Report", group:"Fish now"},
     {id:"advisor", label:"Conditions Advisor", group:"Fish now"},
     {id:"session", label:"Build My Session", group:"Fish now"},
     {id:"how-to", label:"How-To", group:"Fish now"},
@@ -477,6 +479,57 @@
     $("#nj-playbook").classList.toggle("nj-muted", state.water === "fresh");
   }
 
+
+  const formatCoastalTime = value => {
+    if (!value) return "Unavailable";
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.valueOf()) ? value : new Intl.DateTimeFormat("en-US", {month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}).format(parsed);
+  };
+
+  function renderCoastalReport() {
+    const report = state.coastalReport;
+    if (!report?.zones?.length) {
+      $("#coastal-report-status").textContent = "The daily report is unavailable. The rest of the field guide remains ready offline.";
+      $("#coastal-zone-tabs").innerHTML = "";
+      $("#coastal-zone-panel").innerHTML = `<h3>No saved report yet</h3><p>Reconnect and reload to download the latest daily report.</p>`;
+      return;
+    }
+    if (!report.zones.some(item => item.id === state.coastalZone)) state.coastalZone = report.zones[0].id;
+    const generated = new Date(report.generatedAt);
+    const ageHours = (Date.now() - generated.valueOf()) / 36e5;
+    const activeZone = report.zones.find(item => item.id === state.coastalZone);
+    const retainedSources = Object.entries(activeZone?.sourceStatus || {}).filter(([, status]) => status === "retained").map(([source]) => source);
+    const freshness = retainedSources.length ? "Some sources retained from the prior update" : ageHours <= 30 ? "Current daily report" : ageHours <= 72 ? "Report is aging" : "Stale report, verify conditions";
+    const retainedNote = retainedSources.length ? ` · Retained: ${retainedSources.join(", ")}` : "";
+    $("#coastal-report-status").innerHTML = `<strong>${escapeHtml(freshness)}</strong><span>Generated ${escapeHtml(formatCoastalTime(report.generatedAt))} ET · Forecast issued ${escapeHtml(report.forecastIssued || "unknown")}${escapeHtml(retainedNote)}</span>`;
+    $("#coastal-zone-tabs").innerHTML = report.zones.map(zone => `<button type="button" role="tab" id="coastal-tab-${escapeHtml(zone.id)}" data-coastal-zone="${escapeHtml(zone.id)}" aria-selected="${zone.id === state.coastalZone}" aria-controls="coastal-zone-panel">${escapeHtml(zone.name)}</button>`).join("");
+    const zone = report.zones.find(item => item.id === state.coastalZone);
+    const conditions = zone.conditions || {};
+    const forecast = zone.forecast || {};
+    const tides = conditions.tides || [];
+    const local = zone.localReport;
+    const techniques = zone.techniques.map(techniqueById).filter(Boolean);
+    const localMarkup = local ? `<section class="coastal-catch-report"><div><span>Attributed local report</span><strong>${escapeHtml(local.source)}</strong></div><h4>${escapeHtml(local.title)}</h4><p>${escapeHtml(local.summary)}</p><p class="coastal-freshness">Published ${escapeHtml(formatCoastalTime(local.publishedAt))} · ${escapeHtml(local.scope)}</p><a href="${escapeHtml(local.url)}" target="_blank" rel="noopener noreferrer">Read the full source report</a></section>` : `<section class="coastal-no-report"><strong>No verified catch report for this zone</strong><p>Conditions are available, but the app will not infer what is biting from weather alone.</p></section>`;
+    $("#coastal-zone-panel").setAttribute("aria-labelledby", `coastal-tab-${zone.id}`);
+    $("#coastal-zone-panel").innerHTML = `<header><div><p class="section-kicker">${escapeHtml(zone.reportStatus === "verified" ? "Recent local report + NOAA" : "NOAA conditions only")}</p><h3>${escapeHtml(zone.name)}</h3></div><span>${conditions.waterTempF ? `${escapeHtml(conditions.waterTempF)}°F water` : "Water temperature unavailable"}</span></header><div class="coastal-condition-grid"><section><span>Observation station</span><strong>${escapeHtml(conditions.stationName || "Unavailable")}</strong><p>${conditions.observedAt ? `Observed ${escapeHtml(formatCoastalTime(conditions.observedAt))}` : "No current observation"}</p>${conditions.url ? `<a href="${escapeHtml(conditions.url)}" target="_blank" rel="noopener noreferrer">NOAA station</a>` : ""}</section><section><span>Next tides</span>${tides.length ? `<ol>${tides.map(item => `<li><b>${item.type === "H" ? "High" : "Low"}</b><time>${escapeHtml(formatCoastalTime(item.time))}</time><small>${escapeHtml(item.heightFt)} ft</small></li>`).join("")}</ol>` : `<p>Tides unavailable.</p>`}</section></div><section class="coastal-forecast"><span>Marine forecast · ${escapeHtml(forecast.title || "zone unavailable")}</span>${(forecast.periods || []).map(item => `<div><strong>${escapeHtml(item.label)}</strong><p>${escapeHtml(item.text)}</p></div>`).join("")}${forecast.url ? `<a href="${escapeHtml(forecast.url)}" target="_blank" rel="noopener noreferrer">Full NOAA marine forecast</a>` : ""}</section>${localMarkup}<section class="coastal-techniques"><span>Useful field-guide starting points</span><div>${techniques.map(item => `<button type="button" data-open="${escapeHtml(item.id)}">${escapeHtml(item.name)}</button>`).join("")}</div></section>`;
+    $("#coastal-source-list").innerHTML = report.sources.map(item => `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.kind)}</span></a>`).join("");
+    $("#coastal-disclaimer").textContent = report.disclaimer;
+  }
+
+  async function loadCoastalReport() {
+    try {
+      const response = await fetch("./coastal-report.json", {cache:"no-store"});
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const report = await response.json();
+      if (report.schemaVersion !== 1 || !Array.isArray(report.zones)) throw new Error("Invalid report");
+      state.coastalReport = report;
+      safeSave("tacklebox-coastal-report", report);
+    } catch {
+      state.coastalReport = safeLoad("tacklebox-coastal-report", null, value => value?.schemaVersion === 1 && Array.isArray(value.zones));
+    }
+    renderCoastalReport();
+  }
+
   function renderLineComparison() {
     const products = Object.fromEntries(lineComparison.products.map(item => [item.id,item]));
     $("#line-product-grid").innerHTML = lineComparison.products.map(item => `<article class="line-product-card"><p class="section-kicker">${escapeHtml(item.maker)}</p><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.construction)}</p><strong>Best for</strong><p>${escapeHtml(item.bestFor)}</p><aside><b>Tradeoff</b><span>${escapeHtml(item.tradeoff)}</span></aside><div><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">Official details</a><a href="${escapeHtml(item.evidence)}" target="_blank" rel="noopener noreferrer">Independent rating</a></div></article>`).join("");
@@ -569,6 +622,7 @@
     }
     else if (button.dataset.loadSessionId) { const item = state.savedSessions.find(entry => entry.id === button.dataset.loadSessionId); if (item) { applySessionSelections(item.selections); showToast("Briefing loaded"); } }
     else if (button.dataset.deleteSession) { state.savedSessions = state.savedSessions.filter(item => item.id !== button.dataset.deleteSession); safeSave("tacklebox-session-plans", state.savedSessions); renderSavedSessions(); showToast("Briefing deleted"); }
+    else if (button.dataset.coastalZone) { state.coastalZone = button.dataset.coastalZone; safeSave("tacklebox-coastal-zone", state.coastalZone); renderCoastalReport(); }
     else if (button.dataset.njSpecies) activateNjSpecies(button.dataset.njSpecies);
     else if (button.dataset.njPlay) {
       const play = njSpecies().plays.find(item => item.id === button.dataset.njPlay);
@@ -632,6 +686,7 @@
   $$("dialog").forEach(dialog => dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); }));
 
   renderModuleNav();
+  loadCoastalReport();
   document.querySelectorAll(".brand[data-module-link]").forEach(link => link.addEventListener("click", event => { event.preventDefault(); navigateModule(link.dataset.moduleLink); }));
   $("#quiver-list").innerHTML = data.quiver.map((item,index) => `<article class="quiver-item"><span class="quiver-number">0${index + 1}</span><div><h3>${escapeHtml(item.name)}</h3><p class="spec-line">${escapeHtml(item.spec)}</p></div><p>${escapeHtml(item.use)}</p></article>`).join("");
   $("#season-grid").innerHTML = data.seasons.map(item => `<article class="season-card"><span>${escapeHtml(item.signal)}</span><h3>${escapeHtml(item.name)}</h3><ul>${item.points.map(point => `<li>${escapeHtml(point)}</li>`).join("")}</ul></article>`).join("");

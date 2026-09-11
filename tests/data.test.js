@@ -109,11 +109,11 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("lure-products.js", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("salt-line-products.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=21");
-  expect(serviceWorker).toContain("./advisor-data.js?v=21");
-  expect(serviceWorker).toContain("./advisor-engine.js?v=21");
-  expect(serviceWorker).toContain("./lure-products.js?v=21");
-  expect(serviceWorker).toContain("./salt-line-products.js?v=21");
+  expect(serviceWorker).toContain("./manual-data.js?v=22");
+  expect(serviceWorker).toContain("./advisor-data.js?v=22");
+  expect(serviceWorker).toContain("./advisor-engine.js?v=22");
+  expect(serviceWorker).toContain("./lure-products.js?v=22");
+  expect(serviceWorker).toContain("./salt-line-products.js?v=22");
   expect(serviceWorker).not.toContain("youtube.com");
   expect(serviceWorker).toContain(`key.startsWith("tacklebox-field-guide-")`);
   expect(serviceWorker).toContain(".catch(() => cached)");
@@ -128,9 +128,9 @@ test("module navigation is task-first and mobile ready", async () => {
   const html = await Bun.file(new URL("index.html", root)).text();
   const app = await Bun.file(new URL("app.js", root)).text();
   const css = await Bun.file(new URL("styles.css", root)).text();
-  const order = ["home","advisor","session","how-to","setups","line-comparison","nj-playbook","water-reading","rigs","areas","regulations","library","quiver","seasons","notes","sources"];
-  expect((html.match(/data-module=/g) || []).length).toBe(16);
-  expect((html.match(/data-module="[^"]+" hidden/g) || []).length).toBe(15);
+  const order = ["home","coastal-report","advisor","session","how-to","setups","line-comparison","nj-playbook","water-reading","rigs","areas","regulations","library","quiver","seasons","notes","sources"];
+  expect((html.match(/data-module=/g) || []).length).toBe(17);
+  expect((html.match(/data-module="[^"]+" hidden/g) || []).length).toBe(16);
   expect(html).toContain("id=\"module-sidebar\"");
   expect(html).toContain("id=\"module-menu-button\"");
   expect(app).toContain(`const modules = [`);
@@ -252,4 +252,25 @@ test("Line Comparison explains category winners and tradeoffs", async () => {
   expect(app).toContain("renderLineComparison();");
   expect(css).toContain(".line-table-wrap");
   expect(css).toContain(".line-category-card");
+});
+
+test("NJ Coastal Report is daily, sourced, accessible, and offline-ready", async () => {
+  const root = new URL("../", import.meta.url);
+  const report = await Bun.file(new URL("coastal-report.json", root)).json();
+  const html = await Bun.file(new URL("index.html", root)).text();
+  const app = await Bun.file(new URL("app.js", root)).text();
+  const css = await Bun.file(new URL("styles.css", root)).text();
+  const workflow = await Bun.file(new URL(".github/workflows/update-coastal-report.yml", root)).text();
+  const sw = await Bun.file(new URL("sw.js", root)).text();
+  expect(report.schemaVersion).toBe(1);
+  expect(report.zones).toHaveLength(6);
+  expect(new Set(report.zones.map(item => item.id)).size).toBe(6);
+  expect(report.sources.every(item => item.url.startsWith("https://"))).toBe(true);
+  for (const id of ["coastal-report-title","coastal-report-status","coastal-zone-tabs","coastal-zone-panel","coastal-source-list"]) expect(html).toContain(`id="${id}"`);
+  expect(app).toContain("async function loadCoastalReport()");
+  expect(app).toContain('safeSave("tacklebox-coastal-report", report)');
+  expect(app).toContain('data-coastal-zone');
+  expect(css).toContain(".coastal-zone-panel");
+  expect(workflow).toContain('cron: "15 9 * * *"');
+  expect(sw).toContain('"./coastal-report.json"');
 });

@@ -1,0 +1,429 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-10T23:02:21.573695-04:00",
+  "forecastIssued": "401 PM EDT Thu Sep 10 2026",
+  "timezone": "America/New_York",
+  "zones": [
+    {
+      "id": "sandy-hook",
+      "name": "Raritan Bay & Sandy Hook",
+      "techniques": [
+        "inshore-spin",
+        "inshore-structure"
+      ],
+      "conditions": {
+        "stationId": "8531680",
+        "stationName": "Sandy Hook",
+        "waterTempF": "76.5",
+        "observedAt": "2026-09-10T22:54:00-04:00",
+        "tides": [
+          {
+            "time": "2026-09-11T02:30:00-04:00",
+            "heightFt": "-0.286",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T08:32:00-04:00",
+            "heightFt": "5.802",
+            "type": "H"
+          },
+          {
+            "time": "2026-09-11T14:47:00-04:00",
+            "heightFt": "-0.036",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T20:47:00-04:00",
+            "heightFt": "5.765",
+            "type": "H"
+          }
+        ],
+        "url": "https://tidesandcurrents.noaa.gov/stationhome.html?id=8531680"
+      },
+      "forecast": {
+        "title": "Coastal waters from Sandy Hook to Manasquan Inlet NJ out 20 NM",
+        "periods": [
+          {
+            "label": "Tonight",
+            "text": "W winds 5 to 10 kt, becoming N late. Seas 2 to 3 ft. Wave Detail: S 3 ft at 7 seconds."
+          },
+          {
+            "label": "Fri",
+            "text": "NE winds 5 to 10 kt. Seas around 2 ft. Wave Detail: SE 2 ft at 6 seconds."
+          }
+        ],
+        "url": "https://www.ndbc.noaa.gov/data/Forecasts/FZUS51.KPHI.html"
+      },
+      "localReport": {
+        "title": "Miss Belmar Princess-Northern New Jersey",
+        "summary": "Our last report of the week comes from Capt. Al Shinn of the Miss Belmar and Miss Belmar Princess. Al said he too had an up and down week because of the weather, and it seems like the weather reports hurt more than the actual weather. The best day of bluefishing was on Saturday when the slammers seemed to be everywhere on the surface of the water. During the week one day you wound hammer the blues, bonito, and Spanish mackerel, the next day you had to work for them. However when they turned on it was a real mad dog",
+        "publishedAt": "2026-09-08T01:25:17-04:00",
+        "ageHours": 69.6,
+        "source": "The Fisherman · Northern New Jersey",
+        "url": "https://www.thefisherman.com/fishing-report/miss-belmar-princess-northern-new-jersey-215/",
+        "scope": "Raritan Bay, Sandy Hook, Monmouth County and nearby waters"
+      },
+      "sourceStatus": {
+        "conditions": "current",
+        "forecast": "current",
+        "localReport": "current"
+      },
+      "reportStatus": "verified"
+    },
+    {
+      "id": "monmouth-ocean",
+      "name": "Monmouth & Ocean County Surf",
+      "techniques": [
+        "salt-surf",
+        "inshore-spin"
+      ],
+      "conditions": {
+        "stationId": "8531680",
+        "stationName": "Sandy Hook",
+        "waterTempF": "76.5",
+        "observedAt": "2026-09-10T22:54:00-04:00",
+        "tides": [
+          {
+            "time": "2026-09-11T02:30:00-04:00",
+            "heightFt": "-0.286",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T08:32:00-04:00",
+            "heightFt": "5.802",
+            "type": "H"
+          },
+          {
+            "time": "2026-09-11T14:47:00-04:00",
+            "heightFt": "-0.036",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T20:47:00-04:00",
+            "heightFt": "5.765",
+            "type": "H"
+          }
+        ],
+        "url": "https://tidesandcurrents.noaa.gov/stationhome.html?id=8531680"
+      },
+      "forecast": {
+        "title": "Coastal waters from Manasquan Inlet to Little Egg Inlet NJ out",
+        "periods": [
+          {
+            "label": "Tonight",
+            "text": "W winds 5 to 10 kt, becoming N late. Seas 2 to 3 ft. Wave Detail: S 3 ft at 6 seconds and SE 1 foot at 9 seconds. A slight chance of showers late."
+          },
+          {
+            "label": "Fri",
+            "text": "NE winds 5 to 10 kt. Seas 2 to 3 ft. Wave Detail: E 3 ft at 6 seconds."
+          }
+        ],
+        "url": "https://www.ndbc.noaa.gov/data/Forecasts/FZUS51.KPHI.html"
+      },
+      "localReport": {
+        "title": "Miss Belmar Princess-Northern New Jersey",
+        "summary": "Our last report of the week comes from Capt. Al Shinn of the Miss Belmar and Miss Belmar Princess. Al said he too had an up and down week because of the weather, and it seems like the weather reports hurt more than the actual weather. The best day of bluefishing was on Saturday when the slammers seemed to be everywhere on the surface of the water. During the week one day you wound hammer the blues, bonito, and Spanish mackerel, the next day you had to work for them. However when they turned on it was a real mad dog",
+        "publishedAt": "2026-09-08T01:25:17-04:00",
+        "ageHours": 69.6,
+        "source": "The Fisherman · Northern New Jersey",
+        "url": "https://www.thefisherman.com/fishing-report/miss-belmar-princess-northern-new-jersey-215/",
+        "scope": "Raritan Bay, Sandy Hook, Monmouth County and nearby waters"
+      },
+      "sourceStatus": {
+        "conditions": "current",
+        "forecast": "current",
+        "localReport": "current"
+      },
+      "reportStatus": "verified"
+    },
+    {
+      "id": "lbi",
+      "name": "Barnegat Bay & LBI",
+      "techniques": [
+        "inshore-wade",
+        "salt-surf",
+        "nearshore-jig"
+      ],
+      "conditions": {
+        "stationId": "8534720",
+        "stationName": "Atlantic City",
+        "waterTempF": "77.0",
+        "observedAt": "2026-09-10T22:54:00-04:00",
+        "tides": [
+          {
+            "time": "2026-09-11T02:05:00-04:00",
+            "heightFt": "-0.116",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T08:14:00-04:00",
+            "heightFt": "4.948",
+            "type": "H"
+          },
+          {
+            "time": "2026-09-11T14:18:00-04:00",
+            "heightFt": "-0.057",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T20:31:00-04:00",
+            "heightFt": "5.076",
+            "type": "H"
+          }
+        ],
+        "url": "https://tidesandcurrents.noaa.gov/stationhome.html?id=8534720"
+      },
+      "forecast": {
+        "title": "Coastal waters from Manasquan Inlet to Little Egg Inlet NJ out",
+        "periods": [
+          {
+            "label": "Tonight",
+            "text": "W winds 5 to 10 kt, becoming N late. Seas 2 to 3 ft. Wave Detail: S 3 ft at 6 seconds and SE 1 foot at 9 seconds. A slight chance of showers late."
+          },
+          {
+            "label": "Fri",
+            "text": "NE winds 5 to 10 kt. Seas 2 to 3 ft. Wave Detail: E 3 ft at 6 seconds."
+          }
+        ],
+        "url": "https://www.ndbc.noaa.gov/data/Forecasts/FZUS51.KPHI.html"
+      },
+      "localReport": {
+        "title": "LBI Fishing Report 9/10/26",
+        "summary": "September 10, 2026 September fishing is underway on Long Beach Island and while the calendar says fall is getting close, the water is still holding onto summer. Warm and relatively clean / clear waters are present on the LBI surf with plenty of bait (spearing and other micro minnows). This has kept a diverse mix of fish around the LBI suds. Here’s my recent fishing report video from Tuesday morning 9/8/26, followed by a test report below… Variety On Tap For Those Fishing LBI Fluke, kingfish, weakfish, blowfish, cro",
+        "publishedAt": "2026-09-10T14:36:31-04:00",
+        "ageHours": 8.4,
+        "source": "FishingLBI / Fisherman’s Headquarters",
+        "url": "https://fishinglbi.com/2026/09/10/lbi-fishing-report-9-10-26/",
+        "scope": "Barnegat Bay, Long Beach Island surf, inlet and nearby waters"
+      },
+      "sourceStatus": {
+        "conditions": "current",
+        "forecast": "current",
+        "localReport": "current"
+      },
+      "reportStatus": "verified"
+    },
+    {
+      "id": "atlantic-city",
+      "name": "Atlantic City & Great Bay",
+      "techniques": [
+        "inshore-spin",
+        "pier-bait"
+      ],
+      "conditions": {
+        "stationId": "8534720",
+        "stationName": "Atlantic City",
+        "waterTempF": "77.0",
+        "observedAt": "2026-09-10T22:54:00-04:00",
+        "tides": [
+          {
+            "time": "2026-09-11T02:05:00-04:00",
+            "heightFt": "-0.116",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T08:14:00-04:00",
+            "heightFt": "4.948",
+            "type": "H"
+          },
+          {
+            "time": "2026-09-11T14:18:00-04:00",
+            "heightFt": "-0.057",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T20:31:00-04:00",
+            "heightFt": "5.076",
+            "type": "H"
+          }
+        ],
+        "url": "https://tidesandcurrents.noaa.gov/stationhome.html?id=8534720"
+      },
+      "forecast": {
+        "title": "Coastal waters from Little Egg Inlet to Great Egg Inlet NJ out",
+        "periods": [
+          {
+            "label": "Tonight",
+            "text": "SW winds 10 to 15 kt, becoming W 5 to 10 kt late this evening and early morning, then becoming N late. Seas 2 to 3 ft. Wave Detail: S 3 ft at 6 seconds and SE 1 foot at 9 seconds. A chance of showers with a slight chance of tstms late."
+          },
+          {
+            "label": "Fri",
+            "text": "NE winds 10 to 15 kt, diminishing to 5 to 10 kt in the afternoon. Seas 2 to 3 ft. Wave Detail: SE 3 ft at 6 seconds and SE 1 foot at 9 seconds. A chance of showers in the morning."
+          }
+        ],
+        "url": "https://www.ndbc.noaa.gov/data/Forecasts/FZUS51.KPHI.html"
+      },
+      "localReport": {
+        "title": "Higbee’s Bait and Tackle-Southern New Jersey",
+        "summary": "The Delaware Bay has been giving up plenty of keeper flounder this week according to Higbee’s Bait and Tackle. Several customers found a boat limit of fish to 22 inches while fishing minnows, spearing and squid strips. The party boats are seeing some decent catches of flounder while also having a mix of croaker’s, spots and blues, and recently black drum to 20 pounds. Anglers report more blues and weakfish in the mix than in past weeks. Lastly, for anyone crabbing, all the local creeks have been producing dozens of",
+        "publishedAt": "2026-09-08T01:25:27-04:00",
+        "ageHours": 69.6,
+        "source": "The Fisherman · Southern New Jersey",
+        "url": "https://www.thefisherman.com/fishing-report/higbees-bait-and-tackle-southern-new-jersey-212/",
+        "scope": "Atlantic County, Cape May and Delaware Bay"
+      },
+      "sourceStatus": {
+        "conditions": "current",
+        "forecast": "current",
+        "localReport": "current"
+      },
+      "reportStatus": "verified"
+    },
+    {
+      "id": "cape-may",
+      "name": "Cape May Coast",
+      "techniques": [
+        "salt-surf",
+        "nearshore-jig"
+      ],
+      "conditions": {
+        "stationId": "8536110",
+        "stationName": "Cape May",
+        "waterTempF": "78.4",
+        "observedAt": "2026-09-10T22:54:00-04:00",
+        "tides": [
+          {
+            "time": "2026-09-11T03:06:00-04:00",
+            "heightFt": "0.094",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T09:21:00-04:00",
+            "heightFt": "5.687",
+            "type": "H"
+          },
+          {
+            "time": "2026-09-11T15:19:00-04:00",
+            "heightFt": "-0.022",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T21:41:00-04:00",
+            "heightFt": "5.875",
+            "type": "H"
+          }
+        ],
+        "url": "https://tidesandcurrents.noaa.gov/stationhome.html?id=8536110"
+      },
+      "forecast": {
+        "title": "Coastal waters from Great Egg Inlet to Cape May NJ out 20 NM",
+        "periods": [
+          {
+            "label": "Tonight",
+            "text": "SW winds 5 to 10 kt, becoming NW late. Seas 2 to 3 ft. Wave Detail: SW 3 ft at 5 seconds and SE 1 foot at 9 seconds. A chance of showers with a slight chance of tstms late."
+          },
+          {
+            "label": "Fri",
+            "text": "NE winds 10 to 15 kt, diminishing to 5 to 10 kt in the afternoon. Seas 2 to 3 ft. Wave Detail: S 3 ft at 6 seconds and SE 1 foot at 9 seconds. A chance of showers in the morning."
+          }
+        ],
+        "url": "https://www.ndbc.noaa.gov/data/Forecasts/FZUS51.KPHI.html"
+      },
+      "localReport": {
+        "title": "Higbee’s Bait and Tackle-Southern New Jersey",
+        "summary": "The Delaware Bay has been giving up plenty of keeper flounder this week according to Higbee’s Bait and Tackle. Several customers found a boat limit of fish to 22 inches while fishing minnows, spearing and squid strips. The party boats are seeing some decent catches of flounder while also having a mix of croaker’s, spots and blues, and recently black drum to 20 pounds. Anglers report more blues and weakfish in the mix than in past weeks. Lastly, for anyone crabbing, all the local creeks have been producing dozens of",
+        "publishedAt": "2026-09-08T01:25:27-04:00",
+        "ageHours": 69.6,
+        "source": "The Fisherman · Southern New Jersey",
+        "url": "https://www.thefisherman.com/fishing-report/higbees-bait-and-tackle-southern-new-jersey-212/",
+        "scope": "Atlantic County, Cape May and Delaware Bay"
+      },
+      "sourceStatus": {
+        "conditions": "current",
+        "forecast": "current",
+        "localReport": "current"
+      },
+      "reportStatus": "verified"
+    },
+    {
+      "id": "delaware-bay",
+      "name": "Delaware Bay",
+      "techniques": [
+        "inshore-structure",
+        "offshore-bottom"
+      ],
+      "conditions": {
+        "stationId": "8536110",
+        "stationName": "Cape May",
+        "waterTempF": "78.4",
+        "observedAt": "2026-09-10T22:54:00-04:00",
+        "tides": [
+          {
+            "time": "2026-09-11T03:06:00-04:00",
+            "heightFt": "0.094",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T09:21:00-04:00",
+            "heightFt": "5.687",
+            "type": "H"
+          },
+          {
+            "time": "2026-09-11T15:19:00-04:00",
+            "heightFt": "-0.022",
+            "type": "L"
+          },
+          {
+            "time": "2026-09-11T21:41:00-04:00",
+            "heightFt": "5.875",
+            "type": "H"
+          }
+        ],
+        "url": "https://tidesandcurrents.noaa.gov/stationhome.html?id=8536110"
+      },
+      "forecast": {
+        "title": "Delaware Bay waters south of East Point NJ to Slaughter Beach DE",
+        "periods": [
+          {
+            "label": "Tonight",
+            "text": "SW winds around 5 kt, becoming NW late. Seas around 2 ft this evening, then 1 foot or less. Wave Detail: W 1 foot at 2 seconds and S 1 foot at 6 seconds, becoming S 1 foot at 6 seconds. A chance of showers with a slight chance of tstms after midnight."
+          },
+          {
+            "label": "Fri",
+            "text": "NE winds 5 to 10 kt. Seas around 2 ft. Wave Detail: E 2 ft at 6 seconds. Showers likely in the morning."
+          }
+        ],
+        "url": "https://www.ndbc.noaa.gov/data/Forecasts/FZUS51.KPHI.html"
+      },
+      "localReport": {
+        "title": "Higbee’s Bait and Tackle-Southern New Jersey",
+        "summary": "The Delaware Bay has been giving up plenty of keeper flounder this week according to Higbee’s Bait and Tackle. Several customers found a boat limit of fish to 22 inches while fishing minnows, spearing and squid strips. The party boats are seeing some decent catches of flounder while also having a mix of croaker’s, spots and blues, and recently black drum to 20 pounds. Anglers report more blues and weakfish in the mix than in past weeks. Lastly, for anyone crabbing, all the local creeks have been producing dozens of",
+        "publishedAt": "2026-09-08T01:25:27-04:00",
+        "ageHours": 69.6,
+        "source": "The Fisherman · Southern New Jersey",
+        "url": "https://www.thefisherman.com/fishing-report/higbees-bait-and-tackle-southern-new-jersey-212/",
+        "scope": "Atlantic County, Cape May and Delaware Bay"
+      },
+      "sourceStatus": {
+        "conditions": "current",
+        "forecast": "current",
+        "localReport": "current"
+      },
+      "reportStatus": "verified"
+    }
+  ],
+  "sources": [
+    {
+      "name": "NOAA/NWS Mount Holly Coastal Waters Forecast",
+      "url": "https://tgftp.nws.noaa.gov/data/raw/fz/fzus51.kphi.cwf.phi.txt",
+      "kind": "official conditions"
+    },
+    {
+      "name": "NOAA CO-OPS Tides & Currents",
+      "url": "https://api.tidesandcurrents.noaa.gov/api/prod/",
+      "kind": "official observations and predictions"
+    },
+    {
+      "name": "The Fisherman regional NJ reports",
+      "url": "https://www.thefisherman.com/area/northern-new-jersey/feed/",
+      "kind": "attributed regional fishing reports"
+    },
+    {
+      "name": "FishingLBI / Fisherman’s Headquarters",
+      "url": "https://fishinglbi.com/feed/",
+      "kind": "attributed LBI fishing report"
+    }
+  ],
+  "errors": [],
+  "disclaimer": "Conditions are official observations or forecasts. Catch reports are attributed local reports, not guarantees. No report means no verified recent fishing claim, not no fish. Check marine warnings, access and current regulations before leaving."
+}
