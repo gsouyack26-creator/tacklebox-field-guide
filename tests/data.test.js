@@ -109,11 +109,11 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("lure-products.js", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("salt-line-products.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=22");
-  expect(serviceWorker).toContain("./advisor-data.js?v=22");
-  expect(serviceWorker).toContain("./advisor-engine.js?v=22");
-  expect(serviceWorker).toContain("./lure-products.js?v=22");
-  expect(serviceWorker).toContain("./salt-line-products.js?v=22");
+  expect(serviceWorker).toContain("./manual-data.js?v=23");
+  expect(serviceWorker).toContain("./advisor-data.js?v=23");
+  expect(serviceWorker).toContain("./advisor-engine.js?v=23");
+  expect(serviceWorker).toContain("./lure-products.js?v=23");
+  expect(serviceWorker).toContain("./salt-line-products.js?v=23");
   expect(serviceWorker).not.toContain("youtube.com");
   expect(serviceWorker).toContain(`key.startsWith("tacklebox-field-guide-")`);
   expect(serviceWorker).toContain(".catch(() => cached)");
@@ -273,4 +273,15 @@ test("NJ Coastal Report is daily, sourced, accessible, and offline-ready", async
   expect(css).toContain(".coastal-zone-panel");
   expect(workflow).toContain('cron: "15 9 * * *"');
   expect(sw).toContain('"./coastal-report.json"');
+});
+
+
+test("menhaden impact brief distinguishes evidence from uncertainty", async () => {
+  const root = new URL("../", import.meta.url);
+  const html = await Bun.file(new URL("index.html", root)).text();
+  const css = await Bun.file(new URL("styles.css", root)).text();
+  for (const phrase of ["menhaden-brief-title", "not overfished", "above the ecosystem target", "100% probability", "51,000 metric tons", "localized-depletion risk", "not strong enough"]) expect(html).toContain(phrase);
+  for (const url of ["asmfc.org/news/press-releases/", "law.lis.virginia.gov/admincode/", "fmars.2023.1284462", "fmars.2023.1172787", "fmars.2024.1416687", "omegaprotein.com/"]) expect(html).toContain(url);
+  expect(html).toContain("opposing view");
+  expect(css).toContain(".menhaden-brief");
 });

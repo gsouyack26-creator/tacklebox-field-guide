@@ -548,3 +548,23 @@ dialog::backdrop { background: oklch(18% .025 175 / .76); backdrop-filter: blur(
 .coastal-sources a { display: grid; text-decoration: none; }
 .coastal-sources a span, .coastal-sources p { color: var(--muted); font-size: .86rem; }
 @media (min-width: 48rem) { .coastal-condition-grid { grid-template-columns: .8fr 1.2fr; } .coastal-report-heading { grid-template-columns: 1fr .8fr; align-items: end; } }
+
+
+/* Menhaden evidence brief */
+.menhaden-brief { max-width: 82rem; margin-top: 1.5rem; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow); }
+.menhaden-brief > header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem; padding: clamp(1.2rem,4vw,2rem); border-bottom: 1px solid var(--line); }
+.menhaden-brief h3 { max-width: 58rem; margin: 0; font-size: clamp(1.8rem,5vw,3.4rem); }
+.menhaden-brief > header > span { color: var(--muted); font-size: .82rem; font-weight: 800; }
+.menhaden-brief-lede { max-width: 72rem; margin: 0; padding: 1.2rem; color: var(--muted); font-size: 1.05rem; }
+.menhaden-findings { display: grid; gap: 1px; border-block: 1px solid var(--line); background: var(--line); }
+.menhaden-findings article { padding: 1.2rem; background: var(--paper); }
+.menhaden-findings span { color: var(--coral); font-size: .7rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.menhaden-findings h4 { margin: .45rem 0; font: 700 1.35rem var(--font-display); }
+.menhaden-findings p, .menhaden-bottom-line p, .menhaden-evidence p { margin: 0; color: var(--muted); }
+.menhaden-bottom-line { display: grid; gap: .4rem; padding: 1.2rem; border-left: 4px solid var(--amber); background: var(--river-deep); }
+.menhaden-evidence { padding: 1rem 1.2rem; border-top: 1px solid var(--line); }
+.menhaden-evidence summary { min-height: 2.5rem; cursor: pointer; font-weight: 900; }
+.menhaden-evidence > div { display: grid; gap: .5rem; margin: .5rem 0 1rem; }
+.menhaden-evidence a { display: grid; padding: .7rem; border: 1px solid var(--line); color: var(--river); text-decoration: none; }
+.menhaden-evidence a span { color: var(--muted); font-size: .86rem; }
+@media (min-width: 48rem) { .menhaden-findings { grid-template-columns: repeat(2,minmax(0,1fr)); } .menhaden-evidence > div { grid-template-columns: repeat(2,minmax(0,1fr)); } }
