@@ -9,16 +9,22 @@
   };
   const safeSave = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch {} };
   const advisorDefault = {water:"fresh",target:"general",trend:"stable",clarity:"stained",wind:"moderate",structure:"open",forage:"unknown",current:"moderate",light:"day",trouble:"none"};
+  const sessionDefault = {water:"fresh",target:"general",access:"any",structureId:"point-fresh",trend:"stable",clarity:"stained",wind:"moderate",forage:"unknown",current:"moderate",light:"day",trouble:"none"};
+  const validSession = value => value && typeof value === "object" && ["fresh","salt"].includes(value.water) && typeof value.structureId === "string";
+  const validSavedSessions = value => Array.isArray(value) && value.every(item => item && typeof item.id === "string" && validSession(item.selections));
   const state = {
     water: "all", season: "all", access: "all", search: "", group: "all",
     savedOnly: false, saved: new Set(safeLoad("tacklebox-saved", [], Array.isArray)), compare: new Set(),
     manualSpecies: "striper", hotspotSpecies: "all",
     nj: safeLoad("tacklebox-nj", { species: data.nj.defaultSpecies, values: {} }, value => value && typeof value === "object" && typeof value.species === "string" && value.values && typeof value.values === "object"),
-    advisor: safeLoad("tacklebox-advisor", advisorDefault, value => value && typeof value === "object" && typeof value.water === "string")
+    advisor: safeLoad("tacklebox-advisor", advisorDefault, value => value && typeof value === "object" && typeof value.water === "string"),
+    session: safeLoad("tacklebox-session", sessionDefault, validSession),
+    savedSessions: safeLoad("tacklebox-session-plans", [], validSavedSessions).slice(0, 5)
   };
   const modules = [
     {id:"home", label:"Home", group:"Fish now"},
     {id:"advisor", label:"Conditions Advisor", group:"Fish now"},
+    {id:"session", label:"Build My Session", group:"Fish now"},
     {id:"how-to", label:"How-To", group:"Fish now"},
     {id:"setups", label:"Recommended Setups", group:"Fish now"},
     {id:"nj-playbook", label:"NJ Playbook", group:"Fish now"},
@@ -186,6 +192,98 @@
     $("#advisor-trouble").value = advisor.trouble[state.advisor.trouble] ? state.advisor.trouble : "none";
     populateAdvisorChoices();
     renderAdvisor();
+  }
+
+  const sessionStructureCategory = {
+    "point-fresh":"wood-rock", "flat-edge":"deep-current", "submerged-wood":"wood-rock",
+    "creek-seam":"deep-current", "dam-tailwater":"deep-current", "weed-edge":"vegetation",
+    "surf-trough":"open-beach", "inlet-rip":"inlet-current", "jetty-base":"bridge-jetty",
+    "bridge-shadow":"bridge-jetty", "bar-tip":"open-beach", "creek-mouth-salt":"bay-flat"
+  };
+  const sessionSafety = {
+    "point-fresh":"Confirm footing and depth changes before wading; rock edges can drop quickly.",
+    "flat-edge":"Watch wind drift and changing depth, especially from a kayak or small boat.",
+    "submerged-wood":"Keep the cast outside visible limbs first; do not climb or wade into unstable timber.",
+    "creek-seam":"Current strength and footing can change within one step; wear a PFD where appropriate.",
+    "dam-tailwater":"Obey exclusion zones and discharge warnings. Flow can change without notice.",
+    "weed-edge":"Avoid entering dense vegetation or soft bottom without confirming a safe return path.",
+    "surf-trough":"Read the beach at low tide when possible; never turn your back on breaking waves.",
+    "inlet-rip":"Know the exit route before fishing. Surge, sweep, and slick rock can intensify quickly.",
+    "jetty-base":"Use appropriate traction, stay back from wash, and never step onto wet rock for a cast.",
+    "bridge-shadow":"Stay clear of traffic, restricted areas, overhead hazards, and marked navigation channels.",
+    "bar-tip":"Bars can flood behind you on a rising tide; track the return route continuously.",
+    "creek-mouth-salt":"Current reversals, soft mud, and rising water can cut off wading routes quickly."
+  };
+  const sessionKeys = ["water","target","access","structureId","trend","clarity","wind","forage","current","light","trouble"];
+  const sessionSelections = () => Object.fromEntries(sessionKeys.map(key => [key, $(`#session-${key === "structureId" ? "structure" : key}`).value]));
+  const optionLabel = (options, value) => options.find(option => option[0] === value)?.[1] || value;
+  const sessionStructure = selections => (data.structures || []).find(item => item.id === selections.structureId);
+
+  function sessionPlan(selections) {
+    const structure = sessionStructure(selections);
+    if (!structure) return null;
+    const engineSelections = {...selections, structure:sessionStructureCategory[structure.id]};
+    const match = advisorEngine.recommend(advisor, engineSelections);
+    if (!match) return null;
+    const technique = techniqueById(match.profile.technique);
+    const trouble = advisor.trouble[selections.trouble] || advisor.trouble.none;
+    const targetLabel = optionLabel(advisor.targets[selections.water], selections.target);
+    const accessLabel = selections.access === "any" ? "Any access" : ({bank:"Bank / shore",surf:"Surf",pier:"Pier / jetty",kayak:"Kayak",boat:"Boat"}[selections.access] || selections.access);
+    return {selections,structure,match,technique,trouble,targetLabel,accessLabel,safety:sessionSafety[structure.id]};
+  }
+
+  function populateSessionChoices(preferred = state.session) {
+    const water = $("#session-water").value;
+    const access = $("#session-access").value;
+    const targetOptions = advisor.targets[water] || [];
+    const forageOptions = advisor.forage[water] || [];
+    const available = (data.structures || []).filter(item => item.water === water && (access === "any" || item.access.includes(access)));
+    $("#session-target").innerHTML = advisorOptionMarkup(targetOptions);
+    $("#session-forage").innerHTML = advisorOptionMarkup(forageOptions);
+    $("#session-structure").innerHTML = available.map(item => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.name)}</option>`).join("");
+    $("#session-target").value = targetOptions.some(item => item[0] === preferred.target) ? preferred.target : targetOptions[0][0];
+    $("#session-forage").value = forageOptions.some(item => item[0] === preferred.forage) ? preferred.forage : forageOptions.at(-1)[0];
+    $("#session-structure").value = available.some(item => item.id === preferred.structureId) ? preferred.structureId : available[0]?.id || "";
+    $("#session-current-field").hidden = water !== "salt";
+  }
+
+  function sessionPlanMarkup(plan, saved = false) {
+    if (!plan) return `<p>No structure matches this water and access combination. Broaden access to build a plan.</p>`;
+    const {selections,structure,match,technique,trouble,targetLabel,accessLabel,safety} = plan;
+    const procedureId = advisor.procedureByTarget[selections.target];
+    return `<p class="advisor-fit">${escapeHtml(match.fit)} · ${escapeHtml(targetLabel)} · ${escapeHtml(accessLabel)}</p><h3>${escapeHtml(structure.name)}</h3><p class="session-technique">${escapeHtml(technique.name)} <span>with ${escapeHtml(match.profile.lure)}</span></p><div class="session-brief"><section><span>01 · Position</span><strong>${escapeHtml(structure.depthZone)}</strong></section><section><span>02 · First cast</span><strong>${escapeHtml(structure.firstCast)}</strong></section><section><span>03 · Presentation</span><strong>${escapeHtml(match.profile.presentation)}</strong></section><section><span>04 · One adjustment</span><strong>${escapeHtml(structure.adjustment)}</strong><small>${escapeHtml(trouble.action)}</small></section></div><aside class="session-safety"><strong>Safety check</strong><p>${escapeHtml(safety)}</p></aside><div class="advisor-actions">${saved ? `<button type="button" data-load-session="${escapeHtml(selections.structureId)}">Load this briefing</button>` : `<button type="button" data-save-session>Save offline briefing</button>`}<button type="button" data-structure="${escapeHtml(structure.id)}">Open cast diagram</button><button type="button" data-open="${escapeHtml(technique.id)}">Open technique</button>${procedureId ? `<button type="button" data-procedure="${escapeHtml(procedureId)}">Open NJ how-to</button>` : ""}</div>`;
+  }
+
+  function renderSavedSessions() {
+    $("#session-save-status").textContent = `${state.savedSessions.length} of 5 saved`;
+    $("#saved-session-list").innerHTML = state.savedSessions.length ? state.savedSessions.map(item => {
+      const plan = sessionPlan(item.selections);
+      if (!plan) return "";
+      return `<article class="saved-session-card"><div><p class="advisor-fit">${escapeHtml(plan.targetLabel)} · ${plan.selections.water === "fresh" ? "Freshwater" : "Saltwater"}</p><h4>${escapeHtml(plan.structure.name)}</h4><p>${escapeHtml(plan.technique.name)} · ${escapeHtml(plan.match.profile.lure)}</p></div><div><button type="button" data-load-session-id="${escapeHtml(item.id)}">Load</button><button type="button" data-delete-session="${escapeHtml(item.id)}">Delete</button></div></article>`;
+    }).join("") : `<p class="session-empty">No saved briefings yet. Build a plan, then save it for offline use.</p>`;
+  }
+
+  function renderSession() {
+    const selections = sessionSelections();
+    state.session = selections;
+    safeSave("tacklebox-session", selections);
+    $("#session-result").innerHTML = sessionPlanMarkup(sessionPlan(selections));
+    renderSavedSessions();
+  }
+
+  function applySessionSelections(selections) {
+    state.session = {...sessionDefault,...selections};
+    for (const key of ["water","access","trend","clarity","wind","current","light","trouble"]) {
+      const select = $(`#session-${key}`);
+      if ([...select.options].some(option => option.value === state.session[key])) select.value = state.session[key];
+    }
+    populateSessionChoices(state.session);
+    renderSession();
+  }
+
+  function initializeSession() {
+    $("#session-trouble").innerHTML = advisorOptionMarkup(Object.entries(advisor.trouble).map(([id,item]) => [id,item.label]));
+    applySessionSelections(state.session);
   }
 
   function renderManual() {
@@ -443,6 +541,14 @@
     else if (button.dataset.hotspot) { const item = manual.hotspots.find(entry => entry.id === button.dataset.hotspot); if (item) openManualDialog(hotspotMarkup(item)); }
     else if (button.dataset.structureWater) { state.water = button.dataset.structureWater; renderWaterReading(); }
     else if (button.dataset.structure) { const item = (data.structures || []).find(entry => entry.id === button.dataset.structure); if (item) openManualDialog(structureMarkup(item)); }
+    else if (button.hasAttribute("data-save-session")) {
+      const selections = sessionSelections();
+      const duplicate = state.savedSessions.find(item => JSON.stringify(item.selections) === JSON.stringify(selections));
+      if (duplicate) showToast("This briefing is already saved");
+      else { state.savedSessions = [{id:`session-${Date.now()}`,selections},...state.savedSessions].slice(0,5); safeSave("tacklebox-session-plans", state.savedSessions); renderSavedSessions(); showToast("Offline briefing saved"); }
+    }
+    else if (button.dataset.loadSessionId) { const item = state.savedSessions.find(entry => entry.id === button.dataset.loadSessionId); if (item) { applySessionSelections(item.selections); showToast("Briefing loaded"); } }
+    else if (button.dataset.deleteSession) { state.savedSessions = state.savedSessions.filter(item => item.id !== button.dataset.deleteSession); safeSave("tacklebox-session-plans", state.savedSessions); renderSavedSessions(); showToast("Briefing deleted"); }
     else if (button.dataset.njSpecies) activateNjSpecies(button.dataset.njSpecies);
     else if (button.dataset.njPlay) {
       const play = njSpecies().plays.find(item => item.id === button.dataset.njPlay);
@@ -473,6 +579,10 @@
   $("#advisor-form").addEventListener("change", event => {
     if (event.target.id === "advisor-water") populateAdvisorChoices();
     renderAdvisor();
+  });
+  $("#session-form").addEventListener("change", event => {
+    if (["session-water","session-access"].includes(event.target.id)) populateSessionChoices(sessionSelections());
+    renderSession();
   });
   $("#nj-selector").addEventListener("change", event => {
     if (!event.target.dataset.njField) return;
@@ -508,6 +618,7 @@
   $("#field-note-list").innerHTML = data.notes.map(item => `<article class="note-item"><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.text)}</p></article>`).join("");
   $("#source-list").innerHTML = data.sources.map((source,index) => `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener noreferrer">${index + 1}. ${escapeHtml(source.name)}</a>`).join("");
   initializeAdvisor();
+  initializeSession();
   renderManual();
   renderRecommendedSetups();
   renderBench();

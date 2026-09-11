@@ -13,13 +13,13 @@
   <title>Striper Tacklebox | NJ Coastal Field Guide</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-  <link rel="stylesheet" href="styles.css?v=18">
-  <script src="data.js?v=18" defer></script>
-  <script src="manual-data.js?v=18" defer></script>
-  <script src="advisor-data.js?v=18" defer></script>
-  <script src="advisor-engine.js?v=18" defer></script>
-  <script src="lure-products.js?v=18" defer></script>
-  <script src="app.js?v=18" defer></script>
+  <link rel="stylesheet" href="styles.css?v=19">
+  <script src="data.js?v=19" defer></script>
+  <script src="manual-data.js?v=19" defer></script>
+  <script src="advisor-data.js?v=19" defer></script>
+  <script src="advisor-engine.js?v=19" defer></script>
+  <script src="lure-products.js?v=19" defer></script>
+  <script src="app.js?v=19" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#module-content">Skip to active module</a>
@@ -80,6 +80,28 @@
         <article id="advisor-result" class="advisor-result" aria-live="polite"></article>
       </div>
       <p class="advisor-caveat" id="advisor-caveat"></p>
+    </section>
+
+    <section class="session-planner" data-module="session" hidden aria-labelledby="session-title">
+      <div class="session-heading"><div><p class="section-kicker">Build my session</p><h2 id="session-title">Turn the water into one plan.</h2></div><p>Choose what you can observe. The planner connects one structure, one technique, one cast path, and one controlled adjustment into an offline field briefing.</p></div>
+      <div class="session-layout">
+        <form id="session-form" class="session-form">
+          <label><span>Water</span><select id="session-water"><option value="fresh">Freshwater</option><option value="salt">Saltwater</option></select></label>
+          <label><span>Target</span><select id="session-target"></select></label>
+          <label><span>Access</span><select id="session-access"><option value="any">Any access</option><option value="bank">Bank / shore</option><option value="surf">Surf</option><option value="pier">Pier / jetty</option><option value="kayak">Kayak</option><option value="boat">Boat</option></select></label>
+          <label><span>Observed structure</span><select id="session-structure"></select></label>
+          <label><span>Temperature trend</span><select id="session-trend"><option value="warming">Warming</option><option value="stable" selected>Stable</option><option value="cooling">Cooling</option></select></label>
+          <label><span>Water clarity</span><select id="session-clarity"><option value="clear">Clear</option><option value="stained" selected>Stained</option><option value="muddy">Dirty / muddy</option></select></label>
+          <label><span>Wind / surface</span><select id="session-wind"><option value="calm">Calm</option><option value="moderate" selected>Moderate</option><option value="strong">Strong / rough</option></select></label>
+          <label><span>Forage</span><select id="session-forage"></select></label>
+          <label id="session-current-field"><span>Tide / current</span><select id="session-current"><option value="slack">Slack</option><option value="moderate" selected>Moderate movement</option><option value="strong">Strong current</option></select></label>
+          <label><span>Light</span><select id="session-light"><option value="day">Bright / daytime</option><option value="low">Low light / night</option></select></label>
+          <label><span>Current problem</span><select id="session-trouble"></select></label>
+        </form>
+        <article id="session-result" class="session-result" aria-live="polite"></article>
+      </div>
+      <section class="saved-sessions" aria-labelledby="saved-sessions-title"><div class="saved-sessions-heading"><div><p class="section-kicker">Offline briefings</p><h3 id="saved-sessions-title">Saved sessions</h3></div><span id="session-save-status">0 of 5 saved</span></div><div id="saved-session-list" class="saved-session-list"></div></section>
+      <p class="advisor-caveat">This is a starting plan, not a forecast. Live weather, water, access, regulations, and personal safety always override it.</p>
     </section>
 
     <section id="field-manual" class="field-manual" data-module="how-to" hidden aria-labelledby="manual-title">

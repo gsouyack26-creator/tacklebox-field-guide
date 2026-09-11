@@ -108,10 +108,10 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("advisor-engine.js", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("lure-products.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=18");
-  expect(serviceWorker).toContain("./advisor-data.js?v=18");
-  expect(serviceWorker).toContain("./advisor-engine.js?v=18");
-  expect(serviceWorker).toContain("./lure-products.js?v=18");
+  expect(serviceWorker).toContain("./manual-data.js?v=19");
+  expect(serviceWorker).toContain("./advisor-data.js?v=19");
+  expect(serviceWorker).toContain("./advisor-engine.js?v=19");
+  expect(serviceWorker).toContain("./lure-products.js?v=19");
   expect(serviceWorker).not.toContain("youtube.com");
   expect(serviceWorker).toContain(`key.startsWith("tacklebox-field-guide-")`);
   expect(serviceWorker).toContain(".catch(() => cached)");
@@ -126,9 +126,9 @@ test("module navigation is task-first and mobile ready", async () => {
   const html = await Bun.file(new URL("index.html", root)).text();
   const app = await Bun.file(new URL("app.js", root)).text();
   const css = await Bun.file(new URL("styles.css", root)).text();
-  const order = ["home","advisor","how-to","setups","nj-playbook","water-reading","rigs","areas","regulations","library","quiver","seasons","notes","sources"];
-  expect((html.match(/data-module=/g) || []).length).toBe(14);
-  expect((html.match(/data-module="[^"]+" hidden/g) || []).length).toBe(13);
+  const order = ["home","advisor","session","how-to","setups","nj-playbook","water-reading","rigs","areas","regulations","library","quiver","seasons","notes","sources"];
+  expect((html.match(/data-module=/g) || []).length).toBe(15);
+  expect((html.match(/data-module="[^"]+" hidden/g) || []).length).toBe(14);
   expect(html).toContain("id=\"module-sidebar\"");
   expect(html).toContain("id=\"module-menu-button\"");
   expect(app).toContain(`const modules = [`);
@@ -153,6 +153,24 @@ test("conditions advisor is wired into the mobile app", async () => {
   expect(app).toContain(`$("#advisor-current-field").hidden = water !== "salt"`);
   expect(css).toContain(".advisor-layout");
   expect(css).toContain(".advisor-adjust");
+});
+
+test("Build My Session creates and saves offline structure briefings", async () => {
+  const root = new URL("../", import.meta.url);
+  const html = await Bun.file(new URL("index.html", root)).text();
+  const app = await Bun.file(new URL("app.js", root)).text();
+  const css = await Bun.file(new URL("styles.css", root)).text();
+  for (const id of ["session-form","session-water","session-target","session-access","session-structure","session-trend","session-clarity","session-wind","session-forage","session-current","session-light","session-trouble","session-result","saved-session-list"]) expect(html).toContain(`id="${id}"`);
+  expect(app).toContain("const sessionStructureCategory =");
+  expect(app).toContain("advisorEngine.recommend(advisor, engineSelections)");
+  expect(app).toContain('safeSave("tacklebox-session-plans"');
+  expect(app).toContain(".slice(0,5)");
+  expect(app).toContain("structure.firstCast");
+  expect(app).toContain("structure.depthZone");
+  expect(app).toContain("structure.adjustment");
+  expect(css).toContain(".session-layout");
+  expect(css).toContain(".session-brief");
+  expect(css).toContain(".session-safety");
 });
 
 test("recommended setups use compact accessible disclosure", async () => {
