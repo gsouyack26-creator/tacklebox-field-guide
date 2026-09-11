@@ -271,7 +271,8 @@ test("NJ Coastal Report is daily, sourced, accessible, and offline-ready", async
   expect(app).toContain('safeSave("tacklebox-coastal-report", report)');
   expect(app).toContain('data-coastal-zone');
   expect(css).toContain(".coastal-zone-panel");
-  expect(workflow).toContain('cron: "15 9 * * *"');
+  expect(workflow).toContain("workflow_dispatch:");
+  expect(workflow).not.toContain("schedule:");
   expect(sw).toContain('"./coastal-report.json"');
 });
 
