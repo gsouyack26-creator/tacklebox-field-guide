@@ -109,11 +109,11 @@ test("PWA assets are complete", async () => {
   expect(await Bun.file(new URL("lure-products.js", root)).exists()).toBe(true);
   expect(await Bun.file(new URL("salt-line-products.js", root)).exists()).toBe(true);
   const serviceWorker = await Bun.file(new URL("sw.js", root)).text();
-  expect(serviceWorker).toContain("./manual-data.js?v=20");
-  expect(serviceWorker).toContain("./advisor-data.js?v=20");
-  expect(serviceWorker).toContain("./advisor-engine.js?v=20");
-  expect(serviceWorker).toContain("./lure-products.js?v=20");
-  expect(serviceWorker).toContain("./salt-line-products.js?v=20");
+  expect(serviceWorker).toContain("./manual-data.js?v=21");
+  expect(serviceWorker).toContain("./advisor-data.js?v=21");
+  expect(serviceWorker).toContain("./advisor-engine.js?v=21");
+  expect(serviceWorker).toContain("./lure-products.js?v=21");
+  expect(serviceWorker).toContain("./salt-line-products.js?v=21");
   expect(serviceWorker).not.toContain("youtube.com");
   expect(serviceWorker).toContain(`key.startsWith("tacklebox-field-guide-")`);
   expect(serviceWorker).toContain(".catch(() => cached)");
@@ -232,7 +232,8 @@ test("every saltwater technique has a sourced top-rated line pick", async () => 
 test("Line Comparison explains category winners and tradeoffs", async () => {
   if (!window.TACKLEBOX_LINE_COMPARISON) await import("../salt-line-products.js?line-comparison");
   const comparison = window.TACKLEBOX_LINE_COMPARISON;
-  expect(comparison.products).toHaveLength(3);
+  expect(comparison.products).toHaveLength(6);
+  expect(comparison.products.map(item => item.id)).toEqual(expect.arrayContaining(["powerpro-original","powerpro-super8","beyond-braid-8x"]));
   expect(comparison.categories).toHaveLength(5);
   const covered = comparison.categories.flatMap(item => item.techniques);
   const saltIds = window.TACKLEBOX_DATA.techniques.filter(item => item.water === "salt").map(item => item.id);
@@ -246,7 +247,7 @@ test("Line Comparison explains category winners and tradeoffs", async () => {
   const html = await Bun.file(new URL("index.html", root)).text();
   const app = await Bun.file(new URL("app.js", root)).text();
   const css = await Bun.file(new URL("styles.css", root)).text();
-  for (const id of ["line-comparison-title","line-product-grid","line-comparison-body","line-category-grid","line-comparison-basis"]) expect(html).toContain(`id="${id}"`);
+  for (const id of ["line-comparison-title","line-product-grid","line-comparison-head","line-comparison-body","line-category-grid","line-comparison-basis"]) expect(html).toContain(`id="${id}"`);
   expect(app).toContain("function renderLineComparison()");
   expect(app).toContain("renderLineComparison();");
   expect(css).toContain(".line-table-wrap");

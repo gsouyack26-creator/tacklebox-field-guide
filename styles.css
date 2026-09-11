@@ -491,7 +491,7 @@ dialog::backdrop { background: oklch(18% .025 175 / .76); backdrop-filter: blur(
 .line-product-card > div:last-child, .line-product-card a { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.2rem; }
 .line-product-card a { min-height: 2.75rem; color: var(--river); font-weight: 850; }
 .line-table-wrap { max-width: 82rem; margin: 2rem 0; overflow-x: auto; border: 1px solid var(--line); }
-.line-table { width: 100%; min-width: 47rem; border-collapse: collapse; background: var(--surface); }
+.line-table { width: 100%; min-width: 92rem; border-collapse: collapse; background: var(--surface); }
 .line-table caption { padding: 1rem; background: var(--river-deep); font: 700 1.45rem var(--font-display); text-align: left; }
 .line-table th, .line-table td { padding: .85rem 1rem; border: 1px solid var(--line); text-align: left; vertical-align: top; }
 .line-table thead th, .line-table tbody th { background: var(--paper); }
